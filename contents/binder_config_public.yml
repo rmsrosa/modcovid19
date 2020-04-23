@@ -1,0 +1,53 @@
+# NBBinder configuration file for the notebooks in 
+# the repository github/rmsrosa/modcovid19
+
+version: 0.12a
+
+path_to_notes: ./notebooks
+
+contents:
+  toc_nb_name: 00.00-Pagina_Inicial.ipynb
+  show_index_in_toc: True
+
+header: "[*Notas sobre modelagem da epidemia de Covid-19*](https://github.com/rmsrosa/modcovid19) / [*IM-UFRJ*](https://www.im.ufrj.br)."
+
+navigators:
+  core_navigators:
+    - 00.00-Pagina_Inicial.ipynb
+  show_nb_title_in_nav: True
+  show_index_in_nav: False
+
+badges:
+  - alt: Google Colab
+    title: Open in Google Colab
+    url: https://colab.research.google.com/github/rmsrosa/modcovid19/blob/master/contents/notebooks
+    src: https://colab.research.google.com/assets/colab-badge.svg
+  - alt: Binder
+    title: Open in Binder
+    url: https://mybinder.org/v2/gh/rmsrosa/modcovid19/master?filepath=contents/notebooks
+    src: https://mybinder.org/badge.svg
+  - alt: nbviewer
+    title: View in NBViewer
+    url: https://nbviewer.jupyter.org/github/rmsrosa/modelagem_matematica/blob/master/contents/notebooks
+    label: view in
+    message: nbviewer
+    color: orange
+  - alt: slides
+    title: View Slides
+    url: https://nbviewer.jupyter.org/github/rmsrosa/modcovid19/blob/master/contents/slides
+    extension: .slides.html
+    label: view
+    message: slides
+    color: darkgreen
+  - alt: download
+    title: Download Notebook
+    url: https://raw.githubusercontent.com/rmsrosa/modcovid19/master/contents/notebooks
+    label: download
+    message: notebook
+    color: 9cf
+
+exports:
+  - export_path: slides
+    exporter_name: slides
+    exporter_args:
+      reveal_scroll: True

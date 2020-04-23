@@ -10,4 +10,4 @@ import resources.nbbinder as nbb
 
 os.chdir(os.path.dirname(__file__))
 
-nbb.bind('binder_config.yml')
+nbb.bind('binder_config_local.yml')
