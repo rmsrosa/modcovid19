@@ -11,7 +11,7 @@ __copyright__ = """Modified work Copyright (c) 2019 Ricardo M S Rosa
 Original work Copyright (c) 2016 Jacob VanderPlas
 """
 __license__ = "MIT"
-__version__ = "0.12a3"
+__version__ = "0.12a3-modified"
 __config_version__ = "0.12a"
 
 import os
@@ -641,7 +641,8 @@ list of available exporters listed in \
 
     if os.path.isdir(export_path):
         for file in os.listdir(export_path):
-            os.remove(os.path.join(export_path, file))
+            if file.endswith('.ipynb'):
+                os.remove(os.path.join(export_path, file))
     else:
         os.mkdir(export_path)
 
@@ -1048,7 +1049,7 @@ def add_navigators(path_to_notes: str = None,
                 or (len(nb.cells) > 2
                     and not nb.cells[-1].source.startswith(NAVIGATOR_MARKER)):
             nb.cells.append(new_markdown_cell(source=navbar_bottom,
-                                              metadata=SLIDE_SHOW))
+                                              metadata=SLIDE_SKIP))
 
         nbformat.write(nb, nb_file)
 
