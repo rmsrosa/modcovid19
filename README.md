@@ -2,7 +2,7 @@
 
 [![Text License: CC-BY-NC-ND license](https://img.shields.io/badge/Text%20License-CC--BY--NC--ND-yellow.svg)](https://opensource.org/licenses/MIT) [![Code License: GNU-GPLv3](https://img.shields.io/badge/Code%20License-GNU--GPLv3-yellow.svg)](https://www.gnu.org/licenses/gpl.html) ![GitHub repo size](https://img.shields.io/github/repo-size/rmsrosa/nbbinder)
 
-Notas sobre modelagem matemática da epidemia de Covid-19
+Notas sobre modelagem matemática da epidemia de Covid-19.
 
 [Ricardo M. S. Rosa](http://www.im.ufrj.br/rrosa/).
 
