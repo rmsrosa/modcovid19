@@ -70,8 +70,9 @@ NEXT_TEMPLATE = "| [{title} ->]({url})"
 
 # Link templates for the badges
 BADGE_LINK = \
-    """<a href="{badge_url}/{badge_filename}"><img align="left" \
-src="{badge_src}" alt="{badge_alt}" title="{badge_title}"></a>
+    """<a href="{badge_url}/{badge_filename}" target="_blank">\
+<img align="left" src="{badge_src}" alt="{badge_alt}" \
+title="{badge_title}"></a>
 """
 BADGE_SHIELD_SRC = "https://img.shields.io/badge/\
 {badge_label}-{badge_message}-{badge_color}"
