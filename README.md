@@ -8,6 +8,8 @@ Notas sobre modelagem matemática da epidemia de Covid-19.
 
 ## *Links* de acesso direto aos cadernos
 
+**ESSES LINKS SÓ FUNCIONAM QUANDO O REPOSITÓRIO É PÚBLICO**
+
 *Links* para acessar a página inicial das notas via [Github](https://github.com), [Binder](https://beta.mybinder.org/) e [Google Colab](http://colab.research.google.com):
 
 [![Github](https://img.shields.io/badge/view%20on-github-orange)](contents/notebooks/00.00-Pagina_Inicial.ipynb) [![Binder](https://mybinder.org/badge.svg)](https://mybinder.org/v2/gh/rmsrosa/modcovid19/master?filepath=contents%2Fnotebooks%2F00.00-Pagina_Inicial.ipynb) [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/rmsrosa/modcovid19/blob/master/contents/notebooks/00.00-Pagina_Inicial.ipynb)
