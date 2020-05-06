@@ -8,7 +8,7 @@ Notas sobre modelagem matemática da epidemia de Covid-19.
 
 ## *Links* de acesso direto aos cadernos
 
-**ESSES LINKS SÓ FUNCIONAM QUANDO O REPOSITÓRIO É PÚBLICO**
+ESSES LINKS SÓ FUNCIONAM QUANDO O REPOSITÓRIO É PÚBLICO!
 
 *Links* para acessar a página inicial das notas via [Github](https://github.com), [Binder](https://beta.mybinder.org/) e [Google Colab](http://colab.research.google.com):
 
