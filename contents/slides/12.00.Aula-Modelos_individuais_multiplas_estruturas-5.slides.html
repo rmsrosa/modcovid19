@@ -13202,8 +13202,12 @@ a.anchor-link {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="P&#225;gina-Inicial">P&#225;gina Inicial<a class="anchor-link" href="#P&#225;gina-Inicial">&#182;</a></h1><p>Abaixo o Sumário dos notebooks sobre as aulas de um curso virtual de modelagem da epidemia de Covid-19 oferecido pelo Professor <a href="http://www.im.ufrj.br/rrosa/">Ricardo M. S. Rosa</a> do <a href="http://www.im.ufrj.br">Instituto de Matemática da UFRJ</a> e que estão reunidas no repositório <a href="https://github.com/rmsrosa/modelagem_matematica">rmsrosa/modelagem_matematica</a>.</p>
-<p>O texto está disponível sob a <a href="https://creativecommons.org/licenses/by-nc-nd/3.0/us/legalcode">licença CC-BY-NC-ND</a> e os códigos estão disponíveis sob a <a href="https://www.gnu.org/licenses/gpl.html">licença GNU GPL Versão 3</a>.</p>
+<h1 id="Modelos-individuais-estoc&#225;sticos-com-m&#250;ltiplas-estruturas-de-conex&#227;o---parte-V">Modelos individuais estoc&#225;sticos com m&#250;ltiplas estruturas de conex&#227;o - parte V<a class="anchor-link" href="#Modelos-individuais-estoc&#225;sticos-com-m&#250;ltiplas-estruturas-de-conex&#227;o---parte-V">&#182;</a></h1><h2 id="Objetivos">Objetivos<a class="anchor-link" href="#Objetivos">&#182;</a></h2><ul>
+<li><p>Continuar o estudo de <strong>modelos estocásticos individuais espacialmente estruturados e com evolução temporal discreta.</strong></p>
+</li>
+<li><p>Entender os diveros parâmetros do modelo</p>
+</li>
+</ul>
 
 </div>
 </div>
@@ -13211,15 +13215,313 @@ a.anchor-link {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Sum&#225;rio">Sum&#225;rio<a class="anchor-link" href="#Sum&#225;rio">&#182;</a></h2>
+<h3 id="Descri&#231;&#227;o-do-modelo-no-artigo-Ferguson-et-al-(2006)">Descri&#231;&#227;o do modelo no artigo Ferguson et al (2006)<a class="anchor-link" href="#Descri&#231;&#227;o-do-modelo-no-artigo-Ferguson-et-al-(2006)">&#182;</a></h3><ul>
+<li><p>Passos temporais de $\Delta t = 0.25 \,\texttt{dias} = 6\,\texttt{horas}$.</p>
+</li>
+<li><p>A cada passo de tempo, um indivíduo suscetível tem probabilidade $1 - e^{-\lambda_i \Delta t}$ de ser infectado, onde $\lambda_i$ é a taxa de risco instantâneo de infecção.</p>
+</li>
+<li><p>$\lambda_i$ vem de três fontes: residência, local de trabalho e encontros aleatórios (mais detalhes nas <a href="https://static-content.springer.com/esm/art%3A10.1038%2Fnature04017/MediaObjects/41586_2005_BFnature04017_MOESM1_ESM.pdf">notas suplementares</a> do artigo <a href="#Referências">Ferguson et al (2005)</a></p>
+</li>
+<li><p>O contatos aleatórios dependem da distância através do uso de "modelos de gravidade", representando contatos aleatórios associados a deslocamentos e viagens.</p>
+</li>
+<li><p>O <em>kernel</em> de decaimento espacial tem a mesma forma que a função de alocação de trabalhadores: $f(d) = 1/(1+(d/a)^b)$, onde $a=4\,\texttt{km}$ e $b=3$.</p>
+</li>
+</ul>
+
 </div>
 </div>
 </div></section></section><section><section>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><!--TABLE_OF_CONTENTS--></p>
-<h2 id=""><a href="#" /><a class="anchor-link" href="#">&#182;</a></h2><h3 id="P&#225;gina-Inicial"><a href="00.00-Pagina_Inicial.slides.html">P&#225;gina Inicial</a><a class="anchor-link" href="#P&#225;gina-Inicial">&#182;</a></h3><h3 id="Aula-1.-Explorando-a-base-de-dados-da-Covid-19"><a href="01.00.Aula-Explorando-dados-da-covid-19.slides.html">Aula 1. Explorando a base de dados da Covid-19</a><a class="anchor-link" href="#Aula-1.-Explorando-a-base-de-dados-da-Covid-19">&#182;</a></h3><h3 id="Aula-2.-Ajuste-de-par&#226;metros"><a href="02.00.Aula-Ajuste_de_parametros.slides.html">Aula 2. Ajuste de par&#226;metros</a><a class="anchor-link" href="#Aula-2.-Ajuste-de-par&#226;metros">&#182;</a></h3><h3 id="Aula-3.-Modelos-epidemiol&#243;gicos-compartimentais"><a href="03.00.Aula-Modelos_compartimentais.slides.html">Aula 3. Modelos epidemiol&#243;gicos compartimentais</a><a class="anchor-link" href="#Aula-3.-Modelos-epidemiol&#243;gicos-compartimentais">&#182;</a></h3><h3 id="Aula-4.-Modelos-compartimentais-estruturados"><a href="04.00.Aula-Compartimentais_estruturados.slides.html">Aula 4. Modelos compartimentais estruturados</a><a class="anchor-link" href="#Aula-4.-Modelos-compartimentais-estruturados">&#182;</a></h3><h3 id="Aula-5.-Qualidade-e-compara&#231;&#227;o-de-modelos"><a href="05.00.Aula-Qualidade_e_comparacao_de_modelos.slides.html">Aula 5. Qualidade e compara&#231;&#227;o de modelos</a><a class="anchor-link" href="#Aula-5.-Qualidade-e-compara&#231;&#227;o-de-modelos">&#182;</a></h3><h3 id="Aula-6.-Modelos-baseados-em-indiv&#237;duos-e-o-relat&#243;rio-do-Imperial-Colege"><a href="06.00.Aula-Modelos_baseados_em_individuos.slides.html">Aula 6. Modelos baseados em indiv&#237;duos e o relat&#243;rio do Imperial Colege</a><a class="anchor-link" href="#Aula-6.-Modelos-baseados-em-indiv&#237;duos-e-o-relat&#243;rio-do-Imperial-Colege">&#182;</a></h3><h3 id="Aula-7.-Modelos-indivuais-estoc&#225;sticos-estruturados"><a href="07.00.Aula-Modelos_individuos_estruturados.slides.html">Aula 7. Modelos indivuais estoc&#225;sticos estruturados</a><a class="anchor-link" href="#Aula-7.-Modelos-indivuais-estoc&#225;sticos-estruturados">&#182;</a></h3><h3 id="Aula-8.-Modelos-individuais-estoc&#225;sticos-com-m&#250;ltiplas-estruturas-de-conex&#227;o---parte-I"><a href="08.00.Aula-Modelos_individuais_multiplas_estruturas.slides.html">Aula 8. Modelos individuais estoc&#225;sticos com m&#250;ltiplas estruturas de conex&#227;o - parte I</a><a class="anchor-link" href="#Aula-8.-Modelos-individuais-estoc&#225;sticos-com-m&#250;ltiplas-estruturas-de-conex&#227;o---parte-I">&#182;</a></h3><h3 id="Aula-9.-Modelos-individuais-estoc&#225;sticos-com-m&#250;ltiplas-estruturas-de-conex&#227;o---parte-II"><a href="09.00.Aula-Modelos_individuais_multiplas_estruturas_2.slides.html">Aula 9. Modelos individuais estoc&#225;sticos com m&#250;ltiplas estruturas de conex&#227;o - parte II</a><a class="anchor-link" href="#Aula-9.-Modelos-individuais-estoc&#225;sticos-com-m&#250;ltiplas-estruturas-de-conex&#227;o---parte-II">&#182;</a></h3><h3 id="Aula-10.-Modelos-individuais-estoc&#225;sticos-com-m&#250;ltiplas-estruturas-de-conex&#227;o---parte-III"><a href="10.00.Aula-Modelos_individuais_multiplas_estruturas_3.slides.html">Aula 10. Modelos individuais estoc&#225;sticos com m&#250;ltiplas estruturas de conex&#227;o - parte III</a><a class="anchor-link" href="#Aula-10.-Modelos-individuais-estoc&#225;sticos-com-m&#250;ltiplas-estruturas-de-conex&#227;o---parte-III">&#182;</a></h3><h3 id="Aula-11.-Modelos-individuais-estoc&#225;sticos-com-m&#250;ltiplas-estruturas-de-conex&#227;o---parte-IV"><a href="11.00.Aula-Modelos_individuais_multiplas_estruturas_4.slides.html">Aula 11. Modelos individuais estoc&#225;sticos com m&#250;ltiplas estruturas de conex&#227;o - parte IV</a><a class="anchor-link" href="#Aula-11.-Modelos-individuais-estoc&#225;sticos-com-m&#250;ltiplas-estruturas-de-conex&#227;o---parte-IV">&#182;</a></h3><h3 id="Aula-12.-Modelos-individuais-estoc&#225;sticos-com-m&#250;ltiplas-estruturas-de-conex&#227;o---parte-V"><a href="12.00.Aula-Modelos_individuais_multiplas_estruturas-5.slides.html">Aula 12. Modelos individuais estoc&#225;sticos com m&#250;ltiplas estruturas de conex&#227;o - parte V</a><a class="anchor-link" href="#Aula-12.-Modelos-individuais-estoc&#225;sticos-com-m&#250;ltiplas-estruturas-de-conex&#227;o---parte-V">&#182;</a></h3>
+<h3 id="Detalhamento-do-modelo">Detalhamento do modelo<a class="anchor-link" href="#Detalhamento-do-modelo">&#182;</a></h3><ul>
+<li><p>Usamos o modelo genérico conforme descrito nas <a href="https://static-content.springer.com/esm/art%3A10.1038%2Fnature04017/MediaObjects/41586_2005_BFnature04017_MOESM1_ESM.pdf">notas suplementares</a> do <a href="#Referências">Ferguson et al (2005)</a>.</p>
+</li>
+<li><p>A <strong>região geográfica</strong> é um domínio $\Omega\subset \mathbb{R}^2$.</p>
+</li>
+<li><p>A <strong>população total</strong> é um inteiro $N$.</p>
+</li>
+<li><p>Há um determinado número de <strong>residências</strong>.</p>
+</li>
+</ul>
+
+</div>
+</div>
+</div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<ul>
+<li><p>Há quatro tipos de <strong>lugares</strong> (<em>places</em>), $n_p = 1, 2, 3, 4$, com os três primeiros representando tipos de <strong>escola</strong>, segundo a escolarização, e o último, o <strong>local de trabalho</strong>.</p>
+</li>
+<li><p>Um <strong>indivíduo</strong> $i\in \{1, \ldots, N\}$ é representado por</p>
+<ul>
+<li><p>sua <strong>idade</strong> $a_i$;</p>
+</li>
+<li><p>sua <strong>residência</strong> $h_i$ (determinada pela função de densidade populacional e dados de censo da pirâmide etária);</p>
+</li>
+<li><p>seu <strong>local de estudo/trabalho</strong> $l_i^j$;</p>
+</li>
+<li><p>o seu <strong>estado</strong> $I_i$, de acordo com $I_i = 1$, se infectado (ou contagioso?), ou $I_i=0$, caso contrário.</p>
+</li>
+<li><p>o <strong>grau da infecção</strong> $C_i$, de acordo com $C_i=1$, se severa, ou $C_i=0$, caso contrário. A cada nova infecção, o indivíduo recém-infectado é aleatoriamente selecionado se $C_i=0$ ou $1$, com 50% de chance para cada grau.</p>
+</li>
+<li><p>o <strong>instante de infecção</strong> $\tau_i$, indicando o instante em que o indivíduo $i$ se tornou infectado (contagioso?)</p>
+</li>
+<li><p>a <strong>força de infecção</strong> $\lambda_i$, detalhada mais abaixo.</p>
+</li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+</div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<ul>
+<li><p>Quantidades derivadas:</p>
+<ul>
+<li><p>$n_i$ é o <strong>número de pessoas na residência</strong> do indivíduo $i$;</p>
+</li>
+<li><p>$m_i^j$ é o <strong>número de pessoas no mesmo local</strong> do indivíduo $i$.</p>
+</li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+</div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="For&#231;a-de-infec&#231;&#227;o">For&#231;a de infec&#231;&#227;o<a class="anchor-link" href="#For&#231;a-de-infec&#231;&#227;o">&#182;</a></h3><p>A <strong>força de infecção</strong> $\lambda_i$ de cada indivíduo é dada por</p>
+$$ 
+  \begin{align*}
+    \lambda_i &amp; = \frac{1}{n_i^\alpha}\sum_{k; h_k = h_i}  I_k \beta_h\kappa(t-\tau_k)\rho_k(1 + C_k (\omega-1)) \quad \textrm{(na residência)} \\
+    &amp; \quad + \sum_{j, k; l_k^j = l_i^j} \frac{I_k \beta_p^j\kappa(t-\tau_k)\rho_k(1 + C_k(\omega\psi_p^j(t-\tau_\kappa)-1)}{m_i^j} \quad \textrm{(na local de escola/trabalho)} \\
+    &amp; \quad + \frac{\sum_k I_k\zeta(a_i)\beta_c\kappa(t-\tau_k)f(d_{ik})\rho_k(1 + C_k (\omega-1))}{\sum_l f(d_{il})} \quad \textrm{(global)},
+  \end{align*}
+$$<p>onde</p>
+<ul>
+<li><p>$i, k$ são índices de indivíduos;</p>
+</li>
+<li><p>$j$ é um índice de local;</p>
+</li>
+<li><p>$\beta_h$, $\beta_p^j$ e $\beta_c$ são coeficientes de transmissão em <strong>residências</strong>, <strong>locais de trabalho/escola</strong> e em toda a região (rede <strong>global</strong>);</p>
+</li>
+<li><p>$\alpha=0.8$ é uma potência para escalonar em função do tamanho da residência;</p>
+</li>
+<li><p>$\omega=2$ é um fator de contágio para infecções severas, em relação a não-severas.</p>
+</li>
+<li><p>$\kappa=\kappa(s)$ é uma temporal de intensidade</p>
+</li>
+<li><p>$\psi_p^j = \psi_p^j(s) = 0.1, 0.2, 0.25, 0.5$, para $j=1,2,3,4$ e $s&gt;0.25 \;\texttt{dias}$, e $\psi_p^j=0$, caso contrário, são os fatores de taxa de contato, em cada tipo de local, para infecções severas, como função do tempo $s=t-\tau$ desde o início do contágio, <strong>refletindo ao grau de ausência do indivíduo no local.</strong></p>
+</li>
+<li><p>$f(d_{ik})$ é o núcleo de distância e $d_{ik}$ é a distância euclidiana entre os indivíduos $i$ e $k$.</p>
+</li>
+<li><p>$\zeta(a_i)$ é a taxa relativa de contato em relação à mobilidade de um indivíduo com idade $a_i$.</p>
+</li>
+<li><p>$\rho_k = 1$ é a taxa relativa de infecção do indivíduo $k$. (Mais geralmente $\rho_k$ pode ser dado por uma distribuição gama com média $1$ e fator de forma $\alpha=0.2$.)</p>
+</li>
+</ul>
+
+</div>
+</div>
+</div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="D&#250;vidas-sobre-os-par&#226;metros-mencionados">D&#250;vidas sobre os par&#226;metros mencionados<a class="anchor-link" href="#D&#250;vidas-sobre-os-par&#226;metros-mencionados">&#182;</a></h2><ul>
+<li><p>Definição das taxas $\beta_h$, $\beta_p^j$, $\beta_c$.</p>
+</li>
+<li><p>Definição da potência $\alpha$</p>
+</li>
+<li><p>Definição das potências $a$ e $b$ do núcleo de decaimento $f$.</p>
+</li>
+<li><p>Definição do fator de contágio $\omega$.</p>
+</li>
+<li><p>Definição da forma de $\psi_p^j$.</p>
+<ul>
+<li><p>Entendi, agora, que está associado ao grau de ausência do indivíduo no local de escola ou trabalho, mas os números, em si, não vêm com explicação.</p>
+</li>
+<li><p>O limite $s=t-\tau&gt;0.25\,\texttt{dias}$ está associado ao prazo de detecção de a infecção. Seria esse o periodo latente/ Tão curto asim? No original:</p>
+<ul>
+<li><em>"We assume severe infections are detectable a minimum of 0.25 days after infectiousness start (i.e. after the latent period ends)."</em></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Entender o motivo de $\rho_k$ ser dado pela distribuição gama.</p>
+</li>
+</ul>
+
+</div>
+</div>
+</div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="D&#250;vidas-sobre-quest&#245;es-n&#227;o-mencionadas">D&#250;vidas sobre quest&#245;es n&#227;o mencionadas<a class="anchor-link" href="#D&#250;vidas-sobre-quest&#245;es-n&#227;o-mencionadas">&#182;</a></h2><ul>
+<li><p>Por que $n_i$ e $n_p^j$ ao invés de $n_i-1$ e $n_p^j-1$?</p>
+</li>
+<li><p>Não tem muita diferença entre $N$ e $N-1$ pro SIR compartimental quando $N$ é grande, mas, no individual, $n_i$ e $n_p^j$ são "pequenos", principalmente $n_i$. Será que o parâmetro $\alpha$ é suficiente para compensar no caso residencial, que é o menor dos dois?</p>
+</li>
+<li><p>Como entram os assintomáticos no modelo?</p>
+</li>
+<li><p>Como entra a quarentena?</p>
+</li>
+<li><p>Como entra o distânciamento social?</p>
+</li>
+</ul>
+
+</div>
+</div>
+</div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Coisas-a-fazer-para-completar-o-c&#243;digo">Coisas a fazer para completar o c&#243;digo<a class="anchor-link" href="#Coisas-a-fazer-para-completar-o-c&#243;digo">&#182;</a></h2><ul>
+<li><p>Incluir $\rho_i$ como parâmetro do indivíduo (constante para cada $i$).</p>
+</li>
+<li><p>Incluir $C_i$ (variável de grau de infecção) e $\tau_i$ (variável com o momento da infecção) como novas variáveis compondo o estado dos indivíduos da população.</p>
+</li>
+<li><p>Incluir $\kappa=\kappa(s)$, $\psi_p^j=\psi_p^j(s)$ e $\omega$ no cálculo da força de infecção.</p>
+</li>
+</ul>
+
+</div>
+</div>
+</div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Coisas-a-fazer-para-flexibilizar-o-c&#243;digo-para-testes">Coisas a fazer para flexibilizar o c&#243;digo para testes<a class="anchor-link" href="#Coisas-a-fazer-para-flexibilizar-o-c&#243;digo-para-testes">&#182;</a></h2><ul>
+<li><p>Fixar alguns "templates" para, dado um número total de indivíduos, fazer</p>
+<ul>
+<li><p>a <strong>localização</strong> dos indivíduos</p>
+</li>
+<li><p>a <strong>distribuição</strong> deles <strong>em residências</strong></p>
+</li>
+<li><p>a <strong>distribuição</strong> deles em <strong>locais de estudo ou trabalho</strong></p>
+</li>
+</ul>
+</li>
+<li><p>Os templates devem usar</p>
+<ul>
+<li><p>Uma função de distribuição de <strong>densidade populacional</strong></p>
+</li>
+<li><p>Uma distribuição de probabilidades do <strong>número de habitantes por residência</strong></p>
+</li>
+<li><p>Uma distribuição de <strong>idades por número de habitantes nas residências</strong></p>
+</li>
+<li><p>Uma distribuição <strong>do número de indivíduos nos locais de escola/trabalho</strong></p>
+</li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+</div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Quest&#245;es-para-a-adapta&#231;&#227;o-ao-Rio-de-Janeiro">Quest&#245;es para a adapta&#231;&#227;o ao Rio de Janeiro<a class="anchor-link" href="#Quest&#245;es-para-a-adapta&#231;&#227;o-ao-Rio-de-Janeiro">&#182;</a></h2><ul>
+<li><p>Distribuição de <strong>habitantes por quilômetro quadrado</strong> (ou, pra começar, por bairros) (datascan, ibge?)</p>
+</li>
+<li><p>Número de <strong>habitantes por residência</strong> (censo?)</p>
+</li>
+<li><p>Distribuição de <strong>idades por número de habitantes nas residências</strong> (censo, prefeitura?)</p>
+</li>
+<li><p>Distribuição do <strong>número de indivíduos nos locais de escola/trabalho</strong> (censo, prefeitura?)</p>
+</li>
+<li><p>Considerar apenas <strong>um nível de escola</strong>?</p>
+</li>
+<li><p><strong>Parâmetros</strong> $a$ e $b$ do núcleo de decaimento em função da distância (prefeitura)</p>
+</li>
+</ul>
+
+</div>
+</div>
+</div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Sobre-as-taxas-de-transmiss&#227;o">Sobre as taxas de transmiss&#227;o<a class="anchor-link" href="#Sobre-as-taxas-de-transmiss&#227;o">&#182;</a></h3><p>Taxas utilizadas na simulação de uma possível epidemia na Tailândia</p>
+<ul>
+<li><p>$R_0 = 2.4$ total.</p>
+</li>
+<li><p>Não achei menção à taxa de recuperação $\gamma$.</p>
+</li>
+<li><p>$\beta_h = 0.4/\texttt{dia}$, correspondendo a $R_0 = 0.6$ (nas residências);</p>
+</li>
+<li><p>Particiona os coeficientes de transmissão fora das residências em partes iguais em relação aos valores correspodentes de $R_0$, sendo que o das escolas é o dobro do dos trabalhos:</p>
+<ul>
+<li><p>$\beta_e^j = 0.94/\texttt{dia}$ (nas escolas - $j=1,2,3$);</p>
+</li>
+<li><p>$\beta_t= 0.47/\texttt{dia}$ (no trabalho);</p>
+</li>
+<li><p>$\beta_c = 0.075/\texttt{dia}$ (global).</p>
+</li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+</div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Dados">Dados<a class="anchor-link" href="#Dados">&#182;</a></h2><ul>
+<li><a href="https://landscan.ornl.gov">LandScan:</a><ul>
+<li>estimativa de população a cada quilômetro quadrado.</li>
+<li>aberto livremente apenas para instituições educacionais (professores, alunos ou funcionários);</li>
+<li>precisa de e-mail institucional;</li>
+<li>após a inscrição online, demora entre 2 e 3 dias para a liberação (ou não);</li>
+<li>coloquei como "sim" na pergunta sobre se desejo publicar artigo com os dados (não que eu tenha isso em mente, mas pode ser que aconteça);</li>
+<li>justifiquei escrevendo "<em>for constructing a population network for individual-based modeling of the covid-19 epidemics in Brazil, in particular in the city and in the sate of Rio de Janeiro.</em>"</li>
+</ul>
+</li>
+<li><a href="https://cidades.ibge.gov.br/brasil/rj/rio-de-janeiro/panorama">IBGE - Rio de Janeiro: </a> <ul>
+<li>densidade demográfica por município;</li>
+<li>pirâmide etária;</li>
+<li>alunos por nível escolar;</li>
+<li>emprego.</li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+</div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Refer&#234;ncias">Refer&#234;ncias<a class="anchor-link" href="#Refer&#234;ncias">&#182;</a></h1><ul>
+<li><p><a href="https://www.imperial.ac.uk/media/imperial-college/medicine/sph/ide/gida-fellowships/Imperial-College-COVID19-NPI-modelling-16-03-2020.pdf">Imperial College COVID-19 Response Team (16/mar/2020), Impact of non-pharmaceutical interventions (NPIs) to reduce COVID- 19 mortality and healthcare demand, 16 de março de 2020 (Free Download).</a></p>
+</li>
+<li><p><a href="https://pubmed.ncbi.nlm.nih.gov/16079797/">Ferguson, N. M. et al. (2005), Strategies for containing an emerging influenza pandemic
+in Southeast Asia, Nature 437, 209-214.</a> (Link para download <a href="http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.452.235&amp;rep=rep1&amp;type=pdf">aqui</a> disponibilizado por <a href="http://citeseerx.ist.psu.edu/">CiteSeerX</a>; veja, também, as <a href="https://static-content.springer.com/esm/art%3A10.1038%2Fnature04017/MediaObjects/41586_2005_BFnature04017_MOESM1_ESM.pdf">notas suplementares</a>.)</p>
+</li>
+</ul>
+<ul>
+<li><p><a href="https://pubmed.ncbi.nlm.nih.gov/16642006/">Ferguson NM, Cummings DAT, Fraser C, Cajka JC, Cooley PC, Burke DS (2006). Strategies for mitigating an influenza pandemic. Nature 442 (7101), 448–52 (Free Download)</a>; veja, também, as <a href="https://www.nature.com/articles/nature04795#Sec2">notas suplementares</a>.</p>
+</li>
+<li><p><a href="https://pubmed.ncbi.nlm.nih.gov/18332436/">Halloran ME, Ferguson NM, Eubank S, et al (2008), Modeling targeted layered containment of an influenza pandemic in the United States. Proc Natl Acad Sci U S A 105 (12), 4639–44 (Free Download)</a>; veja, também, o <a href="https://www.pnas.org/content/suppl/2008/02/28/0706849105.DC1">suplemento do artigo</a>.</p>
+</li>
+<li><p><a href="https://landscan.ornl.gov/">Landscan data</a>: dados da distribuição global da população, com resolução da ordem de $1\,km^2$ ($30''\times 30''$).</p>
+</li>
+<li><p><a href="https://press.princeton.edu/books/hardcover/9780691116174/modeling-infectious-diseases-in-humans-and-animals">M. J. Keeling &amp; P. Rohani (2007), Modeling Infectious Diseases in Humans and Animals, Princeton University Press.</a></p>
+</li>
+<li><p><a href="https://www.springer.com/br/book/9783319508047">I. Z. Kiss, J. Miller &amp; P. L. Simon (2017), Mathematics of Epidemics on Networks: From Exact to Approximate Models, Springer-Verlag.</a></p>
+</li>
+</ul>
+<p>Veja a página <a href="https://www.imperial.ac.uk/mrc-global-infectious-disease-analysis/covid-19/">Imperial College - Covid 19</a> para mais relatórios, publicações e outras informações do Imperial College.</p>
+
 </div>
 </div>
 </div></section></section>
