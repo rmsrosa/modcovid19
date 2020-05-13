@@ -30,6 +30,8 @@ ESSES LINKS SÓ FUNCIONAM QUANDO O REPOSITÓRIO É PÚBLICO!
 
 - Alguns **artigos** relevantes em [contents/bibliography](contents/bibliography)
 
+- Uma **biblioteca** python com códigos para a simulação de epidemia usando variados modelos está sendo elaborada no subdiretório [contents/episiming](contents/episiming).
+
 - Um servidor [Jupyter Hub](https://jupyter.org/hub) próprio para o curso está disponível em [Jupyter Hub ModCovid19](https://rmsrosa.tk/jupyter/),  onde cada aluno terá uma conta e todo o ambiente computacional necessário para a execução dos notebooks.
 
 - O servidor [Jupyter Hub ModCovid19](https://rmsrosa.tk/jupyter/) foi instalado em uma instância da [Amazon EC2 (Amazon Elastic Compute Cloud)](https://aws.amazon.com/pt/ec2/), do tipo [t2.micro](https://aws.amazon.com/pt/ec2/instance-types/), com apenas 1 vCPU, 1Gb RAM, 8Gb SSD. Não é muito, mas serve para uma primeira experiência e serve para a execução dos trabalhos a serem entregues via [nbgrader](https://nbgrader.readthedocs.io/). Mas, para uso geral, recomendamos uma máquina local ou uma das outras nuvens de computação ([Binder](https://beta.mybinder.org/), [Google Colab](http://colab.research.google.com), [Kaggle](https://www.kaggle.com/), por exemplo).
@@ -40,11 +42,11 @@ ESSES LINKS SÓ FUNCIONAM QUANDO O REPOSITÓRIO É PÚBLICO!
 
 - Todo o conteúdo do repositório pode ser baixado para uma máquina local através do botão `Clone or Download` da página inicial [rmsrosa/modcovid19](https://github.com/rmsrosa/modcovid19) e escolhendo a opção `Download ZIP`.
 
-- Cada caderno, além de poder ser visualizado diretamente no [Github](https://github.com) e acessado nas nuvens de computação, também pode ser baixado individualmente para uma máquina local clicando-se no ícone `Raw`, que aparece em cada página, e baixando para a sua máquina o conteúdo que aparecer no navegador (é um arquivo fonte de cadernos [jupyter](https://jupyter.org/), com a extensão `".ipynb"`).
+- Cada caderno também pode ser baixado individualmente para uma máquina local clicando-se no ícone `Raw`. O conteúdo que aparecer no navegador é um arquivo fonte de cadernos [jupyter](https://jupyter.org/), com a extensão `".ipynb"`.
 
-- As alterações nos cadernos deste repositório e a criação de novos cadernos podem ser feitas localmente, em máquinas com o Python (versão 3.8) e os devidos pacotes devidamente instalados.
+- As alterações nos cadernos deste repositório e a criação de novos cadernos podem ser feitas localmente, em máquinas com o Python versão 3.8 e os devidos pacotes devidamente instalados.
 
-- A lista dos pacotes python necessários para a execução do conjunto de cadernos aparece no arquivo [requirements.txt](requirements.txt). Esse arquivo não é apenas uma referência, ele é necessário caso deseja-se acessar o notebook no [Binder](https://beta.mybinder.org/), mas para isso o repositório deve estar com acesso público. 
+- A lista dos pacotes python necessários para a execução do conjunto de cadernos aparece no arquivo [requirements.txt](requirements.txt). Esse arquivo não é apenas uma referência, ele é necessário caso deseja-se acessar o notebook no [Binder](https://beta.mybinder.org/), mas para isso o repositório deve estar com acesso público.
 
 ## Licença
 
