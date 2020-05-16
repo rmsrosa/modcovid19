@@ -193,8 +193,9 @@ def evolucao_vetorial(pop_estado_0, pop_posicoes, redes, redes_tx_transmissao,
         for j in range(1,num_dt+1):
 
             pop_estado = passo_vetorial(pop_estado, redes, redes_tx_transmissao,
-                                                 pop_fator_tx_transmissao_c, prob_nao_recuperacao,
-                                                 pop_posicoes, f_kernel, dt)
+                                        pop_fator_tx_transmissao_c, 
+                                        prob_nao_recuperacao,
+                                        pop_posicoes, f_kernel, dt)
 
             S = np.hstack([S, np.count_nonzero(pop_estado==1)])
             I = np.hstack([I, np.count_nonzero(pop_estado==2)])
