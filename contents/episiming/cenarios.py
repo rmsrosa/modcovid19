@@ -74,6 +74,21 @@ class Cenario:
             )
         return X
 
+    def evolui_jit(self, dados_temporais, num_sim, show=''):
+        X = individuais.evolucao_vetorial_jit(
+                self.pop_estado_0, 
+                self.pop_posicoes, 
+                self.redes, 
+                self.redes_tx_transmissao,
+                self.pop_fator_tx_transmissao_c,
+                self.gamma,
+                self.f_kernel,
+                dados_temporais,
+                num_sim,
+                show
+            )
+        return X
+
     def evolui_matricial(self, dados_temporais, num_sim, show=''):
         tempos = np.linspace(
             dados_temporais[0],

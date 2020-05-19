@@ -6,10 +6,14 @@ Módulo para simulação de modelos epidemiológicos baseados em indivíduos.
 
 import random
 
+import threading
+
 import numpy as np
 import networkx as nx
 
-from os import path
+from numba import jit
+
+from os import path, cpu_count
 from sys import getsizeof
 from collections import namedtuple
 from functools import partial
@@ -45,17 +49,24 @@ def passo_vetorial(pop_estado, redes, redes_tx_transmissao,
     #
     
     contatos_de_risco_rs = np.zeros([len(redes_tx_transmissao), num_pop])
-    
+
     for j in range(len(redes_tx_transmissao)):
         for (i,k) in redes[j].edges:
             if pop_infectados[k] and pop_suscetiveis[i]:
                 contatos_de_risco_rs[j][i] += 1
             elif pop_infectados[i] and pop_suscetiveis[k]:
                 contatos_de_risco_rs[j][k] += 1
-                
-    contatos_de_risco_c = np.array([np.dot(pop_infectados,
-                                           f_kernel(np.linalg.norm(pop_posicoes - pop_posicoes[i], axis=1)))
-                                    for i in range(num_pop)])
+               
+    contatos_de_risco_c = np.array(
+            [np.dot(pop_infectados,
+                    f_kernel(np.linalg.norm(pop_posicoes - pop_posicoes[i], 
+                             axis=1)
+                            )
+                    )
+             for i in range(num_pop)
+            ]
+        )
+
     
     lambda_rate = ((redes_tx_transmissao * contatos_de_risco_rs).sum(axis=0) +
                    pop_fator_tx_transmissao_c * contatos_de_risco_c)
@@ -196,6 +207,330 @@ def evolucao_vetorial(pop_estado_0, pop_posicoes, redes, redes_tx_transmissao,
                                         pop_fator_tx_transmissao_c, 
                                         prob_nao_recuperacao,
                                         pop_posicoes, f_kernel, dt)
+
+            S = np.hstack([S, np.count_nonzero(pop_estado==1)])
+            I = np.hstack([I, np.count_nonzero(pop_estado==2)])
+            R = np.hstack([R, np.count_nonzero(pop_estado==3)])
+
+        # adiciona as contagens dessa simulação para o cálculo final da média
+        S_medio += S
+        I_medio += I
+        R_medio += R
+        
+#        S_medio = ((j-1)*S_medio + S)/j
+#        I_medio = ((j-1)*I_medio + S)/j
+#        R_medio = ((j-1)*R_medio + S)/j
+
+        # adiciona as contagens dessa simulação para o cálculo final do desvio padrão
+        S_sigma += S ** 2
+        I_sigma += I ** 2
+        R_sigma += R ** 2
+        
+#        S_sigma = ((j-1)*S_sigma + S**2)/j
+#        R_sigma = ((j-1)*R_sigma + S**2)/j
+#        I_sigma = ((j-1)*I_sigma + S**2)/j
+
+        if show == 'nuvem':
+            # exibe os gráficos dos dados de cada simulação
+            plt.plot(tempos, S, '-', color='tab:green', alpha=alpha_nuvem)
+            plt.plot(tempos, I, color='tab:red', alpha=alpha_nuvem)
+            plt.plot(tempos, R, '-', color='tab:blue', alpha=alpha_nuvem)
+            plt.plot(tempos, num_pop - S, '-', color='tab:gray', alpha=alpha_nuvem)
+
+    # divide pelo número de evoluções para obter a média
+    S_medio /= num_sim
+    I_medio /= num_sim
+    R_medio /= num_sim
+
+    # ajusta o calcula do desvio padrão
+    S_sigma = ( S_sigma / num_sim - S_medio**2 )**.5
+    I_sigma = ( I_sigma / num_sim - I_medio**2 )**.5
+    R_sigma = ( R_sigma / num_sim - R_medio**2 )**.5
+
+#    S_sigma = ( S_sigma - S_medio**2 )**.5
+#    I_sigma = ( I_sigma - I_medio**2 )**.5
+#    R_sigma = ( R_sigma - R_medio**2 )**.5
+
+    S_sigma_cor = ( num_sim * S_sigma**2 / (num_sim - 1) )**.5
+    I_sigma_cor = ( num_sim * I_sigma**2 / (num_sim - 1) )**.5
+    R_sigma_cor = ( num_sim * R_sigma**2 / (num_sim - 1) )**.5
+
+
+    # exibe os gráficos das médias
+    if show == 'sd':
+        plt.fill_between(tempos, S_medio - S_sigma, S_medio + S_sigma, facecolor='tab:green', alpha = 0.2)
+        plt.fill_between(tempos, I_medio - I_sigma, I_medio + I_sigma, facecolor='tab:red', alpha = 0.2)
+        plt.fill_between(tempos, R_medio - R_sigma, R_medio + R_sigma, facecolor='tab:blue', alpha = 0.2)
+        plt.fill_between(tempos, num_pop - S_medio - S_sigma, num_pop - S_medio + S_sigma, facecolor='tab:gray', alpha = 0.2)
+
+    if show:
+        plt.plot(tempos, S_medio, '-', color='tab:green', label='suscetíveis')
+        plt.plot(tempos, I_medio, '-', color='tab:red', label='infectados')
+        plt.plot(tempos, R_medio, '-', color='tab:blue', label='recuperados')
+        plt.plot(tempos, num_pop - S_medio, '-', color='tab:gray', label='inf.+ rec.')
+        
+    if show == 'nuvem':
+        plt.title('Evolução do conjunto de simulações e da média', fontsize=16)
+    elif show == 'sd':
+        plt.title('Evolução da média, com o desvio padrão', fontsize=16)
+    elif show == 'media':
+        plt.title('Evolução da média das simulações', fontsize=16)
+
+        
+    # informações para o gráfico
+    if show:
+        plt.xlabel('tempo', fontsize=14)
+        plt.ylabel('número de indivíduos', fontsize=14)
+        plt.legend(fontsize=12)
+        plt.show() 
+
+    resultado = SIR_Individual(
+        tempos,
+        S_medio,
+        I_medio, 
+        R_medio,
+        I_sigma,
+        R_sigma,
+        S_sigma
+    )
+
+    return resultado
+
+num_threads = cpu_count()
+
+@jit(nopython=True, parallel=False)
+def dist2_jit(x,y):
+    return (abs(x[0] - y[0])**2 + abs(x[1]-y[1])**2)**.5
+
+@jit(nopython=True, parallel=False)
+def f_kernel_jit(d):
+    return 1.0/(1.0 + (d/1.0)**1.5)
+
+@jit(nopython=True, parallel=False)
+def get_contatos_de_risco_c_jit(num_pop, pop_infectados, pop_posicoes):
+
+    ret = []
+    for i in range(num_pop):
+        f_kernel_i = [
+            f_kernel_jit(dist2_jit(pop_posicoes[j], pop_posicoes[i])) 
+            for j in range(num_pop)
+        ]
+
+        produto = 0
+        for j in range(num_pop):
+            produto += pop_infectados[j] * f_kernel_i[j]
+
+        ret.append(produto)
+    return ret
+
+@jit('void(double[:], double[:], int8)', nopython=True, nogil=True)
+#@jit(nopython=True, nogil=True)
+def get_estado_jit_mp_template(result, pop_estado, estado):
+    for j in range(len(result)):
+        if pop_estado[j] == estado:
+            result[j] = 1
+        else:
+            result[j] = 0
+
+def get_estado_jit_mp(pop_estado, estado):
+    length = len(pop_estado)
+    result = np.empty(length, dtype=np.float64)
+    args = (result, pop_estado)
+    # Define length of each chunk base on number of cpus
+    chunklen = (len(pop_estado) + num_threads - 1) // num_threads
+    # Create argument tuples for each input chunk
+    chunks = [[arg[i * chunklen:(i + 1) * chunklen] for arg in args]
+              for i in range(num_threads)]    
+    # Spawn one thread per chunk
+    threads = [threading.Thread(target=get_estado_jit_mp_template, args=args + tuple([estado]))
+               for chunk in chunks]
+    for thread in threads:
+        thread.start()
+    for thread in threads:
+        thread.join()
+    return result
+
+def passo_vetorial_jit(pop_estado, redes, redes_tx_transmissao,
+                       pop_fator_tx_transmissao_c, prob_nao_recuperacao,
+                       pop_posicoes, f_kernel, dt):
+
+    #
+    # calcula número de indivíduos
+    #
+    num_pop = len(pop_estado)
+
+    #
+    # separa os suscetíveis, criando um vetor de 1's e 0's, se for, ou não, suscetível
+    #
+    pop_suscetiveis = np.select([pop_estado==1], [pop_estado])
+#    pop_suscetiveis = get_estado_jit_mp(pop_estado, 1)
+
+    #
+    # separa os infectados, criando um vetor de 1's e 0's, se for, ou não, infectado/contagioso
+    #
+    pop_infectados = np.select([pop_estado==2], [pop_estado])/2
+#    pop_infectados = get_estado_jit_mp(pop_estado, 2)
+
+    #
+    # cria lista de grafos orientados para contatos com risco de contágio em cada rede
+    # copia os vértices de cada rede
+    # copia apenas as arestas que ligam um infectado (k) a um suscetível (i)
+    #
+    
+    contatos_de_risco_rs = np.zeros([len(redes_tx_transmissao), num_pop])
+
+    for j in range(len(redes_tx_transmissao)):
+        for (i,k) in redes[j].edges:
+            if pop_infectados[k] and pop_suscetiveis[i]:
+                contatos_de_risco_rs[j][i] += 1
+            elif pop_infectados[i] and pop_suscetiveis[k]:
+                contatos_de_risco_rs[j][k] += 1
+
+    contatos_de_risco_c = np.array(
+        get_contatos_de_risco_c_jit(num_pop, pop_infectados, pop_posicoes)
+    )
+    
+    lambda_rate = ((redes_tx_transmissao * contatos_de_risco_rs).sum(axis=0) +
+                   pop_fator_tx_transmissao_c * contatos_de_risco_c)
+    
+    prob_nao_contagio = np.exp(-dt*lambda_rate)                             
+
+    sorteio = np.random.rand(num_pop)
+
+    pop_novos_infectados = np.select([sorteio > prob_nao_contagio], [np.ones(num_pop)])
+
+    sorteio = np.random.rand(num_pop)
+
+    pop_novos_recuperados = np.select([pop_infectados * sorteio > prob_nao_recuperacao], 
+                                      [np.ones(num_pop)])
+    
+    # retorna a população atualizada adicionando '1' aos que avançaram de estágio
+
+    return pop_estado + pop_novos_infectados + pop_novos_recuperados
+
+def evolucao_vetorial_jit(pop_estado_0, pop_posicoes, redes,
+                          redes_tx_transmissao, pop_fator_tx_transmissao_c,
+                          gamma, f_kernel,
+                          dados_temporais, num_sim, show=''):
+    """Evolução temporal da epidemia em um grafo estruturado.
+
+    Entrada:
+        pop_0: numpy.array
+            state of the population, with 
+                1: suscetível
+                2: infectado
+                3: recuperado ou removido
+
+        G: numpy.array
+            grafo de conexões, com atributo `taxa de transmissao`
+
+        kernel: function
+            função 'kernel' decaindo com distância entre a posição dos indivíduos
+
+        dados_temporais: list
+            [t_0, dt, num_dt]
+
+        num_sim: int
+            número de simulações
+
+        show: str
+            indica se é para exibir um gráfico e de que tipo:
+                - 'nuvem': exibe uma nuvem com todas as simulações e o valor médio em destaque
+                - 'sd': exibe o valor médio com uma faixa dada pelo desvio padrão
+                - 'sdc': exibe o valor médio com uma faixa dada pelo desvio padrão corrigido
+                - 'medio': exibe apenas o valor médio
+                - '': não exibe gráfico algum.
+
+    Saída
+        X: class.SIR_Individual
+            Uma instância da classe `SIR_Individual` com os seguintes atributos:
+                tempos:
+                num_sim:
+                S_medio:
+                I_medio: 
+                R_medio:
+                I_sigma:
+                R_sigma:
+                S_sigma:
+    """  
+
+    # confere se escolha para `show` é válida    
+    if show:
+        assert(show in ('nuvem', 'sd', 'sdc', 'media')), 'Valor inválido para argumento `show`.'
+
+    # atributos de saída
+    SIR_Individual = namedtuple('SIR_Individual', 
+                                [
+                                    'tempos',
+                                    'S_medio',
+                                    'I_medio', 
+                                    'R_medio',
+                                    'S_sigma',
+                                    'I_sigma', 
+                                    'R_sigma'
+                                ])
+    
+    # número de indivíduos da população
+    num_pop = len(pop_estado_0)
+    num_inf_0 = np.count_nonzero(pop_estado_0==2)        
+
+    # número de instantes no tempo e passos de tempo
+    t_0 = dados_temporais[0]
+    dt = dados_temporais[1]
+    num_dt = dados_temporais[2]
+    tempos = np.linspace(t_0, num_dt*dt, num_dt+1)
+    
+    # ajusta dados da rede dependendo se há mais de uma ou não
+    #
+    if type(redes) == list or type(redes_tx_transmissao) == list:
+        assert(len(redes) == len(redes_tx_transmissao)), 'redes e taxas de transmissão \
+        \ devem ter o mesmo número de elementos.'
+    else:
+        redes = [redes]
+        redes_tx_transmissao = [redes_tx_transmissao]
+    
+    # calcula propabilidade de não recuperação
+    prob_nao_recuperacao = np.exp(-dt*gamma)
+
+    # inicializa variáveis para o cálculo da média
+    S_medio = np.zeros(num_dt+1)
+    I_medio = np.zeros(num_dt+1)
+    R_medio = np.zeros(num_dt+1)
+
+    # inicializa variáveis para o cálculo do desvio padrão
+    S_sigma = np.zeros(num_dt+1)
+    I_sigma = np.zeros(num_dt+1)
+    R_sigma = np.zeros(num_dt+1)
+
+    # prepara gráfico se necessário
+    if show:    
+        # inicializa figura e define eixo vertical
+        plt.figure(figsize=(12,6))
+        plt.ylim(0, num_pop)
+        plt.xlim(tempos[0], tempos[-1])
+    
+    if show == 'nuvem':
+        # alpha para a nuvem de gráficos das diversas simulaçõe
+        alpha_nuvem = min(0.2, 5/num_sim)  
+
+    # simulações
+    for j in range(num_sim):
+
+        # inicializa população de cada simulação
+        pop_estado = np.copy(pop_estado_0)
+        S = np.array([num_pop - num_inf_0])
+        I = np.array([num_inf_0])
+        R = np.array([0])
+     
+        
+        # evolui o dia e armazena as novas contagens
+        for j in range(1,num_dt+1):
+
+            pop_estado = \
+                passo_vetorial_jit(pop_estado, redes, redes_tx_transmissao,
+                                   pop_fator_tx_transmissao_c,
+                                   prob_nao_recuperacao,
+                                   pop_posicoes, f_kernel, dt)
 
             S = np.hstack([S, np.count_nonzero(pop_estado==1)])
             I = np.hstack([I, np.count_nonzero(pop_estado==2)])
