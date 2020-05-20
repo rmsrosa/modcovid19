@@ -6,14 +6,13 @@ Módulo para simulação de modelos epidemiológicos baseados em indivíduos.
 
 import random
 
-import threading
-
 import numpy as np
 import networkx as nx
 
-from numba import jit
+from numba import njit
+from numba.typed import List
 
-from os import path, cpu_count
+from os import path
 from sys import getsizeof
 from collections import namedtuple
 from functools import partial
@@ -296,17 +295,19 @@ def evolucao_vetorial(pop_estado_0, pop_posicoes, redes, redes_tx_transmissao,
 
     return resultado
 
-num_threads = cpu_count()
+@njit
+def get_estado_jit(pop_estado, estado):
+    return np.array([1 if e == estado else 0 for e in pop_estado])
 
-@jit(nopython=True, parallel=False)
+@njit
 def dist2_jit(x,y):
     return (abs(x[0] - y[0])**2 + abs(x[1]-y[1])**2)**.5
 
-@jit(nopython=True, parallel=False)
+@njit
 def f_kernel_jit(d):
     return 1.0/(1.0 + (d/1.0)**1.5)
 
-@jit(nopython=True, parallel=False)
+@njit
 def get_contatos_de_risco_c_jit(num_pop, pop_infectados, pop_posicoes):
 
     ret = []
@@ -323,34 +324,18 @@ def get_contatos_de_risco_c_jit(num_pop, pop_infectados, pop_posicoes):
         ret.append(produto)
     return ret
 
-@jit('void(double[:], double[:], int8)', nopython=True, nogil=True)
-#@jit(nopython=True, nogil=True)
-def get_estado_jit_mp_template(result, pop_estado, estado):
-    for j in range(len(result)):
-        if pop_estado[j] == estado:
-            result[j] = 1
-        else:
-            result[j] = 0
+@njit
+def get_contatos_de_risco_jit(num_pop, conexoes,
+                              pop_suscetiveis, pop_infectados):
+    contatos_de_risco = np.zeros(num_pop)
+    for i, k in conexoes:
+            if pop_infectados[k] and pop_suscetiveis[i]:
+                contatos_de_risco[i] += 1
+            elif pop_infectados[i] and pop_suscetiveis[k]:
+                contatos_de_risco[k] += 1
+    return contatos_de_risco
 
-def get_estado_jit_mp(pop_estado, estado):
-    length = len(pop_estado)
-    result = np.empty(length, dtype=np.float64)
-    args = (result, pop_estado)
-    # Define length of each chunk base on number of cpus
-    chunklen = (len(pop_estado) + num_threads - 1) // num_threads
-    # Create argument tuples for each input chunk
-    chunks = [[arg[i * chunklen:(i + 1) * chunklen] for arg in args]
-              for i in range(num_threads)]    
-    # Spawn one thread per chunk
-    threads = [threading.Thread(target=get_estado_jit_mp_template, args=args + tuple([estado]))
-               for chunk in chunks]
-    for thread in threads:
-        thread.start()
-    for thread in threads:
-        thread.join()
-    return result
-
-def passo_vetorial_jit(pop_estado, redes, redes_tx_transmissao,
+def passo_vetorial_jit(pop_estado, conexoes, redes_tx_transmissao,
                        pop_fator_tx_transmissao_c, prob_nao_recuperacao,
                        pop_posicoes, f_kernel, dt):
 
@@ -362,14 +347,14 @@ def passo_vetorial_jit(pop_estado, redes, redes_tx_transmissao,
     #
     # separa os suscetíveis, criando um vetor de 1's e 0's, se for, ou não, suscetível
     #
-    pop_suscetiveis = np.select([pop_estado==1], [pop_estado])
-#    pop_suscetiveis = get_estado_jit_mp(pop_estado, 1)
+#    pop_suscetiveis = np.select([pop_estado==1], [pop_estado])
+    pop_suscetiveis = get_estado_jit(pop_estado, 1)
 
     #
     # separa os infectados, criando um vetor de 1's e 0's, se for, ou não, infectado/contagioso
     #
-    pop_infectados = np.select([pop_estado==2], [pop_estado])/2
-#    pop_infectados = get_estado_jit_mp(pop_estado, 2)
+#    pop_infectados = np.select([pop_estado==2], [pop_estado])/2
+    pop_infectados = get_estado_jit(pop_estado, 2)
 
     #
     # cria lista de grafos orientados para contatos com risco de contágio em cada rede
@@ -379,16 +364,20 @@ def passo_vetorial_jit(pop_estado, redes, redes_tx_transmissao,
     
     contatos_de_risco_rs = np.zeros([len(redes_tx_transmissao), num_pop])
 
-    for j in range(len(redes_tx_transmissao)):
-        for (i,k) in redes[j].edges:
-            if pop_infectados[k] and pop_suscetiveis[i]:
-                contatos_de_risco_rs[j][i] += 1
-            elif pop_infectados[i] and pop_suscetiveis[k]:
-                contatos_de_risco_rs[j][k] += 1
+    for j in range(len(conexoes)):
+        contatos_de_risco_rs[j] = \
+            get_contatos_de_risco_jit(num_pop, conexoes[j],
+                                      pop_suscetiveis, pop_infectados)        
 
-    contatos_de_risco_c = np.array(
-        get_contatos_de_risco_c_jit(num_pop, pop_infectados, pop_posicoes)
-    )
+#    for j in range(len(redes_tx_transmissao)):
+#        for (i,k) in redes[j].edges:
+#            if pop_infectados[k] and pop_suscetiveis[i]:
+#                contatos_de_risco_rs[j][i] += 1
+#            elif pop_infectados[i] and pop_suscetiveis[k]:
+#                contatos_de_risco_rs[j][k] += 1
+
+    contatos_de_risco_c \
+        = get_contatos_de_risco_c_jit(num_pop, pop_infectados, pop_posicoes)
     
     lambda_rate = ((redes_tx_transmissao * contatos_de_risco_rs).sum(axis=0) +
                    pop_fator_tx_transmissao_c * contatos_de_risco_c)
@@ -489,6 +478,15 @@ def evolucao_vetorial_jit(pop_estado_0, pop_posicoes, redes,
         redes = [redes]
         redes_tx_transmissao = [redes_tx_transmissao]
     
+    conexoes = []
+
+    for rede in redes:
+        conexoes_aux = list(rede.edges)
+        typed_conexoes = List()
+        for c in conexoes_aux:
+            typed_conexoes.append(c)
+        conexoes.append(typed_conexoes)
+
     # calcula propabilidade de não recuperação
     prob_nao_recuperacao = np.exp(-dt*gamma)
 
@@ -527,7 +525,7 @@ def evolucao_vetorial_jit(pop_estado_0, pop_posicoes, redes,
         for j in range(1,num_dt+1):
 
             pop_estado = \
-                passo_vetorial_jit(pop_estado, redes, redes_tx_transmissao,
+                passo_vetorial_jit(pop_estado, conexoes, redes_tx_transmissao,
                                    pop_fator_tx_transmissao_c,
                                    prob_nao_recuperacao,
                                    pop_posicoes, f_kernel, dt)
