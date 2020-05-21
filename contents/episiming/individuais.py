@@ -47,7 +47,7 @@ def passo_vetorial(pop_estado, redes, redes_tx_transmissao,
     # copia apenas as arestas que ligam um infectado (k) a um suscetível (i)
     #
     
-    contatos_de_risco_rs = np.zeros([len(redes_tx_transmissao), num_pop])
+    contatos_de_risco_rs = np.zeros((len(redes_tx_transmissao), num_pop))
 
     for j in range(len(redes_tx_transmissao)):
         for (i,k) in redes[j].edges:
@@ -72,11 +72,11 @@ def passo_vetorial(pop_estado, redes, redes_tx_transmissao,
     
     prob_nao_contagio = np.exp(-dt*lambda_rate)                             
 
+    # `sorteio` será usado independentemente n a seguir, por isso
+    # é calculado aqui já para os dois.
     sorteio = np.random.rand(num_pop)
 
     pop_novos_infectados = np.select([sorteio > prob_nao_contagio], [np.ones(num_pop)])
-
-    sorteio = np.random.rand(num_pop)
 
     pop_novos_recuperados = np.select([pop_infectados * sorteio > prob_nao_recuperacao], 
                                       [np.ones(num_pop)])
@@ -300,6 +300,17 @@ def get_estado_jit(pop_estado, estado):
     return np.array([1 if e == estado else 0 for e in pop_estado])
 
 @njit
+def get_contatos_de_risco_jit(num_pop, conexoes,
+                              pop_suscetiveis, pop_infectados):
+    contatos_de_risco = np.zeros(num_pop)
+    for i, k in conexoes:
+            if pop_infectados[k] and pop_suscetiveis[i]:
+                contatos_de_risco[i] += 1
+            elif pop_infectados[i] and pop_suscetiveis[k]:
+                contatos_de_risco[k] += 1
+    return contatos_de_risco
+
+@njit
 def dist2_jit(x,y):
     return (abs(x[0] - y[0])**2 + abs(x[1]-y[1])**2)**.5
 
@@ -322,22 +333,20 @@ def get_contatos_de_risco_c_jit(num_pop, pop_infectados, pop_posicoes):
             produto += pop_infectados[j] * f_kernel_i[j]
 
         ret.append(produto)
-    return ret
+    return np.array(ret)
 
 @njit
-def get_contatos_de_risco_jit(num_pop, conexoes,
-                              pop_suscetiveis, pop_infectados):
-    contatos_de_risco = np.zeros(num_pop)
-    for i, k in conexoes:
-            if pop_infectados[k] and pop_suscetiveis[i]:
-                contatos_de_risco[i] += 1
-            elif pop_infectados[i] and pop_suscetiveis[k]:
-                contatos_de_risco[k] += 1
-    return contatos_de_risco
+def get_novos_infectados_jit(num_pop, sorteio, prob_nao_contagio):
+    return np.array([1 if sorteio[i]> prob_nao_contagio[i] else 0 for i in range(num_pop)])
+
+@njit
+def get_novos_recuperados_jit(num_pop, sorteio, pop_infectados,
+                              prob_nao_recuperacao):
+    return np.array([1 if pop_infectados[i]*sorteio[i]> prob_nao_recuperacao else 0 for i in range(num_pop)])
 
 def passo_vetorial_jit(pop_estado, conexoes, redes_tx_transmissao,
                        pop_fator_tx_transmissao_c, prob_nao_recuperacao,
-                       pop_posicoes, f_kernel, dt):
+                       pop_posicoes, dt):
 
     #
     # calcula número de indivíduos
@@ -362,7 +371,7 @@ def passo_vetorial_jit(pop_estado, conexoes, redes_tx_transmissao,
     # copia apenas as arestas que ligam um infectado (k) a um suscetível (i)
     #
     
-    contatos_de_risco_rs = np.zeros([len(redes_tx_transmissao), num_pop])
+    contatos_de_risco_rs = np.zeros((len(redes_tx_transmissao), num_pop))
 
     for j in range(len(conexoes)):
         contatos_de_risco_rs[j] = \
@@ -382,20 +391,88 @@ def passo_vetorial_jit(pop_estado, conexoes, redes_tx_transmissao,
     lambda_rate = ((redes_tx_transmissao * contatos_de_risco_rs).sum(axis=0) +
                    pop_fator_tx_transmissao_c * contatos_de_risco_c)
     
-    prob_nao_contagio = np.exp(-dt*lambda_rate)                             
+    prob_nao_contagio = np.exp(-dt*lambda_rate)
 
     sorteio = np.random.rand(num_pop)
 
-    pop_novos_infectados = np.select([sorteio > prob_nao_contagio], [np.ones(num_pop)])
+#    pop_novos_infectados = np.select([sorteio > prob_nao_contagio], [np.ones(num_pop)])
 
-    sorteio = np.random.rand(num_pop)
+    pop_novos_infectados = \
+        get_novos_infectados_jit(num_pop, sorteio,prob_nao_contagio)
 
-    pop_novos_recuperados = np.select([pop_infectados * sorteio > prob_nao_recuperacao], 
-                                      [np.ones(num_pop)])
-    
+#    pop_novos_recuperados = np.select([pop_infectados * sorteio > prob_nao_recuperacao], 
+#                                      [np.ones(num_pop)])
+
+    pop_novos_recuperados = \
+        get_novos_recuperados_jit(num_pop, sorteio,
+                                  pop_infectados, prob_nao_recuperacao)
+
     # retorna a população atualizada adicionando '1' aos que avançaram de estágio
 
     return pop_estado + pop_novos_infectados + pop_novos_recuperados
+
+@njit
+def hstack_jit(vetor, valor):
+    return np.append(vetor, valor)
+
+@njit
+def passo_vetorial_jit2(pop_estado, conexoes, tx_transmissao,
+                       pop_fator_tx_transmissao_c, prob_nao_recuperacao,
+                       pop_posicoes, dt):
+    num_pop = len(pop_estado)
+
+    pop_suscetiveis = get_estado_jit(pop_estado, 1)
+
+    pop_infectados = get_estado_jit(pop_estado, 2)
+    
+    aux = len(tx_transmissao)
+    
+    contatos_de_risco_rs = np.zeros((len(tx_transmissao), num_pop))
+    
+    for j in range(len(conexoes)):
+        contatos_de_risco_rs[j] = \
+            get_contatos_de_risco_jit(num_pop, conexoes[j],
+                                      pop_suscetiveis, pop_infectados)
+        
+    contatos_de_risco_c \
+        = get_contatos_de_risco_c_jit(num_pop, pop_infectados, pop_posicoes)
+
+    lambda_rate = np.random.rand(num_pop)
+    
+    lambda_rate = tx_transmissao[0] * contatos_de_risco_rs[0]
+    for j in range(1, len(tx_transmissao)):
+        lambda_rate += tx_transmissao[j] * contatos_de_risco_rs[j]
+    lambda_rate += pop_fator_tx_transmissao_c * contatos_de_risco_c
+
+    prob_nao_contagio = np.exp(-dt*lambda_rate)
+    
+    sorteio = np.random.rand(num_pop)
+    
+    pop_novos_infectados = np.select([sorteio > prob_nao_contagio], [np.ones(num_pop)])
+    
+    pop_novos_recuperados = np.select([pop_infectados * sorteio > prob_nao_recuperacao], 
+                                      [np.ones(num_pop)])
+    
+    return pop_estado + pop_novos_infectados + pop_novos_recuperados
+
+@njit
+def simulacao(pop_estado, conexoes, tx_transmissao,
+              pop_fator_tx_transmissao_c,
+              prob_nao_recuperacao,
+              pop_posicoes, dt, num_dt, S, I, R):
+    for j in range(1,num_dt+1):
+
+        pop_estado = \
+            passo_vetorial_jit2(pop_estado, conexoes, tx_transmissao,
+                                pop_fator_tx_transmissao_c,
+                                prob_nao_recuperacao,
+                                pop_posicoes, dt)
+
+        S = hstack_jit(S, np.count_nonzero(pop_estado==1))
+        I = hstack_jit(I, np.count_nonzero(pop_estado==2))
+        R = hstack_jit(R, np.count_nonzero(pop_estado==3))
+
+    return S, I, R
 
 def evolucao_vetorial_jit(pop_estado_0, pop_posicoes, redes,
                           redes_tx_transmissao, pop_fator_tx_transmissao_c,
@@ -477,15 +554,18 @@ def evolucao_vetorial_jit(pop_estado_0, pop_posicoes, redes,
     else:
         redes = [redes]
         redes_tx_transmissao = [redes_tx_transmissao]
-    
-    conexoes = []
 
+    conexoes = List()
     for rede in redes:
         conexoes_aux = list(rede.edges)
         typed_conexoes = List()
         for c in conexoes_aux:
             typed_conexoes.append(c)
         conexoes.append(typed_conexoes)
+        
+    tx_transmissao = List()
+    for rede_tx in redes_tx_transmissao:
+        tx_transmissao.append(rede_tx)
 
     # calcula propabilidade de não recuperação
     prob_nao_recuperacao = np.exp(-dt*gamma)
@@ -521,18 +601,22 @@ def evolucao_vetorial_jit(pop_estado_0, pop_posicoes, redes,
         R = np.array([0])
      
         
-        # evolui o dia e armazena as novas contagens
-        for j in range(1,num_dt+1):
+        # faz uma simulação e armazena as novas contagens
 
-            pop_estado = \
-                passo_vetorial_jit(pop_estado, conexoes, redes_tx_transmissao,
-                                   pop_fator_tx_transmissao_c,
-                                   prob_nao_recuperacao,
-                                   pop_posicoes, f_kernel, dt)
+        S, I, R = simulacao(pop_estado, conexoes, tx_transmissao,
+                    pop_fator_tx_transmissao_c,
+                    prob_nao_recuperacao,
+                    pop_posicoes, dt, num_dt, S, I, R)
+#            pop_estado = \
+#                passo_vetorial_jit2(pop_estado, conexoes, tx_transmissao,
+#                                   pop_fator_tx_transmissao_c,
+#                                   prob_nao_recuperacao,
+#                                   pop_posicoes, dt)
 
-            S = np.hstack([S, np.count_nonzero(pop_estado==1)])
-            I = np.hstack([I, np.count_nonzero(pop_estado==2)])
-            R = np.hstack([R, np.count_nonzero(pop_estado==3)])
+#            S = hstack_jit(S, np.count_nonzero(pop_estado==1))
+#            I = hstack_jit(I, np.count_nonzero(pop_estado==2))
+#            R = hstack_jit(R, np.count_nonzero(pop_estado==3))
+
 
         # adiciona as contagens dessa simulação para o cálculo final da média
         S_medio += S

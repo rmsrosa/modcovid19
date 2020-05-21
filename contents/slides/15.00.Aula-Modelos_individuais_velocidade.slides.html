@@ -13202,8 +13202,12 @@ a.anchor-link {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="P&#225;gina-Inicial">P&#225;gina Inicial<a class="anchor-link" href="#P&#225;gina-Inicial">&#182;</a></h1><p>Abaixo o Sumário dos notebooks sobre as aulas de um curso virtual de modelagem da epidemia de Covid-19 oferecido pelo Professor <a href="http://www.im.ufrj.br/rrosa/">Ricardo M. S. Rosa</a> do <a href="http://www.im.ufrj.br">Instituto de Matemática da UFRJ</a> e que estão reunidas no repositório <a href="https://github.com/rmsrosa/modelagem_matematica">rmsrosa/modelagem_matematica</a>.</p>
-<p>O texto está disponível sob a <a href="https://creativecommons.org/licenses/by-nc-nd/3.0/us/legalcode">licença CC-BY-NC-ND</a> e os códigos estão disponíveis sob a <a href="https://www.gnu.org/licenses/gpl.html">licença GNU GPL Versão 3</a>.</p>
+<h1 id="Modelos-individuais---velocidade-de-processsamento">Modelos individuais - velocidade de processsamento<a class="anchor-link" href="#Modelos-individuais---velocidade-de-processsamento">&#182;</a></h1><ul>
+<li><p>Analisar o custo computacional de cada linha de cógido da função de passo de tempo.</p>
+</li>
+<li><p>Analisar opções de aceleração de cada uma dessas linhas.</p>
+</li>
+</ul>
 
 </div>
 </div>
@@ -13211,18 +13215,1371 @@ a.anchor-link {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Sum&#225;rio">Sum&#225;rio<a class="anchor-link" href="#Sum&#225;rio">&#182;</a></h2>
+<h2 id="Gargalos">Gargalos<a class="anchor-link" href="#Gargalos">&#182;</a></h2><h3 id="Passo-de-tempo">Passo de tempo<a class="anchor-link" href="#Passo-de-tempo">&#182;</a></h3><p>Aqui o código atual de cada passo de tempo:</p>
+
+</div>
+</div>
+</div><div class="fragment">
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">passo_vetorial</span><span class="p">(</span><span class="n">pop_estado</span><span class="p">,</span> <span class="n">redes</span><span class="p">,</span> <span class="n">redes_tx_transmissao</span><span class="p">,</span>
+                   <span class="n">pop_fator_tx_transmissao_c</span><span class="p">,</span> <span class="n">prob_nao_recuperacao</span><span class="p">,</span>
+                   <span class="n">pop_posicoes</span><span class="p">,</span> <span class="n">f_kernel</span><span class="p">,</span> <span class="n">dt</span><span class="p">):</span>
+
+    <span class="n">num_pop</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">pop_estado</span><span class="p">)</span>
+
+    <span class="n">pop_suscetiveis</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">select</span><span class="p">([</span><span class="n">pop_estado</span><span class="o">==</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="n">pop_estado</span><span class="p">])</span>
+
+    <span class="n">pop_infectados</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">select</span><span class="p">([</span><span class="n">pop_estado</span><span class="o">==</span><span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="n">pop_estado</span><span class="p">])</span><span class="o">/</span><span class="mi">2</span>
+    
+    <span class="n">contatos_de_risco_rs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="nb">len</span><span class="p">(</span><span class="n">redes_tx_transmissao</span><span class="p">),</span> <span class="n">num_pop</span><span class="p">])</span>
+
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">redes_tx_transmissao</span><span class="p">)):</span>
+        <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">k</span><span class="p">)</span> <span class="ow">in</span> <span class="n">redes</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">edges</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">pop_infectados</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="ow">and</span> <span class="n">pop_suscetiveis</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+                <span class="n">contatos_de_risco_rs</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">elif</span> <span class="n">pop_infectados</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="ow">and</span> <span class="n">pop_suscetiveis</span><span class="p">[</span><span class="n">k</span><span class="p">]:</span>
+                <span class="n">contatos_de_risco_rs</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">k</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+               
+    <span class="n">contatos_de_risco_c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+            <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">pop_infectados</span><span class="p">,</span>
+                    <span class="n">f_kernel</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">pop_posicoes</span> <span class="o">-</span> <span class="n">pop_posicoes</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> 
+                             <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+                            <span class="p">)</span>
+                    <span class="p">)</span>
+             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_pop</span><span class="p">)</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
+
+    
+    <span class="n">lambda_rate</span> <span class="o">=</span> <span class="p">((</span><span class="n">redes_tx_transmissao</span> <span class="o">*</span> <span class="n">contatos_de_risco_rs</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">+</span>
+                   <span class="n">pop_fator_tx_transmissao_c</span> <span class="o">*</span> <span class="n">contatos_de_risco_c</span><span class="p">)</span>
+    
+    <span class="n">prob_nao_contagio</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">dt</span><span class="o">*</span><span class="n">lambda_rate</span><span class="p">)</span>                             
+
+    <span class="n">sorteio</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">num_pop</span><span class="p">)</span>
+
+    <span class="n">pop_novos_infectados</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">select</span><span class="p">([</span><span class="n">sorteio</span> <span class="o">&gt;</span> <span class="n">prob_nao_contagio</span><span class="p">],</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">num_pop</span><span class="p">)])</span>
+
+    <span class="n">sorteio</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">num_pop</span><span class="p">)</span>
+
+    <span class="n">pop_novos_recuperados</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">select</span><span class="p">([</span><span class="n">pop_infectados</span> <span class="o">*</span> <span class="n">sorteio</span> <span class="o">&gt;</span> <span class="n">prob_nao_recuperacao</span><span class="p">],</span> 
+                                      <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">num_pop</span><span class="p">)])</span>
+
+    <span class="k">return</span> <span class="n">pop_estado</span> <span class="o">+</span> <span class="n">pop_novos_infectados</span> <span class="o">+</span> <span class="n">pop_novos_recuperados</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div></div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="C&#225;lculo-da-popula&#231;&#227;o">C&#225;lculo da popula&#231;&#227;o<a class="anchor-link" href="#C&#225;lculo-da-popula&#231;&#227;o">&#182;</a></h3><p>O cálculo de <code>num_pop</code> a partir de <code>pop_estado</code> é ridiculamente rápido. De qualquer forma, podemos incluí-lo como argumento. Para vermos a diferença, podemos comparar o custo em se calcular <code>num_pop</code> e entre passar ou não como parâmetro.</p>
+
+</div>
+</div>
+</div><div class="fragment">
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">n_pop</span> <span class="o">=</span> <span class="mi">10000</span>
+<span class="n">pop_estado</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="n">low</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="n">n_pop</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+    <span class="k">pass</span>
+
+<span class="k">def</span> <span class="nf">g</span><span class="p">(</span><span class="n">num_pop</span><span class="p">,</span> <span class="n">a</span><span class="p">):</span>
+    <span class="k">pass</span>
+
+<span class="o">%</span><span class="k">timeit</span> len(pop_estado)
+
+<span class="o">%</span><span class="k">timeit</span> f(pop_estado)
+<span class="o">%</span><span class="k">timeit</span> g(n_pop, pop_estado)
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>115 ns ± 14.3 ns per loop (mean ± std. dev. of 7 runs, 10000000 loops each)
+123 ns ± 1.38 ns per loop (mean ± std. dev. of 7 runs, 10000000 loops each)
+152 ns ± 2.01 ns per loop (mean ± std. dev. of 7 runs, 10000000 loops each)
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div></div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Linhas-de-c&#243;digo-com-puro-numpy">Linhas de c&#243;digo com puro numpy<a class="anchor-link" href="#Linhas-de-c&#243;digo-com-puro-numpy">&#182;</a></h3><p>As linhas</p>
+<div class="highlight"><pre><span></span><span class="n">pop_suscetiveis</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">select</span><span class="p">([</span><span class="n">pop_estado</span><span class="o">==</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="n">pop_estado</span><span class="p">])</span>
+
+    <span class="n">pop_infectados</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">select</span><span class="p">([</span><span class="n">pop_estado</span><span class="o">==</span><span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="n">pop_estado</span><span class="p">])</span><span class="o">/</span><span class="mi">2</span>
+
+    <span class="n">contatos_de_risco_rs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="nb">len</span><span class="p">(</span><span class="n">redes_tx_transmissao</span><span class="p">),</span> <span class="n">num_pop</span><span class="p">])</span>
+
+
+
+
+    <span class="n">lambda_rate</span> <span class="o">=</span> <span class="p">((</span><span class="n">redes_tx_transmissao</span> <span class="o">*</span> <span class="n">contatos_de_risco_rs</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">+</span>
+                   <span class="n">pop_fator_tx_transmissao_c</span> <span class="o">*</span> <span class="n">contatos_de_risco_c</span><span class="p">)</span>
+
+    <span class="n">prob_nao_contagio</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">dt</span><span class="o">*</span><span class="n">lambda_rate</span><span class="p">)</span>                             
+
+    <span class="n">sorteio</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">num_pop</span><span class="p">)</span>
+
+    <span class="n">pop_novos_infectados</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">select</span><span class="p">([</span><span class="n">sorteio</span> <span class="o">&gt;</span> <span class="n">prob_nao_contagio</span><span class="p">],</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">num_pop</span><span class="p">)])</span>
+
+    <span class="n">sorteio</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">num_pop</span><span class="p">)</span>
+
+    <span class="n">pop_novos_recuperados</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">select</span><span class="p">([</span><span class="n">pop_infectados</span> <span class="o">*</span> <span class="n">sorteio</span> <span class="o">&gt;</span> <span class="n">prob_nao_recuperacao</span><span class="p">],</span> 
+                                      <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">num_pop</span><span class="p">)])</span>
+
+    <span class="k">return</span> <span class="n">pop_estado</span> <span class="o">+</span> <span class="n">pop_novos_infectados</span> <span class="o">+</span> <span class="n">pop_novos_recuperados</span>
+</pre></div>
+<p>são todas tratadas diretamente pelo <code>numpy</code>, portanto, já são bastante eficientes e paralelizadas (sob condições normais do sistema).</p>
+<p>É claro que podemos ganhar mais paralelizando o conjunto todo dessas linhas.</p>
+<p>E veremos, também, que o <code>np.select</code> não é eficiente.</p>
+
 </div>
 </div>
 </div></section></section><section><section>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><!--TABLE_OF_CONTENTS--></p>
-<h2 id=""><a href="#" /><a class="anchor-link" href="#">&#182;</a></h2><h3 id="P&#225;gina-Inicial"><a href="00.00-Pagina_Inicial.slides.html">P&#225;gina Inicial</a><a class="anchor-link" href="#P&#225;gina-Inicial">&#182;</a></h3><h3 id="Aula-1.-Explorando-a-base-de-dados-da-Covid-19"><a href="01.00.Aula-Explorando-dados-da-covid-19.slides.html">Aula 1. Explorando a base de dados da Covid-19</a><a class="anchor-link" href="#Aula-1.-Explorando-a-base-de-dados-da-Covid-19">&#182;</a></h3><h3 id="Aula-2.-Ajuste-de-par&#226;metros"><a href="02.00.Aula-Ajuste_de_parametros.slides.html">Aula 2. Ajuste de par&#226;metros</a><a class="anchor-link" href="#Aula-2.-Ajuste-de-par&#226;metros">&#182;</a></h3><h3 id="Aula-3.-Modelos-epidemiol&#243;gicos-compartimentais"><a href="03.00.Aula-Modelos_compartimentais.slides.html">Aula 3. Modelos epidemiol&#243;gicos compartimentais</a><a class="anchor-link" href="#Aula-3.-Modelos-epidemiol&#243;gicos-compartimentais">&#182;</a></h3><h3 id="Aula-4.-Modelos-compartimentais-estruturados"><a href="04.00.Aula-Compartimentais_estruturados.slides.html">Aula 4. Modelos compartimentais estruturados</a><a class="anchor-link" href="#Aula-4.-Modelos-compartimentais-estruturados">&#182;</a></h3><h3 id="Aula-5.-Qualidade-e-compara&#231;&#227;o-de-modelos"><a href="05.00.Aula-Qualidade_e_comparacao_de_modelos.slides.html">Aula 5. Qualidade e compara&#231;&#227;o de modelos</a><a class="anchor-link" href="#Aula-5.-Qualidade-e-compara&#231;&#227;o-de-modelos">&#182;</a></h3><h3 id="Aula-6.-Modelos-baseados-em-indiv&#237;duos-e-o-relat&#243;rio-do-Imperial-Colege"><a href="06.00.Aula-Modelos_baseados_em_individuos.slides.html">Aula 6. Modelos baseados em indiv&#237;duos e o relat&#243;rio do Imperial Colege</a><a class="anchor-link" href="#Aula-6.-Modelos-baseados-em-indiv&#237;duos-e-o-relat&#243;rio-do-Imperial-Colege">&#182;</a></h3><h3 id="Aula-7.-Modelos-indivuais-estoc&#225;sticos-estruturados"><a href="07.00.Aula-Modelos_individuos_estruturados.slides.html">Aula 7. Modelos indivuais estoc&#225;sticos estruturados</a><a class="anchor-link" href="#Aula-7.-Modelos-indivuais-estoc&#225;sticos-estruturados">&#182;</a></h3><h3 id="Aula-8.-Modelos-individuais-estoc&#225;sticos-com-m&#250;ltiplas-estruturas-de-conex&#227;o"><a href="08.00.Aula-Modelos_individuais_multiplas_estruturas.slides.html">Aula 8. Modelos individuais estoc&#225;sticos com m&#250;ltiplas estruturas de conex&#227;o</a><a class="anchor-link" href="#Aula-8.-Modelos-individuais-estoc&#225;sticos-com-m&#250;ltiplas-estruturas-de-conex&#227;o">&#182;</a></h3><h3 id="Aula-9.-Modelos-individuais-estoc&#225;sticos---redes-e-par&#226;metros"><a href="09.00.Aula-Modelos_individuais_redes_e_parametros.slides.html">Aula 9. Modelos individuais estoc&#225;sticos - redes e par&#226;metros</a><a class="anchor-link" href="#Aula-9.-Modelos-individuais-estoc&#225;sticos---redes-e-par&#226;metros">&#182;</a></h3><h3 id="Aula-10.-Modelos-individuais---implementa&#231;&#227;o-inicial"><a href="10.00.Aula-Modelos_individuais_implementacao_matricial.slides.html">Aula 10. Modelos individuais - implementa&#231;&#227;o inicial</a><a class="anchor-link" href="#Aula-10.-Modelos-individuais---implementa&#231;&#227;o-inicial">&#182;</a></h3><h3 id="Aula-11.-Modelos-individuais-estoc&#225;sticos---implementa&#231;&#227;o-vetorial"><a href="11.00.Aula-Modelos_individuais_implementacao_vetorial.slides.html">Aula 11. Modelos individuais estoc&#225;sticos - implementa&#231;&#227;o vetorial</a><a class="anchor-link" href="#Aula-11.-Modelos-individuais-estoc&#225;sticos---implementa&#231;&#227;o-vetorial">&#182;</a></h3><h3 id="Aula-12.-Modelos-individuais---par&#226;metros"><a href="12.00.Aula-Modelos_individuais_parametros.slides.html">Aula 12. Modelos individuais - par&#226;metros</a><a class="anchor-link" href="#Aula-12.-Modelos-individuais---par&#226;metros">&#182;</a></h3><h3 id="Aula-13.-Modelos-individuais---compara&#231;&#227;o-entre-as-implementa&#231;&#245;es-matricial-e-vetorial"><a href="13.00.Aula-Modelos_individuais_comparacao_matricial_vetorial.slides.html">Aula 13. Modelos individuais - compara&#231;&#227;o entre as implementa&#231;&#245;es matricial e vetorial</a><a class="anchor-link" href="#Aula-13.-Modelos-individuais---compara&#231;&#227;o-entre-as-implementa&#231;&#245;es-matricial-e-vetorial">&#182;</a></h3><h3 id="Aula-14.-Modelos-individuais---converg&#234;ncia-em-redes-completas"><a href="14.00.Aula-Modelos_individuais_convergencia_redes_completas.slides.html">Aula 14. Modelos individuais - converg&#234;ncia em redes completas</a><a class="anchor-link" href="#Aula-14.-Modelos-individuais---converg&#234;ncia-em-redes-completas">&#182;</a></h3><h3 id="Aula-15.-Modelos-individuais---velocidade-de-processsamento"><a href="15.00.Aula-Modelos_individuais_velocidade.slides.html">Aula 15. Modelos individuais - velocidade de processsamento</a><a class="anchor-link" href="#Aula-15.-Modelos-individuais---velocidade-de-processsamento">&#182;</a></h3><h3 id="Aula-16.-Modelos-individuais---reformula&#231;&#227;o-da-implementa&#231;&#227;o"><a href="16.00.Aula-Modelos_individuais_reformulacao.slides.html">Aula 16. Modelos individuais - reformula&#231;&#227;o da implementa&#231;&#227;o</a><a class="anchor-link" href="#Aula-16.-Modelos-individuais---reformula&#231;&#227;o-da-implementa&#231;&#227;o">&#182;</a></h3>
+<h3 id="Gargalos">Gargalos<a class="anchor-link" href="#Gargalos">&#182;</a></h3><p>Os dois gargalos, no entanto, estão no cálculo dos contatos de risco, tanto das redes fixas (residencial e de local de escola/trabalho) como da comunidade.</p>
+<p>O problema é que ambas envolvem ciclos <em>(loops)</em> em python. E não vejo como torná-los códigos tratados diretamente pelo <code>numpy</code>.</p>
+<div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">redes_tx_transmissao</span><span class="p">)):</span>
+        <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">k</span><span class="p">)</span> <span class="ow">in</span> <span class="n">redes</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">edges</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">pop_infectados</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="ow">and</span> <span class="n">pop_suscetiveis</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+                <span class="n">contatos_de_risco_rs</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">elif</span> <span class="n">pop_infectados</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="ow">and</span> <span class="n">pop_suscetiveis</span><span class="p">[</span><span class="n">k</span><span class="p">]:</span>
+                <span class="n">contatos_de_risco_rs</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">k</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="n">contatos_de_risco_c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+            <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">pop_infectados</span><span class="p">,</span>
+                    <span class="n">f_kernel</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">pop_posicoes</span> <span class="o">-</span> <span class="n">pop_posicoes</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> 
+                             <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+                            <span class="p">)</span>
+                    <span class="p">)</span>
+             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_pop</span><span class="p">)</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
+</pre></div>
+
 </div>
 </div>
-</div></section></section>
+</div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Custo-computacional">Custo computacional<a class="anchor-link" href="#Custo-computacional">&#182;</a></h3><p>Para ilustrar o custo computacional de cada termo acima, vamos considerar o cenário de 350 habitantes usado anteriormente.</p>
+
+</div>
+</div>
+</div><div class="fragment">
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">cenario_pop_350</span> <span class="o">=</span> <span class="n">episiming</span><span class="o">.</span><span class="n">cenarios</span><span class="o">.</span><span class="n">Pop350</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div></div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Definindo as variáveis usadas pela função</p>
+
+</div>
+</div>
+</div></div><div class="fragment">
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">dt</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">pop_estado</span> <span class="o">=</span> <span class="n">cenario_pop_350</span><span class="o">.</span><span class="n">pop_estado_0</span>
+<span class="n">redes</span> <span class="o">=</span> <span class="n">cenario_pop_350</span><span class="o">.</span><span class="n">redes</span>
+<span class="n">redes_tx_transmissao</span> <span class="o">=</span> <span class="n">cenario_pop_350</span><span class="o">.</span><span class="n">redes_tx_transmissao</span>
+<span class="n">pop_fator_tx_transmissao_c</span> <span class="o">=</span> <span class="n">cenario_pop_350</span><span class="o">.</span><span class="n">pop_fator_tx_transmissao_c</span>
+<span class="n">prob_nao_recuperacao</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">dt</span><span class="o">*</span><span class="n">cenario_pop_350</span><span class="o">.</span><span class="n">gamma</span><span class="p">)</span>
+<span class="n">pop_posicoes</span> <span class="o">=</span> <span class="n">cenario_pop_350</span><span class="o">.</span><span class="n">pop_posicoes</span>
+<span class="n">f_kernel</span> <span class="o">=</span> <span class="n">cenario_pop_350</span><span class="o">.</span><span class="n">f_kernel</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div></div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Para o cálculo do tempo, vamos definir, ainda, funções para os códigos que consideramos "gargalos".</p>
+
+</div>
+</div>
+</div><div class="fragment">
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">get_contatos_de_risco_rs</span><span class="p">(</span><span class="n">num_pop</span><span class="p">,</span> <span class="n">pop_suscetiveis</span><span class="p">,</span> <span class="n">pop_infectados</span><span class="p">,</span> <span class="n">redes</span><span class="p">):</span>
+
+    <span class="n">contatos_de_risco_rs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="nb">len</span><span class="p">(</span><span class="n">redes</span><span class="p">),</span> <span class="n">num_pop</span><span class="p">])</span>
+
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">redes</span><span class="p">)):</span>
+        <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">k</span><span class="p">)</span> <span class="ow">in</span> <span class="n">redes</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">edges</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">pop_infectados</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="ow">and</span> <span class="n">pop_suscetiveis</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+                <span class="n">contatos_de_risco_rs</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">elif</span> <span class="n">pop_infectados</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="ow">and</span> <span class="n">pop_suscetiveis</span><span class="p">[</span><span class="n">k</span><span class="p">]:</span>
+                <span class="n">contatos_de_risco_rs</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">k</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">contatos_de_risco_rs</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div></div><div class="fragment">
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">get_contatos_de_risco_c</span><span class="p">(</span><span class="n">pop_infectados</span><span class="p">,</span> <span class="n">pop_posicoes</span><span class="p">):</span>
+    <span class="n">contatos_de_risco_c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+            <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">pop_infectados</span><span class="p">,</span>
+                    <span class="n">f_kernel</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">pop_posicoes</span> <span class="o">-</span> <span class="n">pop_posicoes</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> 
+                             <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+                            <span class="p">)</span>
+                    <span class="p">)</span>
+             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_pop</span><span class="p">)</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="n">contatos_de_risco_c</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div></div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Agora, executamos todos as linhas da função.</p>
+
+</div>
+</div>
+</div><div class="fragment">
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">num_pop</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">pop_estado</span><span class="p">)</span>
+
+<span class="n">pop_suscetiveis</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">select</span><span class="p">([</span><span class="n">pop_estado</span><span class="o">==</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="n">pop_estado</span><span class="p">])</span>
+
+<span class="n">pop_infectados</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">select</span><span class="p">([</span><span class="n">pop_estado</span><span class="o">==</span><span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="n">pop_estado</span><span class="p">])</span><span class="o">/</span><span class="mi">2</span>
+
+<span class="n">contatos_de_risco_rs</span> <span class="o">=</span> <span class="n">get_contatos_de_risco_rs</span><span class="p">(</span><span class="n">num_pop</span><span class="p">,</span> <span class="n">pop_suscetiveis</span><span class="p">,</span> <span class="n">pop_infectados</span><span class="p">,</span> <span class="n">redes</span><span class="p">)</span>
+
+<span class="n">contatos_de_risco_c</span> <span class="o">=</span> <span class="n">get_contatos_de_risco_c</span><span class="p">(</span><span class="n">pop_infectados</span><span class="p">,</span> <span class="n">pop_posicoes</span><span class="p">)</span>
+
+<span class="n">lambda_rate</span> <span class="o">=</span> <span class="p">((</span><span class="n">redes_tx_transmissao</span> <span class="o">*</span> <span class="n">contatos_de_risco_rs</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="n">pop_fator_tx_transmissao_c</span> <span class="o">*</span> <span class="n">contatos_de_risco_c</span><span class="p">)</span>
+
+<span class="n">prob_nao_contagio</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">dt</span><span class="o">*</span><span class="n">lambda_rate</span><span class="p">)</span>                             
+
+<span class="n">sorteio</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">num_pop</span><span class="p">)</span>
+
+<span class="n">pop_novos_infectados</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">select</span><span class="p">([</span><span class="n">sorteio</span> <span class="o">&gt;</span> <span class="n">prob_nao_contagio</span><span class="p">],</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">num_pop</span><span class="p">)])</span>
+
+<span class="n">sorteio</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">num_pop</span><span class="p">)</span>
+
+<span class="n">pop_novos_recuperados</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">select</span><span class="p">([</span><span class="n">pop_infectados</span> <span class="o">*</span> <span class="n">sorteio</span> <span class="o">&gt;</span> <span class="n">prob_nao_recuperacao</span><span class="p">],</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">num_pop</span><span class="p">)])</span>
+
+<span class="n">pop_novo_estado</span> <span class="o">=</span> <span class="n">pop_estado</span> <span class="o">+</span> <span class="n">pop_novos_infectados</span> <span class="o">+</span> <span class="n">pop_novos_recuperados</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div></div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Com todas as variáveis já calculadas e gravadas na memória, façamos as contagens de tempo:</p>
+
+</div>
+</div>
+</div><div class="fragment">
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">timeit</span> num_pop = len(pop_estado)
+
+<span class="o">%</span><span class="k">timeit</span> pop_suscetiveis = np.select([pop_estado==1], [pop_estado])
+
+<span class="o">%</span><span class="k">timeit</span> pop_infectados = np.select([pop_estado==2], [pop_estado])/2
+
+<span class="o">%</span><span class="k">timeit</span> contatos_de_risco_rs = get_contatos_de_risco_rs(num_pop, pop_suscetiveis, pop_infectados, redes)
+
+<span class="o">%</span><span class="k">timeit</span> contatos_de_risco_c = get_contatos_de_risco_c(pop_infectados, pop_posicoes)
+
+<span class="o">%</span><span class="k">timeit</span> lambda_rate = ((redes_tx_transmissao * contatos_de_risco_rs).sum(axis=0) + pop_fator_tx_transmissao_c * contatos_de_risco_c)
+
+<span class="o">%</span><span class="k">timeit</span> prob_nao_contagio = np.exp(-dt*lambda_rate)                             
+
+<span class="o">%</span><span class="k">timeit</span> sorteio = np.random.rand(num_pop)
+
+<span class="o">%</span><span class="k">timeit</span> pop_novos_infectados = np.select([sorteio &gt; prob_nao_contagio], [np.ones(num_pop)])
+
+<span class="o">%</span><span class="k">timeit</span> sorteio = np.random.rand(num_pop)
+
+<span class="o">%</span><span class="k">timeit</span> pop_novos_recuperados = np.select([pop_infectados * sorteio &gt; prob_nao_recuperacao], [np.ones(num_pop)])
+
+<span class="o">%</span><span class="k">timeit</span> pop_novo_estado = pop_estado + pop_novos_infectados + pop_novos_recuperados
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>118 ns ± 1.05 ns per loop (mean ± std. dev. of 7 runs, 10000000 loops each)
+53.8 µs ± 736 ns per loop (mean ± std. dev. of 7 runs, 10000 loops each)
+59.5 µs ± 1.58 µs per loop (mean ± std. dev. of 7 runs, 10000 loops each)
+1.96 ms ± 67.4 µs per loop (mean ± std. dev. of 7 runs, 1000 loops each)
+18.9 ms ± 193 µs per loop (mean ± std. dev. of 7 runs, 100 loops each)
+15.5 µs ± 373 ns per loop (mean ± std. dev. of 7 runs, 100000 loops each)
+6.79 µs ± 94.1 ns per loop (mean ± std. dev. of 7 runs, 100000 loops each)
+6.45 µs ± 232 ns per loop (mean ± std. dev. of 7 runs, 100000 loops each)
+58.7 µs ± 1.1 µs per loop (mean ± std. dev. of 7 runs, 10000 loops each)
+6.4 µs ± 130 ns per loop (mean ± std. dev. of 7 runs, 100000 loops each)
+63.5 µs ± 838 ns per loop (mean ± std. dev. of 7 runs, 10000 loops each)
+2.5 µs ± 47.7 ns per loop (mean ± std. dev. of 7 runs, 100000 loops each)
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div></div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Na função toda, gastamos</p>
+
+</div>
+</div>
+</div><div class="fragment">
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">timeit</span> passo_vetorial(pop_estado, redes, redes_tx_transmissao, pop_fator_tx_transmissao_c, prob_nao_recuperacao, pop_posicoes, f_kernel, dt)
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>20.9 ms ± 511 µs per loop (mean ± std. dev. of 7 runs, 10 loops each)
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div></div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Observe que os cálculos além dos dos contatos de risco têm um custo negligível perto desses.</p>
+
+</div>
+</div>
+</div></div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Numba-JIT">Numba JIT<a class="anchor-link" href="#Numba-JIT">&#182;</a></h2><p>Uma opção é usar o <a href="http://numba.pydata.org/numba-doc/latest/index.html">numba</a> (veja <a href="http://numba.pydata.org/numba-doc/latest/user/5minguide.html">A ~5 minute guide to Numba</a>), que é um compilador "just-in-time", capaz de transformar um certo conjunto de instruções em python e em numpy diretamente em código executável, no momento da definição da função.</p>
+<p>A partir daí, qualquer chamada à função irá executar o código compilado da função.</p>
+
+</div>
+</div>
+</div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Numba-jit-na-rede-de-contatos">Numba jit na rede de contatos<a class="anchor-link" href="#Numba-jit-na-rede-de-contatos">&#182;</a></h3><p>Para simplificar, vamos considerar o cenário de uma rede completa e analisar o tempo necessário para executar diferentes versões do cálculo dos contatos de risco, incluindo versões com o <code>numba.jit</code>.</p>
+<p>Para usar o <code>numba.jit</code>, vamos importar o método <code>njit</code>, que é o <code>jit</code> com a opção <code>nopython = True</code>. Esta opção evita que o código "recaia" para o python interpretado caso não consiga compilar alguma parte. Vale lembrar, aqui, que só uma parte dos métodos, funções e objetos do python padrão e do numpy funcionam adequadamente no <code>numba</code>.</p>
+<p>Para simplificar ainda mais, vamos assumir, como no caso da rede completa, que há somente uma rede.</p>
+
+</div>
+</div>
+</div><div class="fragment">
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">num_pop</span> <span class="o">=</span> <span class="mi">60</span>
+<span class="n">num_infectados_0</span> <span class="o">=</span> <span class="mi">6</span>
+<span class="n">beta</span> <span class="o">=</span> <span class="mf">0.5</span>
+<span class="n">gamma</span> <span class="o">=</span> <span class="mf">0.2</span>
+
+<span class="n">rede_completa</span> <span class="o">=</span> <span class="n">episiming</span><span class="o">.</span><span class="n">cenarios</span><span class="o">.</span><span class="n">RedeCompleta</span><span class="p">(</span><span class="n">num_pop</span><span class="p">,</span> <span class="n">num_infectados_0</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">gamma</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div></div><div class="fragment">
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">pop_estado</span> <span class="o">=</span> <span class="n">rede_completa</span><span class="o">.</span><span class="n">pop_estado_0</span>
+<span class="n">rede</span> <span class="o">=</span> <span class="n">rede_completa</span><span class="o">.</span><span class="n">redes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">pop_suscetiveis</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">select</span><span class="p">([</span><span class="n">pop_estado</span><span class="o">==</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="n">pop_estado</span><span class="p">])</span>
+<span class="n">pop_infectados</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">select</span><span class="p">([</span><span class="n">pop_estado</span><span class="o">==</span><span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="n">pop_estado</span><span class="p">])</span><span class="o">/</span><span class="mi">2</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div></div></section></section><section><section>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[16]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">get_contatos_de_risco_nx</span><span class="p">(</span><span class="n">num_pop</span><span class="p">,</span> <span class="n">rede</span><span class="p">,</span> <span class="n">pop_suscetiveis</span><span class="p">,</span> <span class="n">pop_infectados</span><span class="p">):</span>
+
+    <span class="n">contatos_de_risco</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">num_pop</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">k</span><span class="p">)</span> <span class="ow">in</span> <span class="n">rede</span><span class="o">.</span><span class="n">edges</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">pop_infectados</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="ow">and</span> <span class="n">pop_suscetiveis</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+            <span class="n">contatos_de_risco</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">elif</span> <span class="n">pop_infectados</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="ow">and</span> <span class="n">pop_suscetiveis</span><span class="p">[</span><span class="n">k</span><span class="p">]:</span>
+            <span class="n">contatos_de_risco</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="k">return</span> <span class="n">contatos_de_risco</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div></section></section><section><section>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[17]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">get_contatos_de_risco_py</span><span class="p">(</span><span class="n">num_pop</span><span class="p">,</span> <span class="n">pop_suscetiveis</span><span class="p">,</span> <span class="n">pop_infectados</span><span class="p">):</span>
+    <span class="n">contatos_de_risco</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">num_pop</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_pop</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">pop_infectados</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="ow">and</span> <span class="n">pop_suscetiveis</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+                <span class="n">contatos_de_risco</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">elif</span> <span class="n">pop_infectados</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="ow">and</span> <span class="n">pop_suscetiveis</span><span class="p">[</span><span class="n">k</span><span class="p">]:</span>
+                <span class="n">contatos_de_risco</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">contatos_de_risco</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div></section></section><section><section>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[18]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nd">@njit</span>
+<span class="k">def</span> <span class="nf">get_contatos_de_risco_jit</span><span class="p">(</span><span class="n">num_pop</span><span class="p">,</span> <span class="n">pop_suscetiveis</span><span class="p">,</span> <span class="n">pop_infectados</span><span class="p">):</span>
+    <span class="n">contatos_de_risco</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">num_pop</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_pop</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">pop_infectados</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="ow">and</span> <span class="n">pop_suscetiveis</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+                <span class="n">contatos_de_risco</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">elif</span> <span class="n">pop_infectados</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="ow">and</span> <span class="n">pop_suscetiveis</span><span class="p">[</span><span class="n">k</span><span class="p">]:</span>
+                <span class="n">contatos_de_risco</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">contatos_de_risco</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div></section></section><section><section>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[19]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">conexoes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">rede</span><span class="o">.</span><span class="n">edges</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">get_contatos_de_risco_cx</span><span class="p">(</span><span class="n">num_pop</span><span class="p">,</span> <span class="n">conexoes</span><span class="p">,</span> <span class="n">pop_suscetiveis</span><span class="p">,</span> <span class="n">pop_infectados</span><span class="p">):</span>
+    <span class="n">contatos_de_risco</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">num_pop</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">conexoes</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">pop_infectados</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="ow">and</span> <span class="n">pop_suscetiveis</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+                <span class="n">contatos_de_risco</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">elif</span> <span class="n">pop_infectados</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="ow">and</span> <span class="n">pop_suscetiveis</span><span class="p">[</span><span class="n">k</span><span class="p">]:</span>
+                <span class="n">contatos_de_risco</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">contatos_de_risco</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div></section></section><section><section>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[20]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nd">@njit</span>
+<span class="k">def</span> <span class="nf">get_contatos_de_risco_cx_jit</span><span class="p">(</span><span class="n">num_pop</span><span class="p">,</span> <span class="n">conexoes</span><span class="p">,</span> <span class="n">pop_suscetiveis</span><span class="p">,</span> <span class="n">pop_infectados</span><span class="p">):</span>
+    <span class="n">contatos_de_risco</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">num_pop</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">conexoes</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">pop_infectados</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="ow">and</span> <span class="n">pop_suscetiveis</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+                <span class="n">contatos_de_risco</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">elif</span> <span class="n">pop_infectados</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="ow">and</span> <span class="n">pop_suscetiveis</span><span class="p">[</span><span class="n">k</span><span class="p">]:</span>
+                <span class="n">contatos_de_risco</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">contatos_de_risco</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div><div class="fragment">
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[21]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">numba.typed</span> <span class="kn">import</span> <span class="n">List</span>
+<span class="n">typed_conexoes</span> <span class="o">=</span> <span class="n">List</span><span class="p">()</span>
+<span class="p">[</span><span class="n">typed_conexoes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">conexoes</span><span class="p">]</span>
+<span class="k">pass</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div></div></section></section><section><section>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[22]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">timeit</span> get_contatos_de_risco_nx(num_pop, rede, pop_suscetiveis, pop_infectados)
+<span class="o">%</span><span class="k">timeit</span> get_contatos_de_risco_py(num_pop, pop_suscetiveis, pop_infectados)
+<span class="o">%</span><span class="k">timeit</span> get_contatos_de_risco_jit(num_pop, pop_suscetiveis, pop_infectados)
+<span class="o">%</span><span class="k">timeit</span> get_contatos_de_risco_cx(num_pop, conexoes, pop_suscetiveis, pop_infectados)
+<span class="o">%</span><span class="k">timeit</span> get_contatos_de_risco_cx_jit(num_pop, typed_conexoes, pop_suscetiveis, pop_infectados)
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>1.57 ms ± 16.6 µs per loop (mean ± std. dev. of 7 runs, 1000 loops each)
+1.08 ms ± 44.3 µs per loop (mean ± std. dev. of 7 runs, 1000 loops each)
+4.86 µs ± 147 ns per loop (mean ± std. dev. of 7 runs, 100000 loops each)
+954 µs ± 21.1 µs per loop (mean ± std. dev. of 7 runs, 1000 loops each)
+15.2 µs ± 354 ns per loop (mean ± std. dev. of 7 runs, 100000 loops each)
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Assim, conseguimor baixar o custo computacional (nesta máquina e neste cenário) do cálculo das conexões de risco da rede de contatos de quase $1.45 \,\texttt{ms}$ para algo da ordem de $5 \,\mu\texttt{s}$, usando <code>get_contatos_de_risco_jit</code>. Isso é uma redução dramática para menos de $0,4\%$ em comparação com o custo atual.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Numba-jit-na-rede-da-comunidade">Numba jit na rede da comunidade<a class="anchor-link" href="#Numba-jit-na-rede-da-comunidade">&#182;</a></h3><p>Agora, vamos buscar reduzir o custo do cálculo do poder de infecção por conta de contatos aleatórios em toda a comunidade.</p>
+<p>Construimos as seguintes funções com <code>njit</code> e testamos a velocidade.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[23]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nd">@njit</span>
+<span class="k">def</span> <span class="nf">dist2_jit</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="nb">abs</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">y</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">**.</span><span class="mi">5</span>
+
+<span class="nd">@njit</span>
+<span class="k">def</span> <span class="nf">f_kernel_jit</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
+    <span class="k">return</span> <span class="mf">1.0</span><span class="o">/</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">+</span> <span class="p">(</span><span class="n">d</span><span class="o">/</span><span class="mf">1.0</span><span class="p">)</span><span class="o">**</span><span class="mf">1.5</span><span class="p">)</span>
+
+<span class="nd">@njit</span>
+<span class="k">def</span> <span class="nf">get_contatos_de_risco_c_jit</span><span class="p">(</span><span class="n">num_pop</span><span class="p">,</span> <span class="n">pop_infectados</span><span class="p">,</span> <span class="n">pop_posicoes</span><span class="p">):</span>
+
+    <span class="n">ret</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_pop</span><span class="p">):</span>
+        <span class="n">f_kernel_i</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">f_kernel_jit</span><span class="p">(</span><span class="n">dist2_jit</span><span class="p">(</span><span class="n">pop_posicoes</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">pop_posicoes</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span> 
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_pop</span><span class="p">)</span>
+        <span class="p">]</span>
+
+        <span class="n">produto</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_pop</span><span class="p">):</span>
+            <span class="n">produto</span> <span class="o">+=</span> <span class="n">pop_infectados</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">*</span> <span class="n">f_kernel_i</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+
+        <span class="n">ret</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">produto</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ret</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[24]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">pop_posicoes</span> <span class="o">=</span> <span class="n">rede_completa</span><span class="o">.</span><span class="n">pop_posicoes</span>
+<span class="o">%</span><span class="k">timeit</span> contatos_de_risco_c = get_contatos_de_risco_c(pop_infectados, pop_posicoes)
+<span class="o">%</span><span class="k">timeit</span> get_contatos_de_risco_c_jit(num_pop, pop_infectados, pop_posicoes)
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>1.64 ms ± 57.7 µs per loop (mean ± std. dev. of 7 runs, 100 loops each)
+310 µs ± 23.2 µs per loop (mean ± std. dev. of 7 runs, 1 loop each)
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div></div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Numba-jit-na-sele&#231;&#227;o-de-suscet&#237;veis-e-infectados">Numba jit na sele&#231;&#227;o de suscet&#237;veis e infectados<a class="anchor-link" href="#Numba-jit-na-sele&#231;&#227;o-de-suscet&#237;veis-e-infectados">&#182;</a></h3><p>Após reduzir de milisegundos a microsegundos o custo computacional do cálculo dos contatos de risco na rede social, podemos pensar em acelerar as outras partes, também.</p>
+<p>O termo mais custoso (contatos com a comunidade) deixaremos para depois. Abaixo, analisamos a aceleração do código de seleção de infectados e suscetíveis.</p>
+
+</div>
+</div>
+</div></section></section><section><section>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[25]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">get_estado_np_select</span><span class="p">(</span><span class="n">pop_estado</span><span class="p">,</span> <span class="n">estado</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">select</span><span class="p">([</span><span class="n">pop_estado</span><span class="o">==</span><span class="n">estado</span><span class="p">],</span> <span class="p">[</span><span class="n">pop_estado</span><span class="p">])</span><span class="o">/</span><span class="n">estado</span>
+
+<span class="k">def</span> <span class="nf">get_estado_np_py</span><span class="p">(</span><span class="n">pop_estado</span><span class="p">,</span> <span class="n">estado</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span> <span class="k">if</span> <span class="n">e</span> <span class="o">==</span> <span class="n">estado</span> <span class="k">else</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">pop_estado</span><span class="p">])</span>
+
+<span class="nd">@njit</span>
+<span class="k">def</span> <span class="nf">get_estado_jit_np_py</span><span class="p">(</span><span class="n">pop_estado</span><span class="p">,</span> <span class="n">estado</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span> <span class="k">if</span> <span class="n">e</span> <span class="o">==</span> <span class="n">estado</span> <span class="k">else</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">pop_estado</span><span class="p">])</span>
+
+<span class="nd">@njit</span>
+<span class="k">def</span> <span class="nf">get_estado_jit_loop</span><span class="p">(</span><span class="n">pop_estado</span><span class="p">,</span> <span class="n">estado</span><span class="p">):</span>
+    <span class="n">pop_selecionados</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">pop_estado</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">pop_estado</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="n">pop_estado</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="n">estado</span><span class="p">:</span>
+            <span class="n">pop_selecionados</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">pop_selecionados</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div></section></section><section><section>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[26]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">pop_estado</span> <span class="o">=</span> <span class="n">rede_completa</span><span class="o">.</span><span class="n">pop_estado_0</span>
+
+<span class="o">%</span><span class="k">timeit</span> get_estado_np_select(pop_estado, 1)
+<span class="o">%</span><span class="k">timeit</span> get_estado_np_py(pop_estado, 1)
+<span class="o">%</span><span class="k">timeit</span> get_estado_jit_np_py(pop_estado, 1)
+<span class="o">%</span><span class="k">timeit</span> get_estado_jit_loop(pop_estado, 1)
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>53.9 µs ± 554 ns per loop (mean ± std. dev. of 7 runs, 10000 loops each)
+49.8 µs ± 2.83 µs per loop (mean ± std. dev. of 7 runs, 10000 loops each)
+1.11 µs ± 21.9 ns per loop (mean ± std. dev. of 7 runs, 1000000 loops each)
+1.05 µs ± 27.1 ns per loop (mean ± std. dev. of 7 runs, 1000000 loops each)
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Excelente! O <code>jit</code> reduziu sensivelmente o custo desse cálculo, também.</p>
+
+</div>
+</div>
+</div></div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Paraleliza&#231;&#227;o-com-o-numba">Paraleliza&#231;&#227;o com o numba<a class="anchor-link" href="#Paraleliza&#231;&#227;o-com-o-numba">&#182;</a></h2><p>Podemos buscar uma aceleração maior ainda implementando alguma forma de paralelização.</p>
+<p>A seguir, analisamos duas opções.</p>
+
+</div>
+</div>
+</div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Paraleliza&#231;&#227;o-com-numba-jit-e-multi-threading">Paraleliza&#231;&#227;o com numba jit e <em>multi-threading</em><a class="anchor-link" href="#Paraleliza&#231;&#227;o-com-numba-jit-e-multi-threading">&#182;</a></h3><p>Podemos combinar o <code>numba</code> com multiprocessamento via <a href="https://docs.python.org/3/library/threading.html">threading</a>.</p>
+<p>Vamos começar com um exemplo adaptado de <a href="http://numba.pydata.org/numba-doc/dev/user/examples.html#multi-threading">Numba: Multi-threading</a>, para ver como ele se sai nessa máquina.</p>
+<p>Primeiro, montamos uma função que serve de "envelope" <em>(wrapper)</em>, para paralelizar qualquer função que tenha a característica que agir em cada componente de um <em>array</em> separadamente <em>(element-wise)</em>.</p>
+
+</div>
+</div>
+</div></section></section><section><section>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[27]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">timefunc</span><span class="p">(</span><span class="n">correct</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Benchmark *func* and print out its runtime.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">20</span><span class="p">),</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
+    <span class="c1"># Make sure the function is compiled before we start the benchmark</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">correct</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">correct</span><span class="p">),</span> <span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">correct</span><span class="p">)</span>
+    <span class="c1"># time it</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{:&gt;5.0f}</span><span class="s1"> ms&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">repeat</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">),</span>
+                                          <span class="n">number</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">repeat</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">res</span>
+
+<span class="k">def</span> <span class="nf">make_singlethread</span><span class="p">(</span><span class="n">inner_func</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Run the given function inside a single thread.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="n">length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">length</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+        <span class="n">inner_func</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span>
+    <span class="k">return</span> <span class="n">func</span>
+
+<span class="k">def</span> <span class="nf">make_multithread</span><span class="p">(</span><span class="n">inner_func</span><span class="p">,</span> <span class="n">numthreads</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Run the given function inside *numthreads* threads, splitting its</span>
+<span class="sd">    arguments into equal-sized chunks.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">func_mt</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="n">length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">length</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="p">(</span><span class="n">result</span><span class="p">,)</span> <span class="o">+</span> <span class="n">args</span>
+        <span class="n">chunklen</span> <span class="o">=</span> <span class="p">(</span><span class="n">length</span> <span class="o">+</span> <span class="n">numthreads</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">//</span> <span class="n">numthreads</span>
+        <span class="c1"># Create argument tuples for each input chunk</span>
+        <span class="n">chunks</span> <span class="o">=</span> <span class="p">[[</span><span class="n">arg</span><span class="p">[</span><span class="n">i</span> <span class="o">*</span> <span class="n">chunklen</span><span class="p">:(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">chunklen</span><span class="p">]</span> <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">args</span><span class="p">]</span>
+                  <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">numthreads</span><span class="p">)]</span>
+        <span class="c1"># Spawn one thread per chunk</span>
+        <span class="n">threads</span> <span class="o">=</span> <span class="p">[</span><span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">inner_func</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="n">chunk</span><span class="p">)</span>
+                   <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">chunks</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">thread</span> <span class="ow">in</span> <span class="n">threads</span><span class="p">:</span>
+            <span class="n">thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">thread</span> <span class="ow">in</span> <span class="n">threads</span><span class="p">:</span>
+            <span class="n">thread</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">result</span>
+    <span class="k">return</span> <span class="n">func_mt</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Agora, definimos duas versões de uma função de teste, uma para usar apenas <code>numpy</code> e outra para o <code>numba</code>.</p>
+
+</div>
+</div>
+</div><div class="fragment">
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[28]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">func_np</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Control function using Numpy.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mf">2.1</span> <span class="o">*</span> <span class="n">a</span> <span class="o">+</span> <span class="mf">3.2</span> <span class="o">*</span> <span class="n">b</span><span class="p">)</span>
+
+<span class="nd">@njit</span><span class="p">(</span><span class="s1">&#39;void(double[:], double[:], double[:])&#39;</span><span class="p">,</span> <span class="n">nogil</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">inner_func_nb</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Function under test.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">)):</span>
+        <span class="n">result</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mf">2.1</span> <span class="o">*</span> <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="mf">3.2</span> <span class="o">*</span> <span class="n">b</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div></div></section></section><section><section>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[29]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">nthreads</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">()</span>
+<span class="n">size</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="mi">6</span>
+
+<span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
+
+<span class="n">func_nb</span> <span class="o">=</span> <span class="n">make_singlethread</span><span class="p">(</span><span class="n">inner_func_nb</span><span class="p">)</span>
+<span class="n">func_nb_mt</span> <span class="o">=</span> <span class="p">[</span><span class="n">make_multithread</span><span class="p">(</span><span class="n">inner_func_nb</span><span class="p">,</span> <span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nthreads</span><span class="p">)]</span>
+
+<span class="n">correct</span> <span class="o">=</span> <span class="n">timefunc</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;numpy (1 thread)&quot;</span><span class="p">,</span> <span class="n">func_np</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nthreads</span><span class="p">):</span>
+    <span class="n">timefunc</span><span class="p">(</span><span class="n">correct</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;numba ({n+1} thread)&quot;</span><span class="p">,</span> <span class="n">func_nb_mt</span><span class="p">[</span><span class="n">n</span><span class="p">],</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>numpy (1 thread)       100 ms
+numba (1 thread)        71 ms
+numba (2 thread)        39 ms
+numba (3 thread)        37 ms
+numba (4 thread)        34 ms
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Usando <code>%timeit</code>:</p>
+
+</div>
+</div>
+</div><div class="fragment">
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[30]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">timeit</span> func_np(a, b)
+
+<span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nthreads</span><span class="p">):</span>
+    <span class="o">%</span><span class="k">timeit</span> func_nb_mt[n](a, b)
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>19.6 ms ± 718 µs per loop (mean ± std. dev. of 7 runs, 10 loops each)
+13.3 ms ± 184 µs per loop (mean ± std. dev. of 7 runs, 100 loops each)
+8.74 ms ± 452 µs per loop (mean ± std. dev. of 7 runs, 100 loops each)
+8.14 ms ± 370 µs per loop (mean ± std. dev. of 7 runs, 100 loops each)
+8.47 ms ± 634 µs per loop (mean ± std. dev. of 7 runs, 100 loops each)
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div></div></section></section><section><section>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[31]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nd">@njit</span>
+<span class="k">def</span> <span class="nf">inner_func_nb_jit</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Function under test.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">)):</span>
+        <span class="n">result</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mf">2.1</span> <span class="o">*</span> <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="mf">3.2</span> <span class="o">*</span> <span class="n">b</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">result</span>
+
+<span class="nd">@njit</span><span class="p">(</span><span class="s1">&#39;void(double[:], double[:], double[:])&#39;</span><span class="p">,</span> <span class="n">nogil</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">inner_func_nb_jit_mt_template</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Function under test.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">)):</span>
+        <span class="n">result</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mf">2.1</span> <span class="o">*</span> <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="mf">3.2</span> <span class="o">*</span> <span class="n">b</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+
+<span class="n">inner_func_nb_jit_mt</span> <span class="o">=</span> <span class="p">[</span><span class="n">make_multithread</span><span class="p">(</span><span class="n">inner_func_nb_jit_mt_template</span><span class="p">,</span> <span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> 
+                          <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">())]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div><div class="fragment">
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[32]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Tempos de np, jit, e jit_mt com 1, 2, 3 e 4 threads&#39;</span><span class="p">)</span>
+<span class="o">%</span><span class="k">timeit</span> func_np(a,b)
+<span class="o">%</span><span class="k">timeit</span> inner_func_nb_jit(a,b)
+<span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">()):</span>
+    <span class="o">%</span><span class="k">timeit</span> inner_func_nb_jit_mt[j](a, b)
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Tempos de np, jit, e jit_mt com 1, 2, 3 e 4 threads
+18.7 ms ± 182 µs per loop (mean ± std. dev. of 7 runs, 10 loops each)
+13.3 ms ± 160 µs per loop (mean ± std. dev. of 7 runs, 100 loops each)
+14.1 ms ± 35.7 µs per loop (mean ± std. dev. of 7 runs, 100 loops each)
+8.18 ms ± 166 µs per loop (mean ± std. dev. of 7 runs, 100 loops each)
+7.87 ms ± 157 µs per loop (mean ± std. dev. of 7 runs, 100 loops each)
+8.28 ms ± 1.55 ms per loop (mean ± std. dev. of 7 runs, 100 loops each)
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div></div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Ok, é claro que é possível acelerar o código paralelizando via <code>numba.jit</code>. Mas parece que ele só usou 2 <em>cores</em> adequadamente, não aproveitando que são 2 <em>threads</em> por <em>core</em> por CPU. E também há a questão do <em>overhead</em>.</p>
+<p>Em relação a <em>cores</em> vs <em>threads</em>, veja <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-optimize-cpu.html#cpu-options-supported-instances-values">Optimizing CPU options - CPU cores and threads per CPU core per instance type</a>.</p>
+
+</div>
+</div>
+</div></div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Paraleliza&#231;&#227;o-com-numba-jit-e-prange">Paraleliza&#231;&#227;o com numba jit e <em>prange</em><a class="anchor-link" href="#Paraleliza&#231;&#227;o-com-numba-jit-e-prange">&#182;</a></h2><p>Outra opção é via <a href="https://numba.pydata.org/numba-doc/dev/user/parallel.html#explicit-parallel-loops">prange</a> <em>(parallel range)</em> do próprio <code>numba</code>, com a opção <code>parallel=True</code>.</p>
+
+</div>
+</div>
+</div><div class="fragment">
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[33]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nd">@njit</span><span class="p">(</span><span class="n">parallel</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">range_test</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="c1"># Without &quot;parallel=True&quot; in the jit-decorator</span>
+    <span class="c1"># the prange statement is equivalent to range</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+        <span class="n">s</span> <span class="o">+=</span> <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">s</span>
+
+<span class="nd">@njit</span><span class="p">(</span><span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">prange_test</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="c1"># Without &quot;parallel=True&quot; in the jit-decorator</span>
+    <span class="c1"># the prange statement is equivalent to range</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">prange</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+        <span class="n">s</span> <span class="o">+=</span> <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">s</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div></div></section></section><section><section>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[34]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">100000</span><span class="p">)</span>
+<span class="o">%</span><span class="k">timeit</span> range_test(a)
+<span class="o">%</span><span class="k">timeit</span> prange_test(a)
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>197 µs ± 8.18 µs per loop (mean ± std. dev. of 7 runs, 1000 loops each)
+75.8 µs ± 28 µs per loop (mean ± std. dev. of 7 runs, 1 loop each)
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Numba-jit-em-paralelo-na-sele&#231;&#227;o-de-suscet&#237;veis-e-infectados">Numba jit em paralelo na sele&#231;&#227;o de suscet&#237;veis e infectados<a class="anchor-link" href="#Numba-jit-em-paralelo-na-sele&#231;&#227;o-de-suscet&#237;veis-e-infectados">&#182;</a></h2><p>Com essa paralelização em mente, podemos ver se conseguimos reduzir ainda mais os códigos de seleção de infectados e suscetíveis.</p>
+
+</div>
+</div>
+</div></section></section><section><section>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[35]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">make_multithread_mod</span><span class="p">(</span><span class="n">inner_func</span><span class="p">,</span> <span class="n">numthreads</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Run the given function inside *numthreads* threads, splitting its</span>
+<span class="sd">    arguments into equal-sized chunks.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">func_mt</span><span class="p">(</span><span class="n">pop_estado</span><span class="p">,</span> <span class="n">estado</span><span class="p">):</span>
+        <span class="n">length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">pop_estado</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">length</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">pop_estado</span><span class="p">)</span>
+        <span class="n">chunklen</span> <span class="o">=</span> <span class="p">(</span><span class="n">length</span> <span class="o">+</span> <span class="n">numthreads</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">//</span> <span class="n">numthreads</span>
+        <span class="c1"># Create argument tuples for each input chunk</span>
+        <span class="n">chunks</span> <span class="o">=</span> <span class="p">[[</span><span class="n">arg</span><span class="p">[</span><span class="n">i</span> <span class="o">*</span> <span class="n">chunklen</span><span class="p">:(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">chunklen</span><span class="p">]</span> <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">args</span><span class="p">]</span>
+                  <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">numthreads</span><span class="p">)]</span>
+        <span class="c1"># Spawn one thread per chunk</span>
+        <span class="n">threads</span> <span class="o">=</span> <span class="p">[</span><span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">inner_func</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="o">*</span><span class="n">chunk</span><span class="p">,</span> <span class="n">estado</span><span class="p">))</span>
+                   <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">chunks</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">thread</span> <span class="ow">in</span> <span class="n">threads</span><span class="p">:</span>
+            <span class="n">thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">thread</span> <span class="ow">in</span> <span class="n">threads</span><span class="p">:</span>
+            <span class="n">thread</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">result</span>
+    <span class="k">return</span> <span class="n">func_mt</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div></section></section><section><section>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[36]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nd">@njit</span><span class="p">(</span><span class="s1">&#39;void(double[:], double[:], int8)&#39;</span><span class="p">,</span> <span class="n">nogil</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">get_estado_jit_mp_template</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">pop_estado</span><span class="p">,</span> <span class="n">estado</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="n">pop_estado</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="n">estado</span><span class="p">:</span>
+            <span class="n">result</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">result</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div></section></section><section><section>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[37]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">get_estado_jit_mp</span> <span class="o">=</span> <span class="n">make_multithread_mod</span><span class="p">(</span><span class="n">get_estado_jit_mp_template</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">())</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div></section></section><section><section>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[38]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">numthreads</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">get_estado_jit_mp_2</span><span class="p">(</span><span class="n">pop_estado</span><span class="p">,</span> <span class="n">estado</span><span class="p">):</span>
+    <span class="n">length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">pop_estado</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">length</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">pop_estado</span><span class="p">)</span>
+    <span class="n">chunklen</span> <span class="o">=</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">pop_estado</span><span class="p">)</span> <span class="o">+</span> <span class="n">numthreads</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">//</span> <span class="n">numthreads</span>
+    <span class="c1"># Create argument tuples for each input chunk</span>
+    <span class="n">chunks</span> <span class="o">=</span> <span class="p">[[</span><span class="n">arg</span><span class="p">[</span><span class="n">i</span> <span class="o">*</span> <span class="n">chunklen</span><span class="p">:(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">chunklen</span><span class="p">]</span> <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">args</span><span class="p">]</span>
+              <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">numthreads</span><span class="p">)]</span>
+    <span class="c1"># Spawn one thread per chunk</span>
+    <span class="n">threads</span> <span class="o">=</span> <span class="p">[</span><span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">get_estado_jit_mp_template</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="o">*</span><span class="n">chunk</span><span class="p">,</span> <span class="n">estado</span><span class="p">))</span>
+               <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">chunks</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">chunks</span><span class="p">:</span>
+        <span class="n">aux</span> <span class="o">=</span> <span class="p">(</span><span class="o">*</span><span class="n">chunk</span><span class="p">,</span> <span class="n">estado</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">thread</span> <span class="ow">in</span> <span class="n">threads</span><span class="p">:</span>
+        <span class="n">thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">thread</span> <span class="ow">in</span> <span class="n">threads</span><span class="p">:</span>
+        <span class="n">thread</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">result</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div></section></section><section><section>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[39]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nd">@njit</span><span class="p">(</span><span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">get_estado_jit_mp_prange</span><span class="p">(</span><span class="n">pop_estado</span><span class="p">,</span> <span class="n">estado</span><span class="p">):</span>
+    <span class="n">pop_selecionados</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">pop_estado</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">prange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">pop_estado</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="n">pop_estado</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="n">estado</span><span class="p">:</span>
+            <span class="n">pop_selecionados</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">pop_selecionados</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div></section></section><section><section>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[40]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">pop_estado</span> <span class="o">=</span> <span class="n">rede_completa</span><span class="o">.</span><span class="n">pop_estado_0</span>
+
+<span class="o">%</span><span class="k">timeit</span> get_estado_np_select(pop_estado, 1)
+<span class="o">%</span><span class="k">timeit</span> get_estado_np_py(pop_estado, 1)
+<span class="o">%</span><span class="k">timeit</span> get_estado_jit_np_py(pop_estado, 1)
+<span class="o">%</span><span class="k">timeit</span> get_estado_jit_loop(pop_estado, 1)
+<span class="o">%</span><span class="k">timeit</span> get_estado_jit_mp(pop_estado,1)
+<span class="o">%</span><span class="k">timeit</span> get_estado_jit_mp_2(pop_estado,1)
+<span class="o">%</span><span class="k">timeit</span> get_estado_jit_mp_prange(pop_estado,1)
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>66.5 µs ± 18.1 µs per loop (mean ± std. dev. of 7 runs, 10000 loops each)
+52.2 µs ± 10.3 µs per loop (mean ± std. dev. of 7 runs, 10000 loops each)
+1.11 µs ± 85.6 ns per loop (mean ± std. dev. of 7 runs, 1000000 loops each)
+1.21 µs ± 299 ns per loop (mean ± std. dev. of 7 runs, 1000000 loops each)
+456 µs ± 7.28 µs per loop (mean ± std. dev. of 7 runs, 1000 loops each)
+477 µs ± 23.6 µs per loop (mean ± std. dev. of 7 runs, 1000 loops each)
+The slowest run took 12.04 times longer than the fastest. This could mean that an intermediate result is being cached.
+21.6 µs ± 25.2 µs per loop (mean ± std. dev. of 7 runs, 1 loop each)
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Ops, multi-threading funcionou nos exemplos acima mas não nesse caso. Precisamos avaliar melhor as construções acima.</p>
+
+</div>
+</div>
+</div></div></section></section>
 </div>
 </div>
 
