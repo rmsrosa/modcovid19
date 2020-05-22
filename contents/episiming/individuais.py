@@ -296,13 +296,16 @@ def f_kernel_jit(d):
     return 1.0/(1.0 + (d/1.0)**1.5)
 
 @njit
-def get_contatos_de_risco_c_jit(num_pop, pop_infectados, pop_posicoes):
+def get_contatos_de_risco_c_jit(num_pop, pop_infectados, 
+                                pop_suscetiveis, pop_posicoes):
 
     ret = []
     for i in range(num_pop):
         produto = 0
-        for j in range(num_pop):
-            produto += pop_infectados[j] * f_kernel_jit(dist2_jit(pop_posicoes[j], pop_posicoes[i])) 
+        if pop_suscetiveis[i] == 1:
+            for j in range(num_pop):
+                if pop_infectados[j] == 1:
+                    produto += f_kernel_jit(dist2_jit(pop_posicoes[j], pop_posicoes[i])) 
 
         ret.append(produto)
     return np.array(ret)
@@ -336,7 +339,8 @@ def passo_vetorial_jit(pop_estado, conexoes, tx_transmissao,
                                       pop_suscetiveis, pop_infectados)
         
     contatos_de_risco_c \
-        = get_contatos_de_risco_c_jit(num_pop, pop_infectados, pop_posicoes)
+        = get_contatos_de_risco_c_jit(num_pop, pop_infectados, 
+                                      pop_suscetiveis, pop_posicoes)
 
     lambda_rate = np.random.rand(num_pop)
     
