@@ -300,14 +300,9 @@ def get_contatos_de_risco_c_jit(num_pop, pop_infectados, pop_posicoes):
 
     ret = []
     for i in range(num_pop):
-        f_kernel_i = [
-            f_kernel_jit(dist2_jit(pop_posicoes[j], pop_posicoes[i])) 
-            for j in range(num_pop)
-        ]
-
         produto = 0
         for j in range(num_pop):
-            produto += pop_infectados[j] * f_kernel_i[j]
+            produto += pop_infectados[j] * f_kernel_jit(dist2_jit(pop_posicoes[j], pop_posicoes[i])) 
 
         ret.append(produto)
     return np.array(ret)

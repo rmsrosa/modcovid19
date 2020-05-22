@@ -13252,7 +13252,22 @@ a.anchor-link {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Evolu&#231;&#227;o-de-cada-simula&#231;&#227;o">Evolu&#231;&#227;o de cada simula&#231;&#227;o<a class="anchor-link" href="#Evolu&#231;&#227;o-de-cada-simula&#231;&#227;o">&#182;</a></h3><p>Também usamos o decorador <code>@njit</code> no ciclo da simulação.</p>
+<h3 id="Evolu&#231;&#227;o-de-cada-simula&#231;&#227;o">Evolu&#231;&#227;o de cada simula&#231;&#227;o<a class="anchor-link" href="#Evolu&#231;&#227;o-de-cada-simula&#231;&#227;o">&#182;</a></h3><p>Também usamos o decorador <code>@njit</code> no ciclo da simulação, criando uma função <code>simulacao</code>.</p>
+<p>Para isso, mudamos, também, as linhas</p>
+<div class="highlight"><pre><span></span><span class="n">S</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">S</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">populacao</span><span class="o">==</span><span class="mi">1</span><span class="p">)])</span>
+<span class="n">I</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">I</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">populacao</span><span class="o">==</span><span class="mi">2</span><span class="p">)])</span>
+<span class="n">R</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">R</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">populacao</span><span class="o">==</span><span class="mi">3</span><span class="p">)])</span>
+</pre></div>
+<p>por</p>
+<div class="highlight"><pre><span></span><span class="n">S</span> <span class="o">=</span> <span class="n">hstack_jit</span><span class="p">(</span><span class="n">S</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">pop_estado</span><span class="o">==</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">I</span> <span class="o">=</span> <span class="n">hstack_jit</span><span class="p">(</span><span class="n">I</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">pop_estado</span><span class="o">==</span><span class="mi">2</span><span class="p">))</span>
+<span class="n">R</span> <span class="o">=</span> <span class="n">hstack_jit</span><span class="p">(</span><span class="n">R</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">pop_estado</span><span class="o">==</span><span class="mi">3</span><span class="p">))</span>
+</pre></div>
+<p>onde</p>
+<div class="highlight"><pre><span></span><span class="nd">@njit</span>
+<span class="k">def</span> <span class="nf">hstack_jit</span><span class="p">(</span><span class="n">vetor</span><span class="p">,</span> <span class="n">valor</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">vetor</span><span class="p">,</span> <span class="n">valor</span><span class="p">)</span>
+</pre></div>
 
 </div>
 </div>
@@ -13338,10 +13353,10 @@ a.anchor-link {
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>CPU times: user 2.34 s, sys: 33.2 ms, total: 2.38 s
-Wall time: 2.42 s
-CPU times: user 219 ms, sys: 1.27 ms, total: 221 ms
-Wall time: 221 ms
+<pre>CPU times: user 2 s, sys: 9.89 ms, total: 2.01 s
+Wall time: 2.01 s
+CPU times: user 106 ms, sys: 422 µs, total: 106 ms
+Wall time: 106 ms
 </pre>
 </div>
 </div>
@@ -13392,8 +13407,8 @@ Wall time: 221 ms
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>CPU times: user 1min 57s, sys: 1.05 s, total: 1min 58s
-Wall time: 2min 4s
+<pre>CPU times: user 1min 39s, sys: 364 ms, total: 1min 39s
+Wall time: 1min 40s
 </pre>
 </div>
 </div>
@@ -13424,8 +13439,8 @@ Wall time: 2min 4s
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>CPU times: user 16.6 s, sys: 184 ms, total: 16.7 s
-Wall time: 17.2 s
+<pre>CPU times: user 10.5 s, sys: 38.6 ms, total: 10.6 s
+Wall time: 10.6 s
 </pre>
 </div>
 </div>
@@ -13477,10 +13492,10 @@ Wall time: 17.2 s
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>CPU times: user 13.1 s, sys: 95 ms, total: 13.2 s
-Wall time: 13.4 s
-CPU times: user 5.22 s, sys: 20.9 ms, total: 5.24 s
-Wall time: 5.26 s
+<pre>CPU times: user 11.6 s, sys: 44.1 ms, total: 11.7 s
+Wall time: 11.7 s
+CPU times: user 3.24 s, sys: 16.8 ms, total: 3.26 s
+Wall time: 3.27 s
 </pre>
 </div>
 </div>
