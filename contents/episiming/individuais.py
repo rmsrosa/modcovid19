@@ -296,7 +296,7 @@ def f_kernel_jit(d):
     return 1.0/(1.0 + (d/1.0)**1.5)
 
 @njit
-def get_contatos_de_risco_c_jit(num_pop, pop_infectados, 
+def get_contatos_de_risco_c_jit_old(num_pop, pop_infectados, 
                                 pop_suscetiveis, pop_posicoes):
 
     ret = []
@@ -309,6 +309,20 @@ def get_contatos_de_risco_c_jit(num_pop, pop_infectados,
 
         ret.append(produto)
     return np.array(ret)
+
+@njit
+def get_contatos_de_risco_c_jit(num_pop, pop_infectados, 
+                                pop_suscetiveis, pop_posicoes):
+
+    ret = np.zeros(num_pop)
+    for j in range(num_pop):
+        produto = 0
+        if pop_infectados[j] == 1:
+            for i in range(num_pop):
+                if pop_suscetiveis[i] == 1:
+                    ret[i] += f_kernel_jit(dist2_jit(pop_posicoes[j], pop_posicoes[i])) 
+
+    return ret
 
 @njit
 def get_novos_infectados_jit(num_pop, sorteio, prob_nao_contagio):
