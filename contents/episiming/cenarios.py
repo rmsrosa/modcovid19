@@ -20,6 +20,156 @@ from episiming import redes, individuais
 def power_decay(a, b, x):
     return 1.0/(1.0 + (x/a)**b)
 
+def distribui_sobra_bloco(distrib_res_bloco, sobra, modo = 's'):
+    '''
+    Distribui a sobra de indivíduos por tamanho de residência.
+    
+    A sobra é distribuida seguinda uma ordem definida pelo argumento `modo`.
+    
+        Se `modo == 'c'` ("crescente"), a distribuição é do menor 
+        para o maior tamanho de residência.
+
+        Se `modo == 'd'` ("decrescente"), a distribuição é do maior 
+        para o menor tamanho de residência.
+        
+        Se `modo == 's'` ("sorteado"), a distribuição é em ordem aleatório.
+    '''
+    
+    if modo == 'c':
+        k_indices = range(1, len(distrib_res_bloco)+1)
+    elif modo == 'd':
+        k_indices = range(len(distrib_res_bloco), 0, -1)
+    else:
+        k_aux = list(range(1, len(distrib_res_bloco)+1))
+        np.random.shuffle(k_aux)
+        k_indices = iter(k_aux)
+
+    for k in k_indices:
+        if sobra >= k:
+            distrib_res_bloco[k-1] += 1
+            sobra -= k
+    distrib_pop_bloco = [distrib_res_bloco[k]*(k+1) 
+                        for k in range(len(distrib_res_bloco))]
+    if sobra > 0:
+        distrib_res_bloco, distrib_pop_bloco, sobra \
+            = distribui_sobra_bloco(distrib_res_bloco, sobra, modo)
+    return distrib_res_bloco, distrib_pop_bloco, sobra
+def distribui_residencias_bloco(num_pop_bloco, censo_residencial, modo = 's'):
+    '''
+    Distribui indivíduos por tamanho de residência, seguindo uma lista com o censo 
+    de distribuição dada.
+    
+    A sobra é distribuida seguinda uma ordem definida pelo argumento `modo`.
+    
+        Se `modo == 'c'` ("crescente"), a distribuição é do menor 
+        para o maior tamanho de residência.
+
+        Se `modo == 'd'` ("decrescente"), a distribuição é do maior 
+        para o menor tamanho de residência.
+        
+        Se `modo == 's'` ("sorteado"), a distribuição é em ordem aleatório.
+    '''
+    distrib_res_bloco = [int(num_pop_bloco*censo_residencial[k]/(k+1)) 
+                                      for k in range(len(censo_residencial))]
+    distrib_pop_bloco = [distrib_res_bloco[k]*(k+1) 
+                              for k in range(len(censo_residencial))]
+    total_bloco = sum(distrib_pop_bloco)
+    sobra = num_pop_bloco -  total_bloco
+    if sobra > 0:
+        distrib_res_bloco, distrib_pop_bloco, sobra \
+            = distribui_sobra_bloco(distrib_res_bloco, sobra, modo)
+    return distrib_res_bloco, distrib_pop_bloco, sobra
+
+def distribui_residencias_e_individuos(regiao, censo_residencial, modo = 's'):
+    N, M = regiao.shape
+    distrib_res_regiao = []
+    distrib_pop_regiao = []
+    for i in range(N):
+        aux_res = []
+        aux_pop = []
+        for j in range(M):
+            distrib_res_bloco, distrib_pop_bloco, sobra \
+                = distribui_residencias_bloco(regiao[i, j], censo_residencial, modo)
+            aux_res.append(distrib_res_bloco)
+            aux_pop.append(distrib_pop_bloco)
+            assert(sobra == 0), f'Não foi possível alocar toda a população do bloco ({i}, {j})'
+        distrib_res_regiao += aux_res
+        distrib_pop_regiao += aux_pop
+    return distrib_res_regiao, distrib_pop_regiao
+
+def aloca_residencias_bloco(distrib_res):
+    '''
+    Aloca as residências por tamanho e as posiciona relativamente ao bloco
+    '''
+    num_residencias = sum(distrib_res)
+    sorteio_lista = list(range(num_residencias**2))
+    np.random.shuffle(sorteio_lista) # embaralha "in place"
+    sorteio = sorteio_lista[:num_residencias]
+    pos_residencias = [( i // num_residencias / num_residencias + 1/2/num_residencias, 
+                         i % num_residencias / num_residencias + 1/2/num_residencias )
+                       for i in sorteio]
+    return pos_residencias
+
+def aloca_individuos_bloco(distrib_res, pos_residencias):
+    '''
+    Aloca e posiciona os indivíduos em residências
+    '''
+    num_residencias = sum(distrib_res)
+    pos_individuos = []
+    res_individuos = []
+    m = 0
+    n = 0
+    for k in range(len(distrib_res)):
+        for l in range(1, distrib_res[k]+1):
+            res_individuos_l = []
+            for i in range(k+1):
+                if k == 0:
+                    x = pos_residencias[m][0]
+                    y = pos_residencias[m][1]
+                else:
+                    x = pos_residencias[m][0] + np.cos(i*2*np.pi/(k+1))/3/num_residencias
+                    y = pos_residencias[m][1] + np.sin(i*2*np.pi/(k+1))/3/num_residencias
+                pos_individuos.append((x, y))
+                res_individuos_l.append(n)
+                n += 1
+            res_individuos.append(res_individuos_l)
+            m += 1
+    return pos_individuos, res_individuos
+
+def aloca_residencias_e_individuos(regiao, censo_residencial):
+     
+    distrib_res_regiao, distrib_pop_regiao \
+        = distribui_residencias_e_individuos(regiao, censo_residencial)
+
+    pos_residencias = []
+    pos_individuos = []
+    res_individuos = []
+    n = 0
+    M, N = regiao.shape
+    for i in range(N):
+        for j in range(M):
+            pos_residencias_bloco = aloca_residencias_bloco(distrib_res_regiao[i*M + j])
+
+            pos_individuos_bloco, res_individuos_bloco \
+                = aloca_individuos_bloco(distrib_res_regiao[i*M + j], pos_residencias_bloco)
+            
+            pos_residencias_translated \
+                = [(i + pos_residencias_bloco[k][0], j + pos_residencias_bloco[k][1])
+                   for k in range(len(pos_residencias_bloco))]
+            pos_individuos_translated \
+                = [(i + pos_individuos_bloco[k][0], j + pos_individuos_bloco[k][1])
+                   for k in range(len(pos_individuos_bloco))]
+            res_individuos_translated \
+                = [[n + l for l in r] for r in res_individuos_bloco]
+            
+            pos_individuos += pos_individuos_translated
+            pos_residencias += pos_residencias_translated
+            res_individuos += res_individuos_translated
+    
+            n += len(pos_individuos_bloco)
+    
+    return pos_residencias, pos_individuos, res_individuos
+
 class Cenario:
     def __init__(self, num_pop, num_infectados_0, beta, gamma):
         self.nome = 'Base'
@@ -400,7 +550,7 @@ class Pop350(Cenario):
 
     def cria_redes(self):
         self.cria_rede_residencial()
-        self.cria_rede_social()
+        self.cria_rede_empresas()
         self.redes = [self.G_r, self.G_s]
         self.redes_tx_transmissao= [self.pop_tx_transmissao_r, self.pop_tx_transmissao_s]
 
@@ -417,7 +567,7 @@ class Pop350(Cenario):
         )
         self.pop_fator_tx_transmissao_c = self.beta_c / aux
         
-class PopMulti350(Cenario):
+class Multi350(Cenario):
 
     def __init__(self, x_vezes, y_vezes, pop_vezes):
         self.nome = 'Pop Multi 350'
@@ -425,10 +575,37 @@ class PopMulti350(Cenario):
         self.inicializa_pop_estado()
         self.cria_redes()
 
+    @staticmethod
+    def multiplicador(h, v, lista = [], n = 0, f = None):
+        if not f:
+            f = lambda x: x/2
+    #        f = lambda x: x**(v/h)
+    #        f = lambda x: x**(0.85)
+    #        f = lambda x: max(x - 1, 1)
+        if n == 0:
+            n = h*v
+        if lista == []:
+            lista = [1 for j in range(h)]
+            n -= h
+        if n > 0:
+            v -= 1
+            hp = f(min(n,h))
+            hn = int(hp)
+            if hp > hn:
+                hn += 1
+            assert(0 < hp <= hn), 'A função de decaimento deve ser não-crescente e não-nula'
+            for j in range(hn):
+                if n > 0:
+                    lista[j] += 1
+                    n -= 1
+            if n > 0:
+                lista = Multi350.multiplicador(h, v, lista, n, f)            
+        return lista
+
     def define_parametros(self, x_vezes, y_vezes, pop_vezes):
 
         # posições
-        populacao_por_bloco = \
+        populacao_350_lista = \
             [
                 [16, 11, 0, 0,  0,  6,  4,  8,  8,  6],
                 [10, 12, 12, 6, 8, 9,  8,  6,  7,  5],
@@ -436,27 +613,31 @@ class PopMulti350(Cenario):
                 [0, 12, 10, 14, 11,  9,  0,  0,  5,  7],
                 [9, 11, 0, 12, 10,  7,  8,  7,  8, 0]
             ]
+
+        populacao_350 = np.array(populacao_350_lista)
         
         aux = []
-        for l in populacao_por_bloco:
+        for l in populacao_350_lista:
             aux.append( x_vezes * l )
-        self.populacao_por_area = pop_vezes * np.array( y_vezes * aux)
+            
+        self.populacao_por_bloco = pop_vezes * np.array( y_vezes * aux)
 
-        self.num_pop = self.populacao_por_area.sum()
+        self.num_pop = self.populacao_por_bloco.sum()
 
         self.pop_estado_0 = np.ones(self.num_pop)
 
-        np.random.seed(seed = 127)
-        self.attr_pos = dict()
-        k = 0
-        N, M = self.populacao_por_area.shape
-        for m in range(M):
-            for n in range(N):
-                for i in range(self.populacao_por_area[n,m]):
-                    self.attr_pos.update(
-                        {k: [m + np.random.rand(), N - n + np.random.rand()]})
-                    k += 1
-        self.pop_posicoes = np.array(list(self.attr_pos.values()))
+        censo_residencial \
+            = np.array([.21, .26, .20, .17, .08, .04, .02, 0.02])
+
+        self.pos_residencias, self.pos_individuos, self.res_individuos \
+            = aloca_residencias_e_individuos(
+                self.populacao_por_bloco, censo_residencial)
+
+        self.attr_pos \
+            = {j: self.pos_individuos[j] 
+               for j in range(self.num_pop)}
+
+        self.pop_posicoes = np.array(self.pos_individuos)
 
         # idades
         self.censo_fracoes = [0.15079769082144653, # 0 a 9 anos
@@ -472,18 +653,24 @@ class PopMulti350(Cenario):
         self.pop_idades = \
             np.random.choice(9, self.num_pop, p=self.censo_fracoes)
 
-        self.raio_residencial = 0.2
-
         self.alpha_r = 0.8
 
         zeta_idade = lambda x: power_decay(50.0, 2.0, abs(x-35))
 
-        self.distribuicao_social = [
+        distribuicao_social_350 = [
             10, 9, 9, 8, 8, 8, 7, 7, 7, 7, 6, 6, 6, 6, 6, 6, 6,
-            5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 4, 4, 4, 4, 4, 4, 4,
-            4, 4, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3
+            5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 4, 4, 4, 4, 4, 3, 3,
+            4, 4, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 2, 2, 1, 1, 1, 1, 1, 1
         ]
 
+        multiplic_distrib = self.multiplicador(x_vezes*y_vezes,pop_vezes)
+
+        self.distribuicao_social = []
+        for i in range(x_vezes*y_vezes):
+            for j in range(len(distribuicao_social_350)):
+                self.distribuicao_social \
+                    += [multiplic_distrib[i]*distribuicao_social_350[j]]
+        self.distribuicao_social.sort(reverse = True)
         
         self.rho_forma = 0.2 # shape factor of gamma distribution
         self.rho_escala = 5 # scale (mean value = scale * shape)
@@ -494,10 +681,10 @@ class PopMulti350(Cenario):
         self.b_kernel = 1.5
         self.f_kernel = partial(power_decay, self.a_kernel, self.b_kernel)
 
-        self.num_infectados_0 = 8
+        self.num_infectados_0 = int(0.01*self.num_pop)
 
         self.beta_r = 0.16
-        self.beta_s = 0.24
+        self.beta_e = 0.24
         self.beta_c = 0.04
         self.gamma = 0.1        
 
@@ -517,8 +704,13 @@ class PopMulti350(Cenario):
     def cria_rede_residencial(self):
 
         self.G_r = nx.random_geometric_graph(
-            self.num_pop, self.raio_residencial,
+            self.num_pop, 0,
             pos=self.attr_pos, seed=1327)
+
+        for individuos in self.res_individuos:
+            if len(individuos) > 1:
+                self.G_r.add_edges_from(
+                    [(i,j) for i in individuos for j in individuos])
 
         nx.set_node_attributes(
             self.G_r, 
@@ -554,10 +746,7 @@ class PopMulti350(Cenario):
 
         nx.set_edge_attributes(self.G_r, 1, 'weight')
 
-    def cria_rede_social(self):
-        self.G_s = nx.random_geometric_graph(self.num_pop, 0,
-                                             pos=self.attr_pos)
-        nx.set_node_attributes(self.G_s, self.attr_estado_0)
+    def cria_rede_empresas(self):
 
         random.seed(721)
         pop_index = list(range(self.num_pop))
@@ -571,31 +760,44 @@ class PopMulti350(Cenario):
             membros.update({j: individuos_aleatorios})
             conexoes = [(m,n) for m in individuos_aleatorios 
                         for n in individuos_aleatorios if m != n ]
-            self.G_s.add_edges_from(conexoes)
 
-        nx.set_edge_attributes(self.G_s, 1, 'weight')
+        self.G_e = nx.random_geometric_graph(
+            self.num_pop, 0, pos = self.attr_pos)
 
-        self.pop_tx_transmissao_s = \
-            np.array([self.beta_s / (1+self.G_s.degree(i)) 
-                      for i in self.G_s.nodes])
-        attr_transmissao_s = dict([(i, {'taxa de transmissao': self.
-                                        pop_tx_transmissao_s[i]}) 
-                                   for i in self.G_s.nodes])
+        nx.set_node_attributes(self.G_e, self.attr_estado_0)
 
-        nx.set_node_attributes(self.G_s, attr_transmissao_s)
+        for individuos_aleatorios in membros.values():
+            conexoes = [(m,n) for m in individuos_aleatorios 
+                        for n in individuos_aleatorios if m != n ]
+            self.G_e.add_edges_from(conexoes)
+
+        nx.set_edge_attributes(self.G_e, 1, 'weight')
+
+        self.pop_tx_transmissao_e = \
+            np.array([self.beta_e / (1+self.G_e.degree(i)) 
+                      for i in self.G_e.nodes])
+        attr_transmissao_e = dict([(i, {'taxa de transmissao': self.
+                                        pop_tx_transmissao_e[i]}) 
+                                   for i in self.G_e.nodes])
+
+        nx.set_node_attributes(self.G_e, attr_transmissao_e)
 
     def cria_redes(self):
         self.cria_rede_residencial()
-        self.cria_rede_social()
-        self.redes = [self.G_r, self.G_s]
-        self.redes_tx_transmissao= [self.pop_tx_transmissao_r, self.pop_tx_transmissao_s]
+        self.cria_rede_empresas()
+        self.redes = [self.G_r, self.G_e]
+        self.redes_tx_transmissao= [
+            self.pop_tx_transmissao_r, 
+            self.pop_tx_transmissao_e
+        ]
 
         aux = np.array(
             [
                 np.sum(
                     self.f_kernel(
                         np.linalg.norm(
-                            self.pop_posicoes - self.pop_posicoes[i], axis=1)
+                            self.pop_posicoes - self.pop_posicoes[i],
+                            axis=1)
                         )
                     ) 
                     for i in range(self.num_pop)
