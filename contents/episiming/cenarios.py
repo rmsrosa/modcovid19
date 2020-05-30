@@ -686,7 +686,7 @@ class Multi350(Cenario):
         self.beta_r = 0.16
         self.beta_e = 0.24
         self.beta_c = 0.04
-        self.gamma = 0.1        
+        self.gamma = 0.1
 
     def inicializa_pop_estado(self):
         np.random.seed(seed = 342)
@@ -701,6 +701,20 @@ class Multi350(Cenario):
         self.attr_estado_0 = dict([(i, {'estado': int(self.pop_estado_0[i])}) 
                                    for i in range(self.num_pop)])
 
+    def inicializa_infeccao(self, num_infectados_0,
+                            beta_r, beta_e, beta_c, gamma):
+
+        self.num_infectados_0 = num_infectados_0
+
+        self.inicializa_pop_estado()
+
+        self.beta_r = beta_r
+        self.beta_e = beta_e
+        self.beta_c = beta_c
+        self.gamma = gamma
+
+        self.atualiza_redes()
+
     def cria_rede_residencial(self):
 
         self.G_r = nx.random_geometric_graph(
@@ -712,11 +726,7 @@ class Multi350(Cenario):
                 self.G_r.add_edges_from(
                     [(i,j) for i in individuos for j in individuos])
 
-        nx.set_node_attributes(
-            self.G_r, 
-            dict([(i, {'estado': int(self.pop_estado_0[i])})
-                  for i in range(self.num_pop)])
-            )
+        nx.set_node_attributes(self.G_r, self.attr_estado_0)
 
         nx.set_node_attributes(
             self.G_r,
@@ -738,11 +748,13 @@ class Multi350(Cenario):
             dict([(i, {'taxa de transmissao': self.pop_tx_transmissao_r[i]}) 
                   for i in self.G_r.nodes])
 
-        nx.set_node_attributes(
-            self.G_r,
-            dict([(i, {'taxa de transmissao': self.pop_tx_transmissao_r[i]}) 
-                  for i in self.G_r.nodes])
-            )
+        nx.set_node_attributes(self.G_r, attr_transmissao_r)
+
+#        nx.set_node_attributes(
+#            self.G_r,
+#            dict([(i, {'taxa de transmissao': self.pop_tx_transmissao_r[i]}) 
+#                  for i in self.G_r.nodes])
+#            )
 
         nx.set_edge_attributes(self.G_r, 1, 'weight')
 
@@ -805,3 +817,29 @@ class Multi350(Cenario):
         )
         self.pop_fator_tx_transmissao_c = self.beta_c / aux
  
+    def atualiza_redes(self):
+
+        nx.set_node_attributes(self.G_r, self.attr_estado_0)
+
+        nx.set_node_attributes(self.G_e, self.attr_estado_0)
+
+        self.pop_tx_transmissao_r = np.array(
+            [self.beta_r / (1+self.G_r.degree(i))**self.alpha_r 
+            for i in self.G_r.nodes]
+            )
+        attr_transmissao_r = \
+            dict([(i, {'taxa de transmissao': self.pop_tx_transmissao_r[i]}) 
+                  for i in self.G_r.nodes])
+
+        nx.set_node_attributes(self.G_r, attr_transmissao_r)
+
+        self.pop_tx_transmissao_e = \
+            np.array([self.beta_e / (1+self.G_e.degree(i)) 
+                      for i in self.G_e.nodes])
+        attr_transmissao_e = dict([(i, {'taxa de transmissao': self.
+                                        pop_tx_transmissao_e[i]}) 
+                                   for i in self.G_e.nodes])
+
+        nx.set_node_attributes(self.G_e, attr_transmissao_e)
+
+        self.cria_redes()
