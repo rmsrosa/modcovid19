@@ -54,6 +54,7 @@ def distribui_sobra_bloco(distrib_res_bloco, sobra, modo = 's'):
         distrib_res_bloco, distrib_pop_bloco, sobra \
             = distribui_sobra_bloco(distrib_res_bloco, sobra, modo)
     return distrib_res_bloco, distrib_pop_bloco, sobra
+
 def distribui_residencias_bloco(num_pop_bloco, censo_residencial, modo = 's'):
     '''
     Distribui indivíduos por tamanho de residência, seguindo uma lista com o censo 
@@ -145,7 +146,7 @@ def aloca_residencias_e_individuos(regiao, censo_residencial):
     pos_individuos = []
     res_individuos = []
     n = 0
-    M, N = regiao.shape
+    N, M = regiao.shape
     for i in range(N):
         for j in range(M):
             pos_residencias_bloco = aloca_residencias_bloco(distrib_res_regiao[i*M + j])
@@ -154,10 +155,12 @@ def aloca_residencias_e_individuos(regiao, censo_residencial):
                 = aloca_individuos_bloco(distrib_res_regiao[i*M + j], pos_residencias_bloco)
             
             pos_residencias_translated \
-                = [(i + pos_residencias_bloco[k][0], j + pos_residencias_bloco[k][1])
+                = [(j + pos_residencias_bloco[k][0],
+                    N - 1 - i +  pos_residencias_bloco[k][1])
                    for k in range(len(pos_residencias_bloco))]
             pos_individuos_translated \
-                = [(i + pos_individuos_bloco[k][0], j + pos_individuos_bloco[k][1])
+                = [(j + pos_individuos_bloco[k][0],
+                    N - 1 - i + pos_individuos_bloco[k][1])
                    for k in range(len(pos_individuos_bloco))]
             res_individuos_translated \
                 = [[n + l for l in r] for r in res_individuos_bloco]
