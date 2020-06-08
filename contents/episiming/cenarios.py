@@ -24,7 +24,7 @@ def distribui_sobra_bloco(distrib_res_bloco, sobra, modo = 's'):
     '''
     Distribui a sobra de indivíduos por tamanho de residência.
     
-    A sobra é distribuida seguinda uma ordem definida pelo argumento `modo`.
+    A sobra é distribuida seguindo uma ordem definida pelo argumento `modo`.
     
         Se `modo == 'c'` ("crescente"), a distribuição é do menor 
         para o maior tamanho de residência.
@@ -32,7 +32,7 @@ def distribui_sobra_bloco(distrib_res_bloco, sobra, modo = 's'):
         Se `modo == 'd'` ("decrescente"), a distribuição é do maior 
         para o menor tamanho de residência.
         
-        Se `modo == 's'` ("sorteado"), a distribuição é em ordem aleatório.
+        Se `modo == 's'` ("sorteado"), a distribuição é em ordem aleatória.
     '''
     
     if modo == 'c':
@@ -57,10 +57,10 @@ def distribui_sobra_bloco(distrib_res_bloco, sobra, modo = 's'):
 
 def distribui_residencias_bloco(num_pop_bloco, censo_residencial, modo = 's'):
     '''
-    Distribui indivíduos por tamanho de residência, seguindo uma lista com o censo 
-    de distribuição dada.
+    Distribui indivíduos por tamanho de residência, seguindo uma lista 
+    com o censo de distribuição.
     
-    A sobra é distribuida seguinda uma ordem definida pelo argumento `modo`.
+    A sobra é distribuida seguindo uma ordem definida pelo argumento `modo`.
     
         Se `modo == 'c'` ("crescente"), a distribuição é do menor 
         para o maior tamanho de residência.
@@ -68,7 +68,7 @@ def distribui_residencias_bloco(num_pop_bloco, censo_residencial, modo = 's'):
         Se `modo == 'd'` ("decrescente"), a distribuição é do maior 
         para o menor tamanho de residência.
         
-        Se `modo == 's'` ("sorteado"), a distribuição é em ordem aleatório.
+        Se `modo == 's'` ("sorteado"), a distribuição é em ordem aleatória.
     '''
     distrib_res_bloco = [int(num_pop_bloco*censo_residencial[k]/(k+1)) 
                                       for k in range(len(censo_residencial))]
@@ -106,8 +106,10 @@ def aloca_residencias_bloco(distrib_res):
     sorteio_lista = list(range(num_residencias**2))
     np.random.shuffle(sorteio_lista) # embaralha "in place"
     sorteio = sorteio_lista[:num_residencias]
-    pos_residencias = [( i // num_residencias / num_residencias + 1/2/num_residencias, 
-                         i % num_residencias / num_residencias + 1/2/num_residencias )
+    pos_residencias = [( i // num_residencias / num_residencias \
+                             + 1/2/num_residencias, 
+                         i % num_residencias / num_residencias \
+                             + 1/2/num_residencias )
                        for i in sorteio]
     return pos_residencias
 
@@ -128,8 +130,10 @@ def aloca_individuos_bloco(distrib_res, pos_residencias):
                     x = pos_residencias[m][0]
                     y = pos_residencias[m][1]
                 else:
-                    x = pos_residencias[m][0] + np.cos(i*2*np.pi/(k+1))/3/num_residencias
-                    y = pos_residencias[m][1] + np.sin(i*2*np.pi/(k+1))/3/num_residencias
+                    x = pos_residencias[m][0] \
+                        + np.cos(i*2*np.pi/(k+1))/3/num_residencias
+                    y = pos_residencias[m][1] \
+                        + np.sin(i*2*np.pi/(k+1))/3/num_residencias
                 pos_individuos.append((x, y))
                 res_individuos_l.append(n)
                 n += 1
@@ -138,9 +142,51 @@ def aloca_individuos_bloco(distrib_res, pos_residencias):
     return pos_individuos, res_individuos
 
 def aloca_residencias_e_individuos(regiao, censo_residencial):
+    '''
+    Aloca as residências e os residentes de cada residência.
+
+    Lê a matriz `regiao` com a quantidade de indivíduos em cada "bloco"
+    e aloca as residências e os indivíduos nos respectivos blocos,
+    buscando ter uma distribuição de indivíduos por tamanho de residência
+    próxima a da indicada pela lista `censo_residencial`.
+
+    Entradas:
+    ---------
+        regiao: numpy.ndarray bidimensional
+            Uma matriz cujos coeficientes indicam o número de residentes
+            no bloco correspondente.
+
+        censo_residencial: list of floats
+            Uma lista onde cada elemento, digamos na posição k, é um 
+            float entre 0 e 1 indicando a fração da população em residências
+            com k+1 residentes.
+
+    Saídas:
+    -------
+        pos_residencias: list of tuples of two floats
+            Os elementos da lista são as coordenadas de cada residência.
+
+        pos_individuos: list of tuples of two floats
+            Os elementos da lista são as coordenadas de cada indivíduo.
+
+        res_individuos: list of lists of integers
+            Os elementos da lista são lista com os índices dos indivíduos
+            de cada residência.
+
+        pop_blocos_indices: list of integers
+            É uma lista de tamanho igual ao número de blocos. Cada 
+            elemento da lista indica o índice do primeiro indivíduo 
+            do bloco correspondente.
+    '''
      
     distrib_res_regiao, distrib_pop_regiao \
         = distribui_residencias_e_individuos(regiao, censo_residencial)
+
+    pop_blocos_indices = list()
+    soma = 0
+    for distrib in distrib_pop_regiao:
+        soma += sum(distrib)
+        pop_blocos_indices.append(soma)   
 
     pos_residencias = []
     pos_individuos = []
@@ -171,7 +217,7 @@ def aloca_residencias_e_individuos(regiao, censo_residencial):
     
             n += len(pos_individuos_bloco)
     
-    return pos_residencias, pos_individuos, res_individuos
+    return pos_residencias, pos_individuos, res_individuos, pop_blocos_indices
 
 class Cenario:
     def __init__(self, num_pop, num_infectados_0, beta, gamma):
@@ -619,6 +665,7 @@ class Multi350(Cenario):
 
         populacao_350 = np.array(populacao_350_lista)
         
+        # outra opção é usar np.tile pra replicar a população
         aux = []
         for l in populacao_350_lista:
             aux.append( x_vezes * l )
@@ -632,7 +679,8 @@ class Multi350(Cenario):
         censo_residencial \
             = np.array([.21, .26, .20, .17, .08, .04, .02, 0.02])
 
-        self.pos_residencias, self.pos_individuos, self.res_individuos \
+        self.pos_residencias, self.pos_individuos, \
+            self.res_individuos, self.pop_blocos_indices \
             = aloca_residencias_e_individuos(
                 self.populacao_por_bloco, censo_residencial)
 
