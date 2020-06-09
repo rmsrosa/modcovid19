@@ -219,7 +219,111 @@ def aloca_residencias_e_individuos(regiao, censo_residencial):
     
     return pos_residencias, pos_individuos, res_individuos, pop_blocos_indices
 
-def gera_idades(num_pop, num_tam_res, res_individuos,
+def obtem_idades_fracoes(idades_grupos, idades_fracoes_grupos, idade_max=100):
+
+    # interpola/extrapola pirâmide populacional
+    idades_fracoes = list()
+    for j in range(len(idades_grupos)-1):
+        idades_fracoes += (idades_grupos[j+1] - idades_grupos[j]) \
+            * [idades_fracoes_grupos[j]/(idades_grupos[j+1]-idades_grupos[j])]
+
+    idades_fracoes += (idade_max - idades_grupos[-1]) \
+            * [idades_fracoes_grupos[-1]/(idade_max-idades_grupos[-1])]
+
+    idades_fracoes = np.array(idades_fracoes)
+
+    return idades_fracoes
+
+def gera_idades(num_pop, num_tam_res, res_individuos, idades_fracoes):
+
+    # separa as residências por tamanho
+    res = (num_tam_res+1)*[[]]
+    for j in range(1,num_tam_res+1):
+        # seleciona residências com j indivíduos (res[0]=[])
+        res[j] = [r for r in res_individuos if len(r) == j]
+    # separa as residências com um adulto e um menor:
+    res_2b = random.sample(res[2], k=int(0.1*len(res[2])))
+    # separa as residências com dois adultos:
+    res_2a = [r for r in res[2] if r not in res_2b]
+    # agrega as residências com três ou mais indivíduos:
+    res_3mais = []
+    for res_k in res[3:]:
+        res_3mais += res_k
+
+    # separa a pirâmide populacional
+    idades = list(range(len(idades_fracoes)))
+
+    distrib_idades_adultos = num_pop*idades_fracoes
+    distrib_idades_adultos[:20] = 0
+
+    distrib_idades_menores = num_pop*idades_fracoes
+    distrib_idades_menores[20:] = 0
+
+    # inicializa lista de idades
+    pop_idades = np.zeros(num_pop).astype(int)
+
+    # define a idade dos adultos morando sozinhos
+    ind_idades = random.choices(idades, distrib_idades_adultos, k=len(res[1]))
+    for j in range(len(res[1])):
+        pop_idades[res[1][j]] = ind_idades[j]
+        distrib_idades_adultos[ind_idades[j]] -= 1
+
+    # define a idade do único adulto em residências com um adulto e um menor
+    ind_idades = random.choices(idades, distrib_idades_adultos, k=len(res_2b))
+    for j in range(len(res_2b)):
+        pop_idades[res_2b[j][0]] = ind_idades[j]
+        distrib_idades_adultos[ind_idades[j]] -= 1
+
+    # define a idade de dois adultos nas outras residências com dois 
+    # indivíduos
+    len_res_2a = len(res_2a)
+    ind_idades = random.choices(idades, distrib_idades_adultos,
+                                k=2*len_res_2a)
+    for j in range(len_res_2a):
+        pop_idades[res_2a[j][0]] = ind_idades[j]
+        pop_idades[res_2a[j][1]] = ind_idades[len_res_2a + j]
+        distrib_idades_adultos[ind_idades[j]] -= 1
+        distrib_idades_adultos[ind_idades[len_res_2a + j]] -= 1
+
+    # define a idade de dois adultos nas residências com três ou mais 
+    # indivíduos
+    len_res_3mais = len(res_3mais)
+    ind_idades = random.choices(idades, distrib_idades_adultos,
+                                k=2*len_res_3mais)
+    for j in range(len_res_3mais):
+        pop_idades[res_3mais[j][0]] = ind_idades[j]
+        pop_idades[res_3mais[j][1]] = ind_idades[len_res_3mais + j]
+        distrib_idades_adultos[ind_idades[j]] -= 1
+        distrib_idades_adultos[ind_idades[len_res_3mais + j]] -= 1
+
+    # define a idade dos menores de idade em residências com um adulto 
+    # e um menor
+    len_res_2b = len(res_2b)
+    ind_idades = random.choices(idades, distrib_idades_menores, k=len_res_2b)
+    for j in range(len_res_2b):
+        pop_idades[res_2b[j][1]] = ind_idades[j]
+        distrib_idades_menores[ind_idades[j]] -= 1
+    
+    # calcula a distribuição restante de idades
+    distrib_idades_left = np.array(
+        [distrib_idades_menores[j] + distrib_idades_adultos[j] 
+        for j in range(len(idades_fracoes))]
+        )
+
+    # define a idade do restante dos invidívuos em residências de três 
+    # ou mais indivíduos
+    for k in range(3,num_tam_res+1):
+        ind_idades = random.choices(idades, distrib_idades_left,
+                                    k=(k-2)*len(res[k]))
+        for j in range(len(res[k])):
+            for l in range(2, k):
+                pop_idades[res[k][j][l]] = ind_idades[(l-2)*len(res[k]) + j]
+                distrib_idades_left[ind_idades[(l-2)*len(res[k]) + j]] -= 1
+
+    return pop_idades
+
+
+def gera_idades_not_so_old(num_pop, num_tam_res, res_individuos,
                 idades_grupos, idades_fracoes_grupos, idade_max=100):
 
     # interpola/extrapola pirâmide populacional
@@ -409,6 +513,23 @@ def gera_idades_old(num_pop, res_individuos,
 
     return pop_idades
 
+def zipf3(a, c, k_max, k):
+    '''
+    retorna a fração de indivíduos em empresas de tamanho maior que k.
+    '''
+    return (((1.0 + k_max/a)/(1.0 + k/a))**c - 1)/((1 + k_max/a)**c - 1.0)
+
+def zipf3_sec(a, c, k_max, k0, k1):
+    '''
+    retorna a fração de individuos em empresas de tamanho maior ou igual a k0 e menor que k1.
+    '''
+    return zipf3(a, c, k_max, k0) - zipf3(a, c, k_max, k1)
+
+def zipf3e(a, c, k_max, k):
+    '''
+    retorna a fração de empresas de tamanho k.
+    '''
+    return zipf3_sec(a, c, k_max, k-1, k)/k
 class Cenario:
     def __init__(self, num_pop, num_infectados_0, beta, gamma):
         self.nome = 'Base'
