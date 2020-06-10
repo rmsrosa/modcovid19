@@ -513,23 +513,175 @@ def gera_idades_old(num_pop, res_individuos,
 
     return pop_idades
 
-def zipf3(a, c, k_max, k):
+def zipf3_acum(a, c, k_max, k):
     '''
     retorna a fração de indivíduos em empresas de tamanho maior que k.
     '''
     return (((1.0 + k_max/a)/(1.0 + k/a))**c - 1)/((1 + k_max/a)**c - 1.0)
 
-def zipf3_sec(a, c, k_max, k0, k1):
+def zipf3(a, c, k_max, k):
     '''
-    retorna a fração de individuos em empresas de tamanho maior ou igual a k0 e menor que k1.
+    retorna a fração de individuos em empresas de tamanho igual a k.
     '''
-    return zipf3(a, c, k_max, k0) - zipf3(a, c, k_max, k1)
+    return zipf3_acum(a, c, k_max, k-1) - zipf3_acum(a, c, k_max, k)
 
 def zipf3e(a, c, k_max, k):
     '''
-    retorna a fração de empresas de tamanho k.
+    retorna a fração de empresas de tamanho igual a k.
     '''
-    return zipf3_sec(a, c, k_max, k-1, k)/k
+    return zipf3(a, c, k_max, k)/k
+
+def quantifica_empresas_por_tamanho(num_pop, num_pea, tam_min, tam_max,
+                                    z3_a, z3_c, verbose=False):
+
+    emp_tam_z3 = np.arange(tam_min, 2*tam_max)
+    emp_num_z3 = (num_pea*zipf3e(z3_a, z3_c, 2*tam_max, emp_tam_z3)).astype(int)
+    emp_num_z3 = emp_num_z3[emp_num_z3>0]
+    emp_tam_z3 = np.array(list(range(tam_min, tam_min + len(emp_num_z3))))
+    emp_pop_z3 = np.array([(tam_min + k)*emp_num_z3[k] for k in range(len(emp_num_z3))])
+
+    if not len(emp_tam_z3):
+        print('Não foi possível distribuir as empresas, tente com outros parâmetros')
+    elif verbose:
+        print(f'Total da população: {num_pop}')
+        print(f'Total da força de trabalho (PEA): {num_pea}')
+        print(f'Número de tamanhos de empresas: {len(emp_num_z3)}')
+        print(f'Número de empresas: {emp_num_z3.sum()}')
+        print(f'Tamanhos de empresas: de {emp_tam_z3.min()} a {emp_tam_z3.max()}')
+        print(f'Número de indivíduos nas empresas (PEA ocupados): {emp_pop_z3.sum()}')
+        print(f'Média de indivíduos por empresa: {emp_pop_z3.sum()/emp_num_z3.sum()}')
+        print('Porcentagem de indivíduos da força de trabalho nas empresas: '
+              + f'{100*emp_pop_z3.sum()/num_pea:.1f}%')
+        print(f'Distribuição do número de empresas por tamanho: \n{emp_num_z3}')
+        print(f'Distribuição do número de indivíduos por tamanho de empresa: \n{emp_pop_z3}')
+    
+    return emp_tam_z3, emp_num_z3, emp_pop_z3
+
+def aloca_empresas(pop_por_bloco, emp_num_z3, tam_min):
+    pop_por_bloco_flat = pop_por_bloco.flatten()
+    emp_loc = random.choices(list(range(len(pop_por_bloco_flat))),
+                             pop_por_bloco_flat, k=emp_num_z3.sum())
+
+    emp_por_bloco = np.zeros_like(pop_por_bloco)
+
+    emp_bloco_pos = list()
+    emp_tam = list()
+    k_nivel = 0
+    for k in range(len(emp_loc)):
+        if k >= emp_num_z3[:k_nivel+1].sum():
+            k_nivel += 1
+        emp_tam.append(tam_min + k_nivel)
+        loc = emp_loc[k]
+        emp_bloco_pos.append((loc // 83, loc % 83))
+        emp_por_bloco[loc // 83, loc % 83] += 1
+
+    return emp_bloco_pos, emp_por_bloco, emp_tam
+
+def aloca_emp_membros_blocos(pop_por_bloco, emp_por_bloco, emp_bloco_pos, 
+                             tam_min, emp_num_z3, a_dist, c_dist):
+    '''
+    Aloca os blocos de localização para cada indivíduo de cada empresa.
+    '''
+    i = np.arange(0.5, 0.5 + emp_por_bloco.shape[0])
+    j = np.arange(0.5, 0.5 + emp_por_bloco.shape[1])
+    jj, ii = np.meshgrid(j,i)
+
+    emp_membros_blocos = list()
+
+    for k in range(len(emp_num_z3)):
+        for j in range(emp_num_z3[k]):
+            dist =  np.sqrt((jj - emp_bloco_pos[k+j][1])**2 
+                            + (ii - emp_bloco_pos[k+j][0])**2)
+#            k_dist = f_dist(dist)*pop_por_bloco
+            k_dist = power_decay(a_dist, c_dist, dist)*pop_por_bloco
+            emp_membros_blocos.append(
+                random.choices(
+                    list(range(emp_por_bloco.shape[0]*emp_por_bloco.shape[1])),
+                    k_dist.flatten(),
+                    k = tam_min + k
+                )
+            )
+
+    return emp_membros_blocos
+
+def aloca_emp_individuos(num_pop, pop_idades, pop_blocos_indices, 
+                         pea_fracoes, emp_pop_z3, emp_tam,
+                         emp_membros_blocos):
+    '''
+    Aloca os indivíduos em cada empresa.
+    '''
+    
+    indices = np.arange(num_pop)
+#    indices = np.array(range(num_pop))
+    pop_pia_indices = indices[pop_idades >= 16]    
+    
+    # Define os pesos de cada individuo segundo a sua idade e os pesos para cada idade
+    pesos = pea_fracoes[pop_idades[pop_pia_indices]]
+    pesos /= pesos.sum() # probabities must add up to 1
+    pop_pia_livres = np.random.choice(pop_pia_indices,
+                                      size=emp_pop_z3.sum(),
+                                      replace=False,
+                                      p=pesos)
+    
+    # Escolhe aleatoriamete um indivíduo em cada bloco alocado
+    emp_membros = list()
+
+    for j in range(len(emp_tam)):
+        membros_j = list()
+        for l in emp_membros_blocos[j]:
+            aux = pop_pia_livres[pop_pia_livres >= pop_blocos_indices[l]]
+            candidatos = aux[aux < pop_blocos_indices[l+1]]
+            if len(candidatos):
+                individuo = random.choice(candidatos)
+                membros_j.append(individuo)
+                pop_pia_livres = pop_pia_livres[pop_pia_livres != individuo]
+        emp_membros.append(membros_j)
+
+    # Alguns blocos podem não ter mais indivíduos economicamente 
+    # ativos disponíveis, então completamos com indivíduos 
+    # de outros blocos quaisquer, 
+    # portanto, sem peso segundo a distância.
+    for j in range(len(emp_tam)):
+        faltam = emp_tam[j] - len(emp_membros[j])
+        if faltam > 0:
+            membros_j = list(np.random.choice(pop_pia_livres, size=faltam,
+                                              replace=False))
+            emp_membros[j] += membros_j
+            for individuo in membros_j:
+                pop_pia_livres = pop_pia_livres[pop_pia_livres != individuo]
+    
+    return emp_membros
+
+def gera_empresas(pop_por_bloco, pop_idades, pop_blocos_indices,
+                  num_pea, pea_fracoes, 
+                  tam_min, tam_max, z3_a, z3_c, a_dist, c_dist):
+    '''
+    Gera as empresas, com as suas localizações e os seus indivíduos.
+    '''
+
+    num_pop = len(pop_idades)
+
+    emp_tam_z3, emp_num_z3, emp_pop_z3 \
+        = quantifica_empresas_por_tamanho(num_pop, num_pea,
+                                          tam_min, tam_max,
+                                          z3_a, z3_c)
+
+    emp_bloco_pos, emp_por_bloco, emp_tam \
+        = aloca_empresas(pop_por_bloco, emp_num_z3, tam_min)
+
+    emp_membros_blocos \
+        = aloca_emp_membros_blocos(pop_por_bloco, emp_por_bloco,
+                                   emp_bloco_pos, tam_min, emp_num_z3,
+                                   a_dist, c_dist)
+
+    emp_membros = aloca_emp_individuos(num_pop, pop_idades,
+                                       pop_blocos_indices,
+                                       pea_fracoes,
+                                       emp_pop_z3, emp_tam,
+                                       emp_membros_blocos)
+
+    return emp_bloco_pos, emp_por_bloco, emp_tam, emp_membros
+
 class Cenario:
     def __init__(self, num_pop, num_infectados_0, beta, gamma):
         self.nome = 'Base'
