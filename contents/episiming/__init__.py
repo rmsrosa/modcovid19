@@ -12,7 +12,7 @@ seres humanos.
 'EpiSiming' simula pequenos (ou grandes...) ajustes causados por epidemias. :(
 """
 
-from . import cenarios, redes, compartimentais, individuais
+from . import cenarios, redes, compartimentais, individuais, rede_escolar
 
 #__all__ = [cenarios, redes, compartimentais, individuais]
 

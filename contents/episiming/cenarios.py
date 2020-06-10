@@ -321,7 +321,6 @@ def gera_idades(num_pop, num_tam_res, res_individuos, idades_fracoes):
                 distrib_idades_left[ind_idades[(l-2)*len(res[k]) + j]] -= 1
 
     return pop_idades
-
 def zipf3_acum(a, c, k_max, k):
     '''
     retorna a fração de indivíduos em empresas de tamanho maior que k.
