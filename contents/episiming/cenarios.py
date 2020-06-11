@@ -1461,7 +1461,7 @@ class RiodeJaneiro(Cenario):
         self.pop_tx_transmissao_emp = \
             np.array([self.beta_emp / (1+self.G_emp.degree(i)) 
                       for i in self.G_emp.nodes])
-        attr_transmissao_esc = dict([(i, {'taxa de transmissao': self.
+        attr_transmissao_emp = dict([(i, {'taxa de transmissao': self.
                                         pop_tx_transmissao_emp[i]}) 
                                    for i in self.G_emp.nodes])
 
