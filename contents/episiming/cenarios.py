@@ -11,11 +11,11 @@ from functools import partial
 import random
 
 import numpy as np
-from scipy.integrate import solve_ivp
+import pandas as pd
 
 import networkx as nx
 
-from episiming import redes, individuais
+from episiming import redes, individuais, rede_escolar
 
 def power_decay(a, b, x):
     return 1.0/(1.0 + (x/a)**b)
@@ -870,9 +870,10 @@ class Pop350(Cenario):
 
     def cria_redes(self):
         self.cria_rede_residencial()
-        self.cria_rede_empresas()
+        self.cria_rede_social()
         self.redes = [self.G_r, self.G_s]
-        self.redes_tx_transmissao= [self.pop_tx_transmissao_r, self.pop_tx_transmissao_s]
+        self.redes_tx_transmissao \
+            = [self.pop_tx_transmissao_r, self.pop_tx_transmissao_s]
 
         aux = np.array(
             [
@@ -902,6 +903,7 @@ class Multi350(Cenario):
     #        f = lambda x: x**(v/h)
     #        f = lambda x: x**(0.85)
     #        f = lambda x: max(x - 1, 1)
+
         if n == 0:
             n = h*v
         if lista == []:
@@ -1080,7 +1082,7 @@ class Multi350(Cenario):
 
         nx.set_edge_attributes(self.G_r, 1, 'weight')
 
-    def cria_rede_empresas(self):
+    def cria_rede_empresarial(self):
 
         random.seed(721)
         pop_index = list(range(self.num_pop))
@@ -1118,7 +1120,7 @@ class Multi350(Cenario):
 
     def cria_redes(self):
         self.cria_rede_residencial()
-        self.cria_rede_empresas()
+        self.cria_rede_empresarial()
         self.redes = [self.G_r, self.G_e]
         self.redes_tx_transmissao= [
             self.pop_tx_transmissao_r, 
@@ -1163,5 +1165,306 @@ class Multi350(Cenario):
                                    for i in self.G_e.nodes])
 
         nx.set_node_attributes(self.G_e, attr_transmissao_e)
+
+        self.cria_redes()
+
+class RiodeJaneiro(Cenario):
+
+    def __init__(self, tx_reducao):
+        self.nome = 'Rio de Janeiro'
+        self.define_parametros(tx_reducao)
+        self.inicializa_pop_estado()
+        self.cria_redes()
+
+    def define_parametros(self, tx_reducao):
+
+        # posições dos indivíduos e de suas residências
+        landscan_rio \
+            = np.load('../input/dados_rio/landscan_rio.npy').astype(int)
+        landscan_rio = np.maximum(landscan_rio, 0)
+        
+        self.pop_por_bloco = (landscan_rio/tx_reducao).astype(int)
+
+        self.num_pop = self.pop_por_bloco.sum()
+
+        self.pop_estado_0 = np.ones(self.num_pop)
+
+        censo_residencial \
+            = np.array([.21, .26, .20, .17, .08, .04, .02, 0.02])
+
+        num_tam_res = len(censo_residencial) # tamanho máximo
+
+        self.pos_residencias, self.pos_individuos, \
+            self.res_individuos, self.pop_blocos_indices \
+            = aloca_residencias_e_individuos(
+                self.pop_por_bloco, censo_residencial)
+
+        self.attr_pos = {j: self.pos_individuos[j] 
+                         for j in range(self.num_pop)}
+
+        self.pop_posicoes = np.array(self.pos_individuos)
+
+        # idades
+        piramide_etaria \
+            = pd.read_csv('../input/dados_rio/piramide_etaria_MRJ.csv')
+
+        idades_grupos = np.array([int(p[0:3]) 
+                                  for p in piramide_etaria.columns[1:]])
+
+        idades_fracoes_grupos \
+            = piramide_etaria.iloc[0][1:].values/piramide_etaria.iloc[0][0]
+
+        self.idade_max = 101
+
+        self.idades_fracoes = obtem_idades_fracoes(
+            idades_grupos, idades_fracoes_grupos, self.idade_max)
+
+        self.pop_idades = gera_idades(
+            self.num_pop, num_tam_res,
+            self.res_individuos, self.idades_fracoes)
+
+        # Dados para a rede escolar
+        self.escolas_municipais \
+            = np.load('../input/dados_rio/municipais.npy').astype(int)
+
+        esc_escolha, self.dist_escolas \
+            = rede_escolar.distribui_escolas(
+                tx_reducao, self.escolas_municipais)        
+
+        dist_idades_na_escola = rede_escolar.distribuicao_idade(
+            self.num_pop, censo_residencial, self.res_individuos,
+            self.pop_idades, piramide_etaria, idades_grupos,
+            idades_fracoes_grupos, self.idade_max)
+
+        self.alunos = rede_escolar.escolhe_alunos_idade(self.pop_idades,
+                                                   dist_idades_na_escola)
+        
+        self.escolas = rede_escolar.aloca_alunos(self.alunos,
+                                                 esc_escolha,
+                                                 self.pos_individuos)
+
+        # Dados para as empresas
+
+        num_pea_2010 = np.array([0, 902115, 1448515, 495289, 241619])
+        pea_fracao = 0.4885
+        num_pea = int(pea_fracao * self.num_pop)
+        pea_idades_faixas = np.array([0, 16, 30, 50, 60])
+        pea_fracoes_faixas = num_pea_2010/num_pea_2010.sum()
+
+        pea_fracoes = obtem_idades_fracoes(pea_idades_faixas,
+                                           pea_fracoes_faixas,
+                                           self.idade_max)
+        
+        tam_min = 3
+        tam_max = 500
+        z3_a = 4.5
+        z3_c = 1.1
+        a_dist = 3
+        c_dist = 4
+
+        self.emp_bloco_pos, self.emp_por_bloco, self.emp_tam, self.emp_membros \
+            = gera_empresas(self.pop_por_bloco, self.pop_idades,
+                            self.pop_blocos_indices, num_pea, pea_fracoes,
+                            tam_min, tam_max, z3_a, z3_c, a_dist, c_dist)
+
+        # Parâmetros para a infeção
+
+        self.alpha_r = 0.8
+
+        zeta_idade = lambda x: power_decay(50.0, 2.0, abs(x-35))
+
+        self.rho_forma = 0.2 # shape factor of gamma distribution
+        self.rho_escala = 5 # scale (mean value = scale * shape)
+        self.pop_rho = np.random.gamma(self.rho_forma, self.rho_escala,
+                                       self.num_pop) 
+
+        self.a_kernel = 1.0
+        self.b_kernel = 1.5
+        self.f_kernel = partial(power_decay, self.a_kernel, self.b_kernel)
+
+        self.num_infectados_0 = int(0.01*self.num_pop)
+
+        self.beta_r = 0.16
+        self.beta_esc = 0.48
+        self.beta_emp = 0.24
+        self.beta_c = 0.04
+        self.gamma = 0.1
+
+    def inicializa_pop_estado(self):
+        #self.pop_estado_0 = np.ones(num_pop, dtype=np.uint8)
+        self.pop_estado_0 = np.ones(self.num_pop)
+        infectados_0 = np.random.choice(self.num_pop,
+                                        self.num_infectados_0, 
+                                        replace=False)
+        #self.pop_estado_0[infectados_0] = \
+        #    2*np.ones(num_infectados_0, dtype=np.uint8)
+        self.pop_estado_0[infectados_0] = 2*np.ones(self.num_infectados_0)
+        self.attr_estado_0 = dict([(i, {'estado': int(self.pop_estado_0[i])}) 
+                                   for i in range(self.num_pop)])
+
+    def inicializa_infeccao(self, num_infectados_0,
+                            beta_r, beta_esc, beta_emp, beta_c, gamma):
+
+        self.num_infectados_0 = num_infectados_0
+
+        self.inicializa_pop_estado()
+
+        self.beta_r = beta_r
+        self.beta_esc = beta_esc
+        self.beta_emp = beta_emp
+        self.beta_c = beta_c
+        self.gamma = gamma
+
+        self.atualiza_redes()
+
+    def cria_rede_residencial(self):
+
+        self.G_r = nx.random_geometric_graph(
+            self.num_pop, 0,
+            pos=self.attr_pos)
+
+        for individuos in self.res_individuos:
+            if len(individuos) > 1:
+                self.G_r.add_edges_from(
+                    [(i,j) for i in individuos for j in individuos])
+
+        nx.set_node_attributes(self.G_r, self.attr_estado_0)
+
+        nx.set_node_attributes(
+            self.G_r,
+            dict([(i, {'faixa etária': self.pop_idades[i]})
+                  for i in range(self.num_pop)])
+            )
+
+        nx.set_node_attributes(
+            self.G_r,
+            dict([(i, {'rho': self.pop_rho[i]}) 
+                  for i in range(self.num_pop)])
+            )
+
+        self.pop_tx_transmissao_r = np.array(
+            [self.beta_r / (1+self.G_r.degree(i))**self.alpha_r 
+            for i in self.G_r.nodes]
+            )
+        attr_transmissao_r = \
+            dict([(i, {'taxa de transmissao': self.pop_tx_transmissao_r[i]}) 
+                  for i in self.G_r.nodes])
+
+        nx.set_node_attributes(self.G_r, attr_transmissao_r)
+
+        nx.set_edge_attributes(self.G_r, 1, 'weight')
+
+    def cria_rede_escolar(self):
+
+        self.G_esc = nx.random_geometric_graph(self.num_pop, 0,
+                                               pos=self.attr_pos)
+
+        for escola in self.escolas:
+            if len(escola) > 1:
+                self.G_esc.add_edges_from(
+                    [(i,j) for i in escola for j in escola if i < j]
+                )
+
+
+        nx.set_node_attributes(self.G_esc, self.attr_estado_0)
+
+        nx.set_edge_attributes(self.G_esc, 1, 'weight')
+
+        self.pop_tx_transmissao_esc = \
+            np.array([self.beta_esc / (1+self.G_esc.degree(i)) 
+                      for i in self.G_esc.nodes])
+
+        attr_transmissao_esc = dict([(i, {'taxa de transmissao': self.
+                                        pop_tx_transmissao_esc[i]}) 
+                                   for i in self.G_esc.nodes])
+
+        nx.set_node_attributes(self.G_esc, attr_transmissao_esc)
+
+    def cria_rede_empresarial(self):
+
+        self.G_emp = nx.random_geometric_graph(
+            self.num_pop, 0, pos = self.attr_pos)
+
+        nx.set_node_attributes(self.G_emp, self.attr_estado_0)
+
+        for membros in self.emp_membros:
+            if len(membros) > 1:
+                self.G_emp.add_edges_from(
+                    [(i,j) for i in membros for j in membros if i < j])
+
+
+        nx.set_edge_attributes(self.G_emp, 1, 'weight')
+
+        self.pop_tx_transmissao_emp = \
+            np.array([self.beta_emp / (1+self.G_emp.degree(i)) 
+                      for i in self.G_emp.nodes])
+        attr_transmissao_emp \
+            = dict([(i, 
+                     {'taxa de transmissao': self.pop_tx_transmissao_emp[i]}
+                    ) 
+                    for i in self.G_emp.nodes])
+
+        nx.set_node_attributes(self.G_emp, attr_transmissao_emp)
+
+    def cria_redes(self):
+        self.cria_rede_residencial()
+        self.cria_rede_escolar()
+        self.cria_rede_empresarial()
+        self.redes = [self.G_r, self.G_esc, self.G_emp]
+        self.redes_tx_transmissao= [
+            self.pop_tx_transmissao_r, 
+            self.pop_tx_transmissao_esc,
+            self.pop_tx_transmissao_emp
+        ]
+
+        aux = np.array(
+            [
+                np.sum(
+                    self.f_kernel(
+                        np.linalg.norm(
+                            self.pop_posicoes - self.pop_posicoes[i],
+                            axis=1)
+                        )
+                    ) 
+                    for i in range(self.num_pop)
+            ]
+        )
+        self.pop_fator_tx_transmissao_c = self.beta_c / aux
+ 
+    def atualiza_redes(self):
+
+        nx.set_node_attributes(self.G_r, self.attr_estado_0)
+
+        nx.set_node_attributes(self.G_esc, self.attr_estado_0)
+
+        nx.set_node_attributes(self.G_emp, self.attr_estado_0)
+
+        self.pop_tx_transmissao_r = np.array(
+            [self.beta_r / (1+self.G_r.degree(i))**self.alpha_r 
+            for i in self.G_r.nodes]
+            )
+        attr_transmissao_r = \
+            dict([(i, {'taxa de transmissao': self.pop_tx_transmissao_r[i]}) 
+                  for i in self.G_r.nodes])
+
+        nx.set_node_attributes(self.G_r, attr_transmissao_r)
+
+        self.pop_tx_transmissao_esc = \
+            np.array([self.beta_esc / (1+self.G_esc.degree(i)) 
+                      for i in self.G_esc.nodes])
+        attr_transmissao_esc = dict([(i, {'taxa de transmissao': self.
+                                        pop_tx_transmissao_esc[i]}) 
+                                   for i in self.G_esc.nodes])
+
+        nx.set_node_attributes(self.G_esc, attr_transmissao_esc)
+
+        self.pop_tx_transmissao_emp = \
+            np.array([self.beta_emp / (1+self.G_emp.degree(i)) 
+                      for i in self.G_emp.nodes])
+        attr_transmissao_esc = dict([(i, {'taxa de transmissao': self.
+                                        pop_tx_transmissao_emp[i]}) 
+                                   for i in self.G_emp.nodes])
+
+        nx.set_node_attributes(self.G_emp, attr_transmissao_emp)
 
         self.cria_redes()
