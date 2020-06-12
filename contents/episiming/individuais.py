@@ -246,12 +246,18 @@ def evolucao_vetorial(pop_estado_0, pop_posicoes, redes, redes_tx_transmissao,
         plt.plot(tempos, R_medio, '-', color='tab:blue', label='recuperados')
         plt.plot(tempos, num_pop - S_medio, '-', color='tab:gray', label='inf.+ rec.')
         
+    if num_sim == 1:
+        num_sim_txt = 'uma simulação'
+    else:
+        num_sim_txt = f'{num_sim} simulações'
+
     if show == 'nuvem':
-        plt.title('Evolução do conjunto de simulações e da média', fontsize=16)
+        plt.title(f'Evolução do conjunto e da média de {num_sim_txt}', fontsize=16)
     elif show == 'sd':
-        plt.title('Evolução da média, com o desvio padrão', fontsize=16)
+        plt.title(f'Evolução da média e do desvio padrão de {num_sim_txt}',
+        fontsize=16)
     elif show == 'media':
-        plt.title('Evolução da média das simulações', fontsize=16)
+        plt.title(f'Evolução da média de {num_sim_txt}', fontsize=16)
         
     # informações para o gráfico
     if show:
@@ -565,12 +571,18 @@ def evolucao_vetorial_jit(pop_estado_0, pop_posicoes, redes,
         plt.plot(tempos, R_medio, '-', color='tab:blue', label='recuperados')
         plt.plot(tempos, num_pop - S_medio, '-', color='tab:gray', label='inf.+ rec.')
         
+    if num_sim == 1:
+        num_sim_txt = 'uma simulação'
+    else:
+        num_sim_txt = f'{num_sim} simulações'
+
     if show == 'nuvem':
-        plt.title('Evolução do conjunto de simulações e da média', fontsize=16)
+        plt.title(f'Evolução do conjunto e da média de {num_sim_txt}', fontsize=16)
     elif show == 'sd':
-        plt.title('Evolução da média, com o desvio padrão', fontsize=16)
+        plt.title(f'Evolução da média e do desvio padrão de {num_sim_txt}',
+        fontsize=16)
     elif show == 'media':
-        plt.title('Evolução da média das simulações', fontsize=16)
+        plt.title(f'Evolução da média de {num_sim_txt}', fontsize=16)
 
         
     # informações para o gráfico
@@ -801,12 +813,18 @@ def evolucao_matricial(pop_0, G, gamma, tempos, num_sim, show=''):
         plt.plot(tempos, R_medio, '-', color='tab:blue', label='recuperados')
         plt.plot(tempos, num_pop - S_medio, '-', color='tab:gray', label='inf.+ rec.')
         
+    if num_sim == 1:
+        num_sim_txt = 'uma simulação'
+    else:
+        num_sim_txt = f'{num_sim} simulações'
+
     if show == 'nuvem':
-        plt.title('Evolução do conjunto de simulações e da média', fontsize=16)
+        plt.title(f'Evolução do conjunto e da média de {num_sim_txt}', fontsize=16)
     elif show == 'sd':
-        plt.title('Evolução da média, com o desvio padrão', fontsize=16)
+        plt.title(f'Evolução da média e do desvio padrão de {num_sim_txt}',
+        fontsize=16)
     elif show == 'media':
-        plt.title('Evolução da média das simulações', fontsize=16)
+        plt.title(f'Evolução da média de {num_sim_txt}', fontsize=16)
 
         
     # informações para o gráfico
