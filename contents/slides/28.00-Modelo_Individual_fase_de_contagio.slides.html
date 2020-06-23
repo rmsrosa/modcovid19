@@ -14119,7 +14119,10 @@ $$<ul>
 <h3 id="Dimensionalidade">Dimensionalidade<a class="anchor-link" href="#Dimensionalidade">&#182;</a></h3><ul>
 <li><p>Alguns problemas:</p>
 <ul>
-<li>As funções exponenciais e logarítmicas, assim como as funções trigonométricas, não "aceitam" bem quantidades dimensionais. É mais seguro adimensionalizá-las antes. De fato, por exemplo, se $q_1$ e $q_2$ são duas quantidades dimensionais com a mesma dimensão $Q$, ao considerarmos $\ln q_1$ e $\ln q_2$, teríamos, por um lado, $\ln q_1$ e $\ln q_2$ com dimensão $\ln Q$, mas, por outro lado, $\ln q_1 - \ln q_2 = \ln(q_1/q_2)$ seria adimensional. Inconsistências semelhantes aparecem nas outras funções mencionadas acima. </li>
+<li><p>Funções trancendentais, como exponenciais e logaritmos, assim como as funções trigonométricas, não devem ser aplicadas diretamente a quantidades dimensionais. Devemos adimensionalizá-las antes.</p>
+</li>
+<li><p>De fato, por exemplo, se $q_1$ e $q_2$ são duas quantidades dimensionais com a mesma dimensão $Q$, ao considerarmos $\ln q_1$ e $\ln q_2$, teríamos, por um lado, $\ln q_1$ e $\ln q_2$ com dimensão $\ln Q$, mas, por outro lado, $\ln q_1 - \ln q_2 = \ln(q_1/q_2)$ seria adimensional. Inconsistências semelhantes aparecem nas outras funções mencionadas acima.</p>
+</li>
 <li>Por outro lado, para que a dimensão física do numerador do termo da exponencial tenha sentido, é preciso que 
 $$ \left[ \delta \right] = \ln \textrm{(tempo)} \quad \text{ e } \left[ \eta \right] = \ln \textrm{(tempo)}.
 $$</li>
@@ -14127,6 +14130,7 @@ $$</li>
 $$ \left[ \kappa \right] = \frac{1}{\textrm{(tempo)} \ln \textrm{(tempo)}}.
 $$</li>
 <li>Mas para que a força de infecção tenha dimensão de $1/\textrm{tempo}$ e para que o tempo de geração seja adimensional, é preciso que $\kappa=\kappa(T; \delta, \eta)$ seja adimensional.</li>
+<li>Sobre formulações matemáticas para se trabalhar com quantidades dimensionais <a href="https://terrytao.wordpress.com/2012/12/29/a-mathematical-formalisation-of-dimensional-analysis/">Terry Tao's A mathematical formalisation of dimensional analysis</a>, <a href="https://arxiv.org/abs/1408.5024">Dan Jonsson's Quantities, dimensions, and Dimensional analysis</a></li>
 </ul>
 </li>
 </ul>
