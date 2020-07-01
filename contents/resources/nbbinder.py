@@ -403,7 +403,9 @@ def get_contents(path_to_notes: str = None,
         The table of contents.
     """
 
-    contents = TOC_MARKER + "\n## [" + toc_title + "](#)\n\n"
+    contents = TOC_MARKER + "\n"
+    if toc_title:
+        contents += "## [" + toc_title + "](#)\n\n"
     for item in yield_contents(path_to_notes, show_index_in_toc):
         contents += item + "\n"
 
