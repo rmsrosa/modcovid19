@@ -1170,17 +1170,19 @@ class Multi350(Cenario):
 
 class RiodeJaneiro(Cenario):
 
-    def __init__(self, tx_reducao):
+    def __init__(self, tx_reducao,
+                 landscan_file='../input/dados_rio/landscan_rio.npy',
+                 piramide_etaria_file='../input/dados_rio/piramide_etaria_MRJ.csv',
+                 escolas_file='../input/dados_rio/municipais.npy'):
         self.nome = 'Rio de Janeiro'
-        self.define_parametros(tx_reducao)
+        self.define_parametros(tx_reducao, landscan_file, piramide_etaria_file, escolas_file)
         self.inicializa_pop_estado()
         self.cria_redes()
 
-    def define_parametros(self, tx_reducao):
+    def define_parametros(self, tx_reducao, landscan_file, piramide_etaria_file, escolas_file):
 
         # posições dos indivíduos e de suas residências
-        landscan_rio \
-            = np.load('../input/dados_rio/landscan_rio.npy').astype(int)
+        landscan_rio = np.load(landscan_file).astype(int)
         landscan_rio = np.maximum(landscan_rio, 0)
         
         self.pop_por_bloco = (landscan_rio/tx_reducao).astype(int)
@@ -1206,7 +1208,7 @@ class RiodeJaneiro(Cenario):
 
         # idades
         piramide_etaria \
-            = pd.read_csv('../input/dados_rio/piramide_etaria_MRJ.csv')
+            = pd.read_csv(piramide_etaria_file)
 
         idades_grupos = np.array([int(p[0:3]) 
                                   for p in piramide_etaria.columns[1:]])
@@ -1225,7 +1227,7 @@ class RiodeJaneiro(Cenario):
 
         # Dados para a rede escolar
         self.escolas_municipais \
-            = np.load('../input/dados_rio/municipais.npy').astype(int)
+            = np.load(escolas_file).astype(int)
 
         esc_escolha, self.dist_escolas \
             = rede_escolar.distribui_escolas(
