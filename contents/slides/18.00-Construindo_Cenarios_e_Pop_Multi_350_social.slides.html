@@ -13350,7 +13350,7 @@ a.anchor-link {
         <span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">regiao_multi_350</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">],</span>
                  <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;w&quot;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Distribuição da população de {regiao_multi_350.sum()} indivíduos&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Distribuição da população de </span><span class="si">{</span><span class="n">regiao_multi_350</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">}</span><span class="s1"> indivíduos&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 
@@ -13408,10 +13408,10 @@ a.anchor-link {
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">censo_residencial</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">.</span><span class="mi">21</span><span class="p">,</span> <span class="o">.</span><span class="mi">26</span><span class="p">,</span> <span class="o">.</span><span class="mi">20</span><span class="p">,</span> <span class="o">.</span><span class="mi">17</span><span class="p">,</span> <span class="o">.</span><span class="mi">08</span><span class="p">,</span> <span class="o">.</span><span class="mi">04</span><span class="p">,</span> <span class="o">.</span><span class="mi">02</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">])</span>
 <span class="n">media</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">([</span><span class="n">censo_residencial</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">censo_residencial</span><span class="p">))])</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Casas de 1 a {len(censo_residencial)} moradores&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Com densidades de probabilidades </span><span class="si">{censo_residencial}</span><span class="s1">, respectivamente&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Total: {sum(censo_residencial)}&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Média de moradores por residência: </span><span class="si">{media:.2f}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Casas de 1 a </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">censo_residencial</span><span class="p">)</span><span class="si">}</span><span class="s1"> moradores&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Com densidades de probabilidades </span><span class="si">{</span><span class="n">censo_residencial</span><span class="si">}</span><span class="s1">, respectivamente&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Total: </span><span class="si">{</span><span class="nb">sum</span><span class="p">(</span><span class="n">censo_residencial</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Média de moradores por residência: </span><span class="si">{</span><span class="n">media</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -13547,7 +13547,7 @@ Média de moradores por residência: 2.95
                 <span class="o">=</span> <span class="n">distribui_residencias_bloco</span><span class="p">(</span><span class="n">regiao</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">],</span> <span class="n">censo_residencial</span><span class="p">,</span> <span class="n">modo</span><span class="p">)</span>
             <span class="n">aux_res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">distrib_res_bloco</span><span class="p">)</span>
             <span class="n">aux_pop</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">distrib_pop_bloco</span><span class="p">)</span>
-            <span class="k">assert</span><span class="p">(</span><span class="n">sobra</span> <span class="o">==</span> <span class="mi">0</span><span class="p">),</span> <span class="sa">f</span><span class="s1">&#39;Não foi possível alocar toda a população do bloco (</span><span class="si">{i}</span><span class="s1">, </span><span class="si">{j}</span><span class="s1">)&#39;</span>
+            <span class="k">assert</span><span class="p">(</span><span class="n">sobra</span> <span class="o">==</span> <span class="mi">0</span><span class="p">),</span> <span class="sa">f</span><span class="s1">&#39;Não foi possível alocar toda a população do bloco (</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">, </span><span class="si">{</span><span class="n">j</span><span class="si">}</span><span class="s1">)&#39;</span>
         <span class="n">distrib_res_regiao</span> <span class="o">+=</span> <span class="n">aux_res</span>
         <span class="n">distrib_pop_regiao</span> <span class="o">+=</span> <span class="n">aux_pop</span>
     <span class="k">return</span> <span class="n">distrib_res_regiao</span><span class="p">,</span> <span class="n">distrib_pop_regiao</span>
@@ -13591,12 +13591,12 @@ Média de moradores por residência: 2.95
 <div class="prompt input_prompt">In&nbsp;[14]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Total de blocos: {len(distrib_res_regiao)}&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Total de blocos: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">distrib_res_regiao</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 <span class="n">total_residencias</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">([</span><span class="nb">sum</span><span class="p">(</span><span class="n">l</span><span class="p">)</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">distrib_res_regiao</span><span class="p">])</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Total de residências: </span><span class="si">{total_residencias}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Total de residências: </span><span class="si">{</span><span class="n">total_residencias</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 <span class="n">total_populacao</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">([</span><span class="nb">sum</span><span class="p">(</span><span class="n">l</span><span class="p">)</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">distrib_pop_regiao</span><span class="p">])</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Total da população: </span><span class="si">{total_populacao}</span><span class="s1">&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Média de moradores por residência: {total_populacao/total_residencias:.2f}&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Total da população: </span><span class="si">{</span><span class="n">total_populacao</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Média de moradores por residência: </span><span class="si">{</span><span class="n">total_populacao</span><span class="o">/</span><span class="n">total_residencias</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 <span class="n">distribuicao_residencias</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">distrib_res_regiao</span><span class="p">[</span><span class="mi">0</span><span class="p">]))]</span>
 <span class="n">distribuicao_populacao</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">distrib_res_regiao</span><span class="p">[</span><span class="mi">0</span><span class="p">]))]</span>
 <span class="k">for</span> <span class="n">distrib_bloco</span> <span class="ow">in</span> <span class="n">distrib_res_regiao</span><span class="p">:</span>
@@ -13604,13 +13604,13 @@ Média de moradores por residência: 2.95
         <span class="n">distribuicao_residencias</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">+=</span> <span class="n">distrib_bloco</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> 
         <span class="n">distribuicao_populacao</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">+=</span> <span class="p">(</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">distrib_bloco</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Total da distribuição de residências por tamanho:&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;   </span><span class="si">{distribuicao_residencias}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;   </span><span class="si">{</span><span class="n">distribuicao_residencias</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Total da distribuição da população por tamanho da residência:&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;   </span><span class="si">{distribuicao_populacao}</span><span class="s1">&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Total da população por outra contagem: {sum(distribuicao_populacao)}&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;   </span><span class="si">{</span><span class="n">distribuicao_populacao</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Total da população por outra contagem: </span><span class="si">{</span><span class="nb">sum</span><span class="p">(</span><span class="n">distribuicao_populacao</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Distribuição do número de residências por tamanho, dos primeiros blocos:&#39;</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;   </span><span class="si">{distrib_res_regiao[l]}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;   </span><span class="si">{</span><span class="n">distrib_res_regiao</span><span class="p">[</span><span class="n">l</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -13801,10 +13801,10 @@ Distribuição do número de residências por tamanho, dos primeiros blocos:
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Cenário &quot;regiao_multi_350&quot;:&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;    número de posições de residências: {len(pos_residencias)}&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;    média de número de indivíduos por residência: {len(pos_individuos)/len(res_individuos):.2f}&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;    número de posições de indivíduos: {len(pos_individuos)}&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;    número de residências com lista de residentes: {len(res_individuos)}&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;    número de posições de residências: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">pos_residencias</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;    média de número de indivíduos por residência: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">pos_individuos</span><span class="p">)</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">res_individuos</span><span class="p">)</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;    número de posições de indivíduos: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">pos_individuos</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;    número de residências com lista de residentes: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">res_individuos</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -13999,9 +13999,9 @@ Distribuição do número de residências por tamanho, dos primeiros blocos:
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">distribuicao_social_aux</span> <span class="o">=</span> <span class="n">x_vezes</span><span class="o">*</span><span class="n">y_vezes</span><span class="o">*</span><span class="n">distribuicao_social_350</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Número de locais: {len(distribuicao_social_aux)}&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Número de trabalhadores nesses locais: {sum(distribuicao_social_aux)}&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Média de indivíduos por local: {sum(distribuicao_social_aux)/len(distribuicao_social_aux):.2f}&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Número de locais: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">distribuicao_social_aux</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Número de trabalhadores nesses locais: </span><span class="si">{</span><span class="nb">sum</span><span class="p">(</span><span class="n">distribuicao_social_aux</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Média de indivíduos por local: </span><span class="si">{</span><span class="nb">sum</span><span class="p">(</span><span class="n">distribuicao_social_aux</span><span class="p">)</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">distribuicao_social_aux</span><span class="p">)</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -14180,7 +14180,7 @@ Média de indivíduos por local: 4.45
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;número de indivíduos&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">14</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;local de trabalho&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">14</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Número de indivíduos por local de trabalho</span><span class="se">\n</span><span class="s1">&#39;</span>
-          <span class="o">+</span> <span class="sa">f</span><span class="s1">&#39;({len(dx)} locais; {sum(dy)} indivíduos alocados)&#39;</span><span class="p">,</span>
+          <span class="o">+</span> <span class="sa">f</span><span class="s1">&#39;(</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">dx</span><span class="p">)</span><span class="si">}</span><span class="s1"> locais; </span><span class="si">{</span><span class="nb">sum</span><span class="p">(</span><span class="n">dy</span><span class="p">)</span><span class="si">}</span><span class="s1"> indivíduos alocados)&#39;</span><span class="p">,</span>
           <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">16</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
@@ -14264,7 +14264,7 @@ Média de indivíduos por local: 4.45
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;número de trabalhadores&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">14</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;categoria de tamanho do local de trabalho&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">14</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Número de indivíduos por local de trabalho</span><span class="se">\n</span><span class="s1">&#39;</span>
-          <span class="o">+</span> <span class="sa">f</span><span class="s1">&#39;(limites das categorias: </span><span class="si">{wsc}</span><span class="s1">)&#39;</span><span class="p">,</span>
+          <span class="o">+</span> <span class="sa">f</span><span class="s1">&#39;(limites das categorias: </span><span class="si">{</span><span class="n">wsc</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">,</span>
           <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">16</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
@@ -14538,7 +14538,7 @@ Número médio de conexões por indivíduo com peso: 41.0
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">cenario_1x350</span> <span class="o">=</span> <span class="n">episiming</span><span class="o">.</span><span class="n">cenarios</span><span class="o">.</span><span class="n">Multi350</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;População: </span><span class="si">{cenario_1x350.num_pop}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;População: </span><span class="si">{</span><span class="n">cenario_1x350</span><span class="o">.</span><span class="n">num_pop</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 <span class="o">%</span><span class="k">timeit</span> X = cenario_1x350.evolui_jit(dados_temporais, num_sim)
 </pre></div>
 
@@ -14572,7 +14572,7 @@ Número médio de conexões por indivíduo com peso: 41.0
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">cenario_2x350</span> <span class="o">=</span> <span class="n">episiming</span><span class="o">.</span><span class="n">cenarios</span><span class="o">.</span><span class="n">Multi350</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;População: </span><span class="si">{cenario_2x350.num_pop}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;População: </span><span class="si">{</span><span class="n">cenario_2x350</span><span class="o">.</span><span class="n">num_pop</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 <span class="o">%</span><span class="k">timeit</span> X = cenario_2x350.evolui_jit(dados_temporais, num_sim)
 </pre></div>
 
@@ -14606,7 +14606,7 @@ Número médio de conexões por indivíduo com peso: 41.0
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">cenario_4x350</span> <span class="o">=</span> <span class="n">episiming</span><span class="o">.</span><span class="n">cenarios</span><span class="o">.</span><span class="n">Multi350</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;População: </span><span class="si">{cenario_4x350.num_pop}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;População: </span><span class="si">{</span><span class="n">cenario_4x350</span><span class="o">.</span><span class="n">num_pop</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 <span class="o">%</span><span class="k">time</span> X = cenario_4x350.evolui_jit(dados_temporais, num_sim)
 </pre></div>
 
@@ -14641,7 +14641,7 @@ Wall time: 4.55 s
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">cenario_8x350</span> <span class="o">=</span> <span class="n">episiming</span><span class="o">.</span><span class="n">cenarios</span><span class="o">.</span><span class="n">Multi350</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;População: </span><span class="si">{cenario_8x350.num_pop}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;População: </span><span class="si">{</span><span class="n">cenario_8x350</span><span class="o">.</span><span class="n">num_pop</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 <span class="o">%</span><span class="k">time</span> X = cenario_8x350.evolui_jit(dados_temporais, num_sim)
 </pre></div>
 
@@ -14676,7 +14676,7 @@ Wall time: 17.9 s
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">cenario_16x350</span> <span class="o">=</span> <span class="n">episiming</span><span class="o">.</span><span class="n">cenarios</span><span class="o">.</span><span class="n">Multi350</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;População: </span><span class="si">{cenario_16x350.num_pop}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;População: </span><span class="si">{</span><span class="n">cenario_16x350</span><span class="o">.</span><span class="n">num_pop</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 <span class="o">%</span><span class="k">time</span> X = cenario_16x350.evolui_jit(dados_temporais, num_sim)
 </pre></div>
 

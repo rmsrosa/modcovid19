@@ -13224,10 +13224,10 @@ a.anchor-link {
 <div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">time</span>
-tx_reducao = 1000
-cenario_rio = episiming.cenarios.RiodeJaneiro(tx_reducao)
-print(f&#39;População do cenário reduzido: {cenario_rio.num_pop}\n&#39;)
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%time</span>
+<span class="n">tx_reducao</span> <span class="o">=</span> <span class="mi">1000</span>
+<span class="n">cenario_rio</span> <span class="o">=</span> <span class="n">episiming</span><span class="o">.</span><span class="n">cenarios</span><span class="o">.</span><span class="n">RiodeJaneiro</span><span class="p">(</span><span class="n">tx_reducao</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;População do cenário reduzido: </span><span class="si">{</span><span class="n">cenario_rio</span><span class="o">.</span><span class="n">num_pop</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -13298,14 +13298,14 @@ Wall time: 5.53 s
 <div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">time</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%time</span>
 
-num_infectados_0_base = 20 # número inicial de infectados
-beta_r_base = 0.5 # taxa de contágio nas residências
-beta_esc_base = 0.4 # taxa de contágio nas escolas
-beta_emp_base = 0.2 # taxa de contágio no trabalho
-beta_c_base = 0.15 # taxa de contágio na comunidade
-gamma_base = 0.1 # inverso do tempo de recuperação
+<span class="n">num_infectados_0_base</span> <span class="o">=</span> <span class="mi">20</span> <span class="c1"># número inicial de infectados</span>
+<span class="n">beta_r_base</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="c1"># taxa de contágio nas residências</span>
+<span class="n">beta_esc_base</span> <span class="o">=</span> <span class="mf">0.4</span> <span class="c1"># taxa de contágio nas escolas</span>
+<span class="n">beta_emp_base</span> <span class="o">=</span> <span class="mf">0.2</span> <span class="c1"># taxa de contágio no trabalho</span>
+<span class="n">beta_c_base</span> <span class="o">=</span> <span class="mf">0.15</span> <span class="c1"># taxa de contágio na comunidade</span>
+<span class="n">gamma_base</span> <span class="o">=</span> <span class="mf">0.1</span> <span class="c1"># inverso do tempo de recuperação</span>
 </pre></div>
 
     </div>
@@ -13351,16 +13351,16 @@ Wall time: 7.87 µs
 <div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">time</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%time</span>
 
-num_infectados_0 = num_infectados_0_base
-beta_r = beta_r_base
-beta_esc = beta_esc_base
-beta_emp = beta_emp_base
-beta_c = beta_c_base
-gamma = gamma_base
+<span class="n">num_infectados_0</span> <span class="o">=</span> <span class="n">num_infectados_0_base</span>
+<span class="n">beta_r</span> <span class="o">=</span> <span class="n">beta_r_base</span>
+<span class="n">beta_esc</span> <span class="o">=</span> <span class="n">beta_esc_base</span>
+<span class="n">beta_emp</span> <span class="o">=</span> <span class="n">beta_emp_base</span>
+<span class="n">beta_c</span> <span class="o">=</span> <span class="n">beta_c_base</span>
+<span class="n">gamma</span> <span class="o">=</span> <span class="n">gamma_base</span>
 
-cenario_rio.inicializa_infeccao(num_infectados_0, beta_r, beta_esc, beta_emp, beta_c, gamma)
+<span class="n">cenario_rio</span><span class="o">.</span><span class="n">inicializa_infeccao</span><span class="p">(</span><span class="n">num_infectados_0</span><span class="p">,</span> <span class="n">beta_r</span><span class="p">,</span> <span class="n">beta_esc</span><span class="p">,</span> <span class="n">beta_emp</span><span class="p">,</span> <span class="n">beta_c</span><span class="p">,</span> <span class="n">gamma</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -13399,9 +13399,9 @@ Wall time: 5.17 s
 <div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">time</span>
-num_sim = 5 # número de simulações
-X = cenario_rio.evolui_jit(dados_temporais, num_sim, show=&#39;sd&#39;)
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%time</span>
+<span class="n">num_sim</span> <span class="o">=</span> <span class="mi">5</span> <span class="c1"># número de simulações</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">cenario_rio</span><span class="o">.</span><span class="n">evolui_jit</span><span class="p">(</span><span class="n">dados_temporais</span><span class="p">,</span> <span class="n">num_sim</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="s1">&#39;sd&#39;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -13462,16 +13462,16 @@ Wall time: 45 s
 <div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">time</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%time</span>
 
-num_infectados_0 = num_infectados_0_base
-beta_r = beta_r_base
-beta_esc = 0*beta_esc_base
-beta_emp = beta_emp_base
-beta_c = 0.9*beta_c_base
-gamma = gamma_base
+<span class="n">num_infectados_0</span> <span class="o">=</span> <span class="n">num_infectados_0_base</span>
+<span class="n">beta_r</span> <span class="o">=</span> <span class="n">beta_r_base</span>
+<span class="n">beta_esc</span> <span class="o">=</span> <span class="mi">0</span><span class="o">*</span><span class="n">beta_esc_base</span>
+<span class="n">beta_emp</span> <span class="o">=</span> <span class="n">beta_emp_base</span>
+<span class="n">beta_c</span> <span class="o">=</span> <span class="mf">0.9</span><span class="o">*</span><span class="n">beta_c_base</span>
+<span class="n">gamma</span> <span class="o">=</span> <span class="n">gamma_base</span>
 
-cenario_rio.inicializa_infeccao(num_infectados_0, beta_r, beta_esc, beta_emp, beta_c, gamma)
+<span class="n">cenario_rio</span><span class="o">.</span><span class="n">inicializa_infeccao</span><span class="p">(</span><span class="n">num_infectados_0</span><span class="p">,</span> <span class="n">beta_r</span><span class="p">,</span> <span class="n">beta_esc</span><span class="p">,</span> <span class="n">beta_emp</span><span class="p">,</span> <span class="n">beta_c</span><span class="p">,</span> <span class="n">gamma</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -13510,9 +13510,9 @@ Wall time: 5.14 s
 <div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">time</span>
-num_sim = 5 # número de simulações
-X_esc_0 = cenario_rio.evolui_jit(dados_temporais, num_sim, show=&#39;sd&#39;)
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%time</span>
+<span class="n">num_sim</span> <span class="o">=</span> <span class="mi">5</span> <span class="c1"># número de simulações</span>
+<span class="n">X_esc_0</span> <span class="o">=</span> <span class="n">cenario_rio</span><span class="o">.</span><span class="n">evolui_jit</span><span class="p">(</span><span class="n">dados_temporais</span><span class="p">,</span> <span class="n">num_sim</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="s1">&#39;sd&#39;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -13573,16 +13573,16 @@ Wall time: 42.9 s
 <div class="prompt input_prompt">In&nbsp;[12]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">time</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%time</span>
 
-num_infectados_0 = num_infectados_0_base
-beta_r = beta_r_base
-beta_esc = beta_esc_base
-beta_emp = 0.5*beta_emp_base
-beta_c = 0.6*beta_c_base
-gamma = gamma_base
+<span class="n">num_infectados_0</span> <span class="o">=</span> <span class="n">num_infectados_0_base</span>
+<span class="n">beta_r</span> <span class="o">=</span> <span class="n">beta_r_base</span>
+<span class="n">beta_esc</span> <span class="o">=</span> <span class="n">beta_esc_base</span>
+<span class="n">beta_emp</span> <span class="o">=</span> <span class="mf">0.5</span><span class="o">*</span><span class="n">beta_emp_base</span>
+<span class="n">beta_c</span> <span class="o">=</span> <span class="mf">0.6</span><span class="o">*</span><span class="n">beta_c_base</span>
+<span class="n">gamma</span> <span class="o">=</span> <span class="n">gamma_base</span>
 
-cenario_rio.inicializa_infeccao(num_infectados_0, beta_r, beta_esc, beta_emp, beta_c, gamma)
+<span class="n">cenario_rio</span><span class="o">.</span><span class="n">inicializa_infeccao</span><span class="p">(</span><span class="n">num_infectados_0</span><span class="p">,</span> <span class="n">beta_r</span><span class="p">,</span> <span class="n">beta_esc</span><span class="p">,</span> <span class="n">beta_emp</span><span class="p">,</span> <span class="n">beta_c</span><span class="p">,</span> <span class="n">gamma</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -13621,9 +13621,9 @@ Wall time: 5.12 s
 <div class="prompt input_prompt">In&nbsp;[13]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">time</span>
-num_sim = 5 # número de simulações
-X_ec = cenario_rio.evolui_jit(dados_temporais, num_sim, show=&#39;sd&#39;)
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%time</span>
+<span class="n">num_sim</span> <span class="o">=</span> <span class="mi">5</span> <span class="c1"># número de simulações</span>
+<span class="n">X_ec</span> <span class="o">=</span> <span class="n">cenario_rio</span><span class="o">.</span><span class="n">evolui_jit</span><span class="p">(</span><span class="n">dados_temporais</span><span class="p">,</span> <span class="n">num_sim</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="s1">&#39;sd&#39;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -13684,16 +13684,16 @@ Wall time: 42.8 s
 <div class="prompt input_prompt">In&nbsp;[14]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">time</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%time</span>
 
-num_infectados_0 = num_infectados_0_base
-beta_r = beta_r_base
-beta_esc = 0*beta_esc_base
-beta_emp = 0.4*beta_emp_base
-beta_c = 0.4*beta_c_base
-gamma = gamma_base
+<span class="n">num_infectados_0</span> <span class="o">=</span> <span class="n">num_infectados_0_base</span>
+<span class="n">beta_r</span> <span class="o">=</span> <span class="n">beta_r_base</span>
+<span class="n">beta_esc</span> <span class="o">=</span> <span class="mi">0</span><span class="o">*</span><span class="n">beta_esc_base</span>
+<span class="n">beta_emp</span> <span class="o">=</span> <span class="mf">0.4</span><span class="o">*</span><span class="n">beta_emp_base</span>
+<span class="n">beta_c</span> <span class="o">=</span> <span class="mf">0.4</span><span class="o">*</span><span class="n">beta_c_base</span>
+<span class="n">gamma</span> <span class="o">=</span> <span class="n">gamma_base</span>
 
-cenario_rio.inicializa_infeccao(num_infectados_0, beta_r, beta_esc, beta_emp, beta_c, gamma)
+<span class="n">cenario_rio</span><span class="o">.</span><span class="n">inicializa_infeccao</span><span class="p">(</span><span class="n">num_infectados_0</span><span class="p">,</span> <span class="n">beta_r</span><span class="p">,</span> <span class="n">beta_esc</span><span class="p">,</span> <span class="n">beta_emp</span><span class="p">,</span> <span class="n">beta_c</span><span class="p">,</span> <span class="n">gamma</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -13732,9 +13732,9 @@ Wall time: 5.16 s
 <div class="prompt input_prompt">In&nbsp;[15]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">time</span>
-num_sim = 5 # número de simulações
-X_g = cenario_rio.evolui_jit(dados_temporais, num_sim, show=&#39;sd&#39;)
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%time</span>
+<span class="n">num_sim</span> <span class="o">=</span> <span class="mi">5</span> <span class="c1"># número de simulações</span>
+<span class="n">X_g</span> <span class="o">=</span> <span class="n">cenario_rio</span><span class="o">.</span><span class="n">evolui_jit</span><span class="p">(</span><span class="n">dados_temporais</span><span class="p">,</span> <span class="n">num_sim</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="s1">&#39;sd&#39;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -13854,10 +13854,10 @@ Wall time: 24.2 s
 <div class="prompt input_prompt">In&nbsp;[17]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">time</span>
-tx_reducao = 100
-cenario_rio = episiming.cenarios.RiodeJaneiro(tx_reducao)
-print(f&#39;População do cenário reduzido: {cenario_rio.num_pop}\n&#39;)
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%time</span>
+<span class="n">tx_reducao</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">cenario_rio</span> <span class="o">=</span> <span class="n">episiming</span><span class="o">.</span><span class="n">cenarios</span><span class="o">.</span><span class="n">RiodeJaneiro</span><span class="p">(</span><span class="n">tx_reducao</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;População do cenário reduzido: </span><span class="si">{</span><span class="n">cenario_rio</span><span class="o">.</span><span class="n">num_pop</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -13898,16 +13898,16 @@ Wall time: 6min 38s
 <div class="prompt input_prompt">In&nbsp;[18]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">time</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%time</span>
 
-num_infectados_0 = 10*num_infectados_0_base
-beta_r = beta_r_base
-beta_esc = beta_esc_base
-beta_emp = beta_emp_base
-beta_c = beta_c_base
-gamma = gamma_base
+<span class="n">num_infectados_0</span> <span class="o">=</span> <span class="mi">10</span><span class="o">*</span><span class="n">num_infectados_0_base</span>
+<span class="n">beta_r</span> <span class="o">=</span> <span class="n">beta_r_base</span>
+<span class="n">beta_esc</span> <span class="o">=</span> <span class="n">beta_esc_base</span>
+<span class="n">beta_emp</span> <span class="o">=</span> <span class="n">beta_emp_base</span>
+<span class="n">beta_c</span> <span class="o">=</span> <span class="n">beta_c_base</span>
+<span class="n">gamma</span> <span class="o">=</span> <span class="n">gamma_base</span>
 
-cenario_rio.inicializa_infeccao(num_infectados_0, beta_r, beta_esc, beta_emp, beta_c, gamma)
+<span class="n">cenario_rio</span><span class="o">.</span><span class="n">inicializa_infeccao</span><span class="p">(</span><span class="n">num_infectados_0</span><span class="p">,</span> <span class="n">beta_r</span><span class="p">,</span> <span class="n">beta_esc</span><span class="p">,</span> <span class="n">beta_emp</span><span class="p">,</span> <span class="n">beta_c</span><span class="p">,</span> <span class="n">gamma</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -13946,9 +13946,9 @@ Wall time: 7min 38s
 <div class="prompt input_prompt">In&nbsp;[19]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">time</span>
-num_sim = 3
-X_100 = cenario_rio.evolui_jit(dados_temporais, num_sim, show=&#39;sd&#39;)
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%time</span>
+<span class="n">num_sim</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">X_100</span> <span class="o">=</span> <span class="n">cenario_rio</span><span class="o">.</span><span class="n">evolui_jit</span><span class="p">(</span><span class="n">dados_temporais</span><span class="p">,</span> <span class="n">num_sim</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="s1">&#39;sd&#39;</span><span class="p">)</span>
 </pre></div>
 
     </div>

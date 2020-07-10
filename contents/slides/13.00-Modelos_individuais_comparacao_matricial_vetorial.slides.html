@@ -13396,8 +13396,8 @@ Número médio de conexões por indivíduo com peso: 3.5
 <div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">time</span>
-X_350 = cenario_pop_350.evolui(dados_temporais, num_sim, show=&#39;sd&#39;)
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%time</span>
+<span class="n">X_350</span> <span class="o">=</span> <span class="n">cenario_pop_350</span><span class="o">.</span><span class="n">evolui</span><span class="p">(</span><span class="n">dados_temporais</span><span class="p">,</span> <span class="n">num_sim</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="s1">&#39;sd&#39;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -13444,8 +13444,8 @@ Wall time: 29.3 s
 <div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">time</span>
-X_350_mat = cenario_pop_350.evolui_matricial(dados_temporais, num_sim, show=&#39;sd&#39;)
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%time</span>
+<span class="n">X_350_mat</span> <span class="o">=</span> <span class="n">cenario_pop_350</span><span class="o">.</span><span class="n">evolui_matricial</span><span class="p">(</span><span class="n">dados_temporais</span><span class="p">,</span> <span class="n">num_sim</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="s1">&#39;sd&#39;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -13501,7 +13501,7 @@ Wall time: 12.6 s
 <span class="c1"># informações para o gráfico</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;dias&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;número de indivíduos&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Evolução do número de infectados (número inicial de infectados: </span><span class="si">{cenario_pop_350.num_infectados_0}</span><span class="s1">)&#39;</span><span class="p">,</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Evolução do número de infectados (número inicial de infectados: </span><span class="si">{</span><span class="n">cenario_pop_350</span><span class="o">.</span><span class="n">num_infectados_0</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">,</span>
           <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;best&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
@@ -13608,8 +13608,8 @@ Wall time: 12.6 s
     <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;dias&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;número de indivíduos&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Evolução do número de infectados&#39;</span>
-              <span class="o">+</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">num_infectados_0 = </span><span class="si">{num_infectados_0}</span><span class="s1">, beta = </span><span class="si">{beta}</span><span class="s1">, gamma = </span><span class="si">{gamma}</span><span class="s1">, &#39;</span>
-              <span class="o">+</span> <span class="sa">f</span><span class="s1">&#39;dt = </span><span class="si">{dt}</span><span class="s1">, num_sim = </span><span class="si">{num_sim}</span><span class="s1">&#39;</span><span class="p">,</span>
+              <span class="o">+</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">num_infectados_0 = </span><span class="si">{</span><span class="n">num_infectados_0</span><span class="si">}</span><span class="s1">, beta = </span><span class="si">{</span><span class="n">beta</span><span class="si">}</span><span class="s1">, gamma = </span><span class="si">{</span><span class="n">gamma</span><span class="si">}</span><span class="s1">, &#39;</span>
+              <span class="o">+</span> <span class="sa">f</span><span class="s1">&#39;dt = </span><span class="si">{</span><span class="n">dt</span><span class="si">}</span><span class="s1">, num_sim = </span><span class="si">{</span><span class="n">num_sim</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
               <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;best&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
@@ -13651,8 +13651,8 @@ Wall time: 12.6 s
 <div class="prompt input_prompt">In&nbsp;[15]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">time</span>
-X_comp = rede_completa.evolui(dados_temporais, num_sim, show=&#39;sd&#39;)
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%time</span>
+<span class="n">X_comp</span> <span class="o">=</span> <span class="n">rede_completa</span><span class="o">.</span><span class="n">evolui</span><span class="p">(</span><span class="n">dados_temporais</span><span class="p">,</span> <span class="n">num_sim</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="s1">&#39;sd&#39;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -13699,8 +13699,8 @@ Wall time: 4.95 s
 <div class="prompt input_prompt">In&nbsp;[16]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">time</span>
-X_comp_mat = rede_completa.evolui_matricial(dados_temporais, num_sim, show=&#39;sd&#39;)
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%time</span>
+<span class="n">X_comp_mat</span> <span class="o">=</span> <span class="n">rede_completa</span><span class="o">.</span><span class="n">evolui_matricial</span><span class="p">(</span><span class="n">dados_temporais</span><span class="p">,</span> <span class="n">num_sim</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="s1">&#39;sd&#39;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -14053,8 +14053,8 @@ Wall time: 1.31 s
 <div class="prompt input_prompt">In&nbsp;[24]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">time</span>
-X_comp = rede_completa.evolui(dados_temporais, num_sim)
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%time</span>
+<span class="n">X_comp</span> <span class="o">=</span> <span class="n">rede_completa</span><span class="o">.</span><span class="n">evolui</span><span class="p">(</span><span class="n">dados_temporais</span><span class="p">,</span> <span class="n">num_sim</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -14086,8 +14086,8 @@ Wall time: 2min 11s
 <div class="prompt input_prompt">In&nbsp;[25]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">time</span>
-X_comp_mat = rede_completa.evolui_matricial(dados_temporais, num_sim)
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%time</span>
+<span class="n">X_comp_mat</span> <span class="o">=</span> <span class="n">rede_completa</span><span class="o">.</span><span class="n">evolui_matricial</span><span class="p">(</span><span class="n">dados_temporais</span><span class="p">,</span> <span class="n">num_sim</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -14167,22 +14167,22 @@ Wall time: 22.7 s
 <div class="prompt input_prompt">In&nbsp;[28]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">time</span>
-t_0 = 0
-dt = 0.025
-num_dt = int(40/dt)
-T = t_0 + num_dt*dt
-dados_temporais = [t_0, dt, num_dt]
-tempos = np.linspace(t_0, num_dt*dt, num_dt+1)
-num_sim = 40
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%time</span>
+<span class="n">t_0</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">dt</span> <span class="o">=</span> <span class="mf">0.025</span>
+<span class="n">num_dt</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mi">40</span><span class="o">/</span><span class="n">dt</span><span class="p">)</span>
+<span class="n">T</span> <span class="o">=</span> <span class="n">t_0</span> <span class="o">+</span> <span class="n">num_dt</span><span class="o">*</span><span class="n">dt</span>
+<span class="n">dados_temporais</span> <span class="o">=</span> <span class="p">[</span><span class="n">t_0</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">num_dt</span><span class="p">]</span>
+<span class="n">tempos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">t_0</span><span class="p">,</span> <span class="n">num_dt</span><span class="o">*</span><span class="n">dt</span><span class="p">,</span> <span class="n">num_dt</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">num_sim</span> <span class="o">=</span> <span class="mi">40</span>
 
-X_comp = rede_completa.evolui(dados_temporais, num_sim)
+<span class="n">X_comp</span> <span class="o">=</span> <span class="n">rede_completa</span><span class="o">.</span><span class="n">evolui</span><span class="p">(</span><span class="n">dados_temporais</span><span class="p">,</span> <span class="n">num_sim</span><span class="p">)</span>
 
-X_comp_mat = rede_completa.evolui_matricial(dados_temporais, num_sim)
+<span class="n">X_comp_mat</span> <span class="o">=</span> <span class="n">rede_completa</span><span class="o">.</span><span class="n">evolui_matricial</span><span class="p">(</span><span class="n">dados_temporais</span><span class="p">,</span> <span class="n">num_sim</span><span class="p">)</span>
 
-X_sir = episiming.compartimentais.evolucao_SIR(pop_sir_0, beta, gamma, tempos)
+<span class="n">X_sir</span> <span class="o">=</span> <span class="n">episiming</span><span class="o">.</span><span class="n">compartimentais</span><span class="o">.</span><span class="n">evolucao_SIR</span><span class="p">(</span><span class="n">pop_sir_0</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">tempos</span><span class="p">)</span>
 
-exibe_comparacao(X_comp, X_comp_mat, X_sir, num_infectados_0, beta, gamma, dt, num_sim)
+<span class="n">exibe_comparacao</span><span class="p">(</span><span class="n">X_comp</span><span class="p">,</span> <span class="n">X_comp_mat</span><span class="p">,</span> <span class="n">X_sir</span><span class="p">,</span> <span class="n">num_infectados_0</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">num_sim</span><span class="p">)</span>
 </pre></div>
 
     </div>

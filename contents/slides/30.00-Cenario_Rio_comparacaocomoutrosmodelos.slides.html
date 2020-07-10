@@ -13224,7 +13224,7 @@ a.anchor-link {
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">tx_reducao</span> <span class="o">=</span> <span class="mi">1000</span>
 <span class="n">cenario_rio</span> <span class="o">=</span> <span class="n">episiming</span><span class="o">.</span><span class="n">cenarios</span><span class="o">.</span><span class="n">RiodeJaneiro</span><span class="p">(</span><span class="n">tx_reducao</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;População do cenário reduzido: </span><span class="si">{cenario_rio.num_pop}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;População do cenário reduzido: </span><span class="si">{</span><span class="n">cenario_rio</span><span class="o">.</span><span class="n">num_pop</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -13339,13 +13339,13 @@ a.anchor-link {
 <div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">time</span>
-num_sim = 1 # número de simulações
-X = cenario_rio.evolui_jit(dados_temporais, num_sim, show=&#39;sd&#39;)
-G=cenario_rio.redes
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%time</span>
+<span class="n">num_sim</span> <span class="o">=</span> <span class="mi">1</span> <span class="c1"># número de simulações</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">cenario_rio</span><span class="o">.</span><span class="n">evolui_jit</span><span class="p">(</span><span class="n">dados_temporais</span><span class="p">,</span> <span class="n">num_sim</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="s1">&#39;sd&#39;</span><span class="p">)</span>
+<span class="n">G</span><span class="o">=</span><span class="n">cenario_rio</span><span class="o">.</span><span class="n">redes</span>
 
-with open(os.path.join(&#39;..&#39;, &#39;input&#39;,&#39;modelos_individuais&#39;,&#39;pickle-example.p&#39;), &#39;wb&#39;) as pfile:
-    pickle.dump(G, pfile)
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;..&#39;</span><span class="p">,</span> <span class="s1">&#39;input&#39;</span><span class="p">,</span><span class="s1">&#39;modelos_individuais&#39;</span><span class="p">,</span><span class="s1">&#39;pickle-example.p&#39;</span><span class="p">),</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">pfile</span><span class="p">:</span>
+    <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">pfile</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -13411,16 +13411,16 @@ Wall time: 31.7 s
 <div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">time</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%time</span>
 
-N = G[0].number_of_nodes()
+<span class="n">N</span> <span class="o">=</span> <span class="n">G</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">number_of_nodes</span><span class="p">()</span>
 
-case=1
-#rede de individuos
-#este numero define o numero de contato de cada no da rede
-pnodes=0.0045155
+<span class="n">case</span><span class="o">=</span><span class="mi">1</span>
+<span class="c1">#rede de individuos</span>
+<span class="c1">#este numero define o numero de contato de cada no da rede</span>
+<span class="n">pnodes</span><span class="o">=</span><span class="mf">0.0045155</span>
 
-FG = nx.erdos_renyi_graph(N, pnodes,52,True)
+<span class="n">FG</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">erdos_renyi_graph</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">pnodes</span><span class="p">,</span><span class="mi">52</span><span class="p">,</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -13460,13 +13460,13 @@ Wall time: 9.55 s
 <div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">time</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%time</span>
 
-#Estas sao as redes de residenca, escolas e empresas
-#se trasnforman en redes tipo direta para combinar com as rede de indiviuos
-H1 = G[0].to_directed()
-H2 = G[1].to_directed()
-H3 = G[2].to_directed()
+<span class="c1">#Estas sao as redes de residenca, escolas e empresas</span>
+<span class="c1">#se trasnforman en redes tipo direta para combinar com as rede de indiviuos</span>
+<span class="n">H1</span> <span class="o">=</span> <span class="n">G</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">to_directed</span><span class="p">()</span>
+<span class="n">H2</span> <span class="o">=</span> <span class="n">G</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">to_directed</span><span class="p">()</span>
+<span class="n">H3</span> <span class="o">=</span> <span class="n">G</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">to_directed</span><span class="p">()</span>
 </pre></div>
 
     </div>
@@ -13498,19 +13498,19 @@ Wall time: 7.07 s
 <div class="prompt input_prompt">In&nbsp;[12]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">time</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%time</span>
 
-#Combina todas as redes
-NetSet1=GEMFPy.MyNet(FG, weight=&#39;weight&#39;)
-NetSet3=GEMFPy.MyNet(H2, weight=&#39;weight&#39;)
-NetSet2=GEMFPy.MyNet(H1, weight=&#39;weight&#39;)
-NetSet4=GEMFPy.MyNet(H3, weight=&#39;weight&#39;)
+<span class="c1">#Combina todas as redes</span>
+<span class="n">NetSet1</span><span class="o">=</span><span class="n">GEMFPy</span><span class="o">.</span><span class="n">MyNet</span><span class="p">(</span><span class="n">FG</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="s1">&#39;weight&#39;</span><span class="p">)</span>
+<span class="n">NetSet3</span><span class="o">=</span><span class="n">GEMFPy</span><span class="o">.</span><span class="n">MyNet</span><span class="p">(</span><span class="n">H2</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="s1">&#39;weight&#39;</span><span class="p">)</span>
+<span class="n">NetSet2</span><span class="o">=</span><span class="n">GEMFPy</span><span class="o">.</span><span class="n">MyNet</span><span class="p">(</span><span class="n">H1</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="s1">&#39;weight&#39;</span><span class="p">)</span>
+<span class="n">NetSet4</span><span class="o">=</span><span class="n">GEMFPy</span><span class="o">.</span><span class="n">MyNet</span><span class="p">(</span><span class="n">H3</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="s1">&#39;weight&#39;</span><span class="p">)</span>
 
-#mais de uma Net
+<span class="c1">#mais de uma Net</span>
 
-NetSet=[NetSet1,NetSet2,NetSet3,NetSet4]
+<span class="n">NetSet</span><span class="o">=</span><span class="p">[</span><span class="n">NetSet1</span><span class="p">,</span><span class="n">NetSet2</span><span class="p">,</span><span class="n">NetSet3</span><span class="p">,</span><span class="n">NetSet4</span><span class="p">]</span>
 
-Net= GEMFPy.NetCmbn(NetSet)
+<span class="n">Net</span><span class="o">=</span> <span class="n">GEMFPy</span><span class="o">.</span><span class="n">NetCmbn</span><span class="p">(</span><span class="n">NetSet</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -13625,30 +13625,30 @@ width=2800
 <div class="prompt input_prompt">In&nbsp;[15]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">time</span>
-StopCond = [&#39;RunTime&#39;, 80]
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%time</span>
+<span class="n">StopCond</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;RunTime&#39;</span><span class="p">,</span> <span class="mi">80</span><span class="p">]</span>
 
-ts, n_index, i_index, j_index = GEMFPy.GEMF_SIM(Para, Net, x0, StopCond,N)
+<span class="n">ts</span><span class="p">,</span> <span class="n">n_index</span><span class="p">,</span> <span class="n">i_index</span><span class="p">,</span> <span class="n">j_index</span> <span class="o">=</span> <span class="n">GEMFPy</span><span class="o">.</span><span class="n">GEMF_SIM</span><span class="p">(</span><span class="n">Para</span><span class="p">,</span> <span class="n">Net</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="n">StopCond</span><span class="p">,</span><span class="n">N</span><span class="p">)</span>
 
-M = Para[0]
-T, StateCount = GEMFPy.Post_Population(x0, M, N, ts, i_index, j_index)
+<span class="n">M</span> <span class="o">=</span> <span class="n">Para</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">T</span><span class="p">,</span> <span class="n">StateCount</span> <span class="o">=</span> <span class="n">GEMFPy</span><span class="o">.</span><span class="n">Post_Population</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">M</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">ts</span><span class="p">,</span> <span class="n">i_index</span><span class="p">,</span> <span class="n">j_index</span><span class="p">)</span>
 
-fig = plt.figure(figsize=(10,5))
-# for i in range(M):
-# plt.plot(T, StateCount[0,:]/N,&#39;r&#39;,label=&#39;Susceptible&#39;)
-plt.plot(T, StateCount[0,:],&#39;r&#39;,label=&#39;Susceptíveies&#39;)
-plt.plot(T, StateCount[1,:],&#39;g&#39;,label=&#39;Expostos&#39;)
-plt.plot(T, StateCount[2,:],&#39;k&#39;,label=&#39;Infectados&#39;)
-plt.plot(T, StateCount[3,:],&#39;y&#39;,label=&#39;Recuperados&#39;)
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="c1"># for i in range(M):</span>
+<span class="c1"># plt.plot(T, StateCount[0,:]/N,&#39;r&#39;,label=&#39;Susceptible&#39;)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">StateCount</span><span class="p">[</span><span class="mi">0</span><span class="p">,:],</span><span class="s1">&#39;r&#39;</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;Susceptíveies&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">StateCount</span><span class="p">[</span><span class="mi">1</span><span class="p">,:],</span><span class="s1">&#39;g&#39;</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;Expostos&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">StateCount</span><span class="p">[</span><span class="mi">2</span><span class="p">,:],</span><span class="s1">&#39;k&#39;</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;Infectados&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">StateCount</span><span class="p">[</span><span class="mi">3</span><span class="p">,:],</span><span class="s1">&#39;y&#39;</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;Recuperados&#39;</span><span class="p">)</span>
 
-plt.xlabel(&#39;Time (day)&#39;)
-plt.ylabel(&#39;Population&#39;)
-plt.title(&#39;SEIR&#39;)
-legend = plt.legend(loc=&#39;upper right&#39;, shadow=True)
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Time (day)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Population&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;SEIR&#39;</span><span class="p">)</span>
+<span class="n">legend</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper right&#39;</span><span class="p">,</span> <span class="n">shadow</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-output1 = &quot;Case&quot;+str(int(case)) + &quot;beta&quot;+str(float(beta_ind))+&quot;proba&quot;+ str(float(pnodes))
+<span class="n">output1</span> <span class="o">=</span> <span class="s2">&quot;Case&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">case</span><span class="p">))</span> <span class="o">+</span> <span class="s2">&quot;beta&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">beta_ind</span><span class="p">))</span><span class="o">+</span><span class="s2">&quot;proba&quot;</span><span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">pnodes</span><span class="p">))</span>
 
-plt.savefig(os.path.join(&#39;..&#39;, &#39;input&#39;,&#39;modelos_individuais&#39;, &quot;Simulacao&quot; +output1+ &quot;.png&quot;))
+<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;..&#39;</span><span class="p">,</span> <span class="s1">&#39;input&#39;</span><span class="p">,</span><span class="s1">&#39;modelos_individuais&#39;</span><span class="p">,</span> <span class="s2">&quot;Simulacao&quot;</span> <span class="o">+</span><span class="n">output1</span><span class="o">+</span> <span class="s2">&quot;.png&quot;</span><span class="p">))</span>
 </pre></div>
 
     </div>
@@ -13705,31 +13705,31 @@ Wall time: 39 s
 <div class="prompt input_prompt">In&nbsp;[16]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">time</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%time</span>
 
-Montecarlo=1
+<span class="n">Montecarlo</span><span class="o">=</span><span class="mi">1</span>
 
-if Montecarlo==1:
+<span class="k">if</span> <span class="n">Montecarlo</span><span class="o">==</span><span class="mi">1</span><span class="p">:</span>
     
-    #numero de simulacoes em MonteCarlo
-    nsim=5
+    <span class="c1">#numero de simulacoes em MonteCarlo</span>
+    <span class="n">nsim</span><span class="o">=</span><span class="mi">5</span>
 
-    t, f = GEMFPy.MonteCarlo(Net, Para,  StopCond, 1, 4, .1, nsim, N, x_init = np.zeros(N) )
+    <span class="n">t</span><span class="p">,</span> <span class="n">f</span> <span class="o">=</span> <span class="n">GEMFPy</span><span class="o">.</span><span class="n">MonteCarlo</span><span class="p">(</span><span class="n">Net</span><span class="p">,</span> <span class="n">Para</span><span class="p">,</span>  <span class="n">StopCond</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="o">.</span><span class="mi">1</span><span class="p">,</span> <span class="n">nsim</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">x_init</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">N</span><span class="p">)</span> <span class="p">)</span>
 
-    fig2 = plt.figure(figsize=(10,5))
-    # for i in range(M):
-    # plt.plot(T, StateCount[0,:]/N,&#39;r&#39;,label=&#39;Susceptible&#39;)
-    plt.plot(t,N*f[0,:],&#39;r&#39;,label=&#39;Susceptíveies&#39;)
-    plt.plot(t,N*f[2,:],&#39;b&#39;,label=&#39;Infetados&#39;)
-    plt.plot(t,N*f[1,:],&#39;g&#39;,label=&#39;Expostos&#39;)
-    plt.plot(t,N*f[3,:],&#39;y&#39;,label=&#39;Recuperados&#39;)
+    <span class="n">fig2</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+    <span class="c1"># for i in range(M):</span>
+    <span class="c1"># plt.plot(T, StateCount[0,:]/N,&#39;r&#39;,label=&#39;Susceptible&#39;)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">N</span><span class="o">*</span><span class="n">f</span><span class="p">[</span><span class="mi">0</span><span class="p">,:],</span><span class="s1">&#39;r&#39;</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;Susceptíveies&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">N</span><span class="o">*</span><span class="n">f</span><span class="p">[</span><span class="mi">2</span><span class="p">,:],</span><span class="s1">&#39;b&#39;</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;Infetados&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">N</span><span class="o">*</span><span class="n">f</span><span class="p">[</span><span class="mi">1</span><span class="p">,:],</span><span class="s1">&#39;g&#39;</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;Expostos&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">N</span><span class="o">*</span><span class="n">f</span><span class="p">[</span><span class="mi">3</span><span class="p">,:],</span><span class="s1">&#39;y&#39;</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;Recuperados&#39;</span><span class="p">)</span>
 
-    plt.xlabel(&#39;Time (day)&#39;)
-    plt.ylabel(&#39;Populacao&#39;)
-    plt.title(&#39;SEIR&#39;)
-    legend = plt.legend(loc=&#39;upper center&#39;, shadow=True)
-    plt.savefig(os.path.join(&#39;..&#39;, &#39;input&#39;,&#39;modelos_individuais&#39;, &#39;Montecarlo&#39; +output1+ &#39;.png&#39;))
-    plt.show()
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Time (day)&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Populacao&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;SEIR&#39;</span><span class="p">)</span>
+    <span class="n">legend</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper center&#39;</span><span class="p">,</span> <span class="n">shadow</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;..&#39;</span><span class="p">,</span> <span class="s1">&#39;input&#39;</span><span class="p">,</span><span class="s1">&#39;modelos_individuais&#39;</span><span class="p">,</span> <span class="s1">&#39;Montecarlo&#39;</span> <span class="o">+</span><span class="n">output1</span><span class="o">+</span> <span class="s1">&#39;.png&#39;</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 
     </div>

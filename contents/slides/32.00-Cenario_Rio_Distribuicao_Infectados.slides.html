@@ -13277,7 +13277,7 @@ a.anchor-link {
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">dt_string</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%d</span><span class="s2">/%b/%Y&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Atualização mais recente do kernel: </span><span class="si">{dt_string}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Atualização mais recente do kernel: </span><span class="si">{</span><span class="n">dt_string</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -13315,13 +13315,13 @@ a.anchor-link {
 <div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">time</span>
-tx_reducao = 100
-landscan_file = os.path.join(&#39;..&#39;, &#39;input&#39;, &#39;dados_rio&#39;, &#39;landscan_rio.npy&#39;)
-piramide_file = os.path.join(&#39;..&#39;, &#39;input&#39;, &#39;dados_rio&#39;, &#39;piramide_etaria_MRJ.csv&#39;)
-escolas_file = os.path.join(&#39;..&#39;, &#39;input&#39;, &#39;dados_rio&#39;, &#39;municipais.npy&#39;)
-cenario_rio = episiming.cenarios.RiodeJaneiro(tx_reducao, landscan_file, piramide_file, escolas_file)
-print(f&#39;População do cenário reduzido: {cenario_rio.num_pop}\n&#39;)
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%time</span>
+<span class="n">tx_reducao</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">landscan_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;..&#39;</span><span class="p">,</span> <span class="s1">&#39;input&#39;</span><span class="p">,</span> <span class="s1">&#39;dados_rio&#39;</span><span class="p">,</span> <span class="s1">&#39;landscan_rio.npy&#39;</span><span class="p">)</span>
+<span class="n">piramide_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;..&#39;</span><span class="p">,</span> <span class="s1">&#39;input&#39;</span><span class="p">,</span> <span class="s1">&#39;dados_rio&#39;</span><span class="p">,</span> <span class="s1">&#39;piramide_etaria_MRJ.csv&#39;</span><span class="p">)</span>
+<span class="n">escolas_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;..&#39;</span><span class="p">,</span> <span class="s1">&#39;input&#39;</span><span class="p">,</span> <span class="s1">&#39;dados_rio&#39;</span><span class="p">,</span> <span class="s1">&#39;municipais.npy&#39;</span><span class="p">)</span>
+<span class="n">cenario_rio</span> <span class="o">=</span> <span class="n">episiming</span><span class="o">.</span><span class="n">cenarios</span><span class="o">.</span><span class="n">RiodeJaneiro</span><span class="p">(</span><span class="n">tx_reducao</span><span class="p">,</span> <span class="n">landscan_file</span><span class="p">,</span> <span class="n">piramide_file</span><span class="p">,</span> <span class="n">escolas_file</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;População do cenário reduzido: </span><span class="si">{</span><span class="n">cenario_rio</span><span class="o">.</span><span class="n">num_pop</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -13980,7 +13980,7 @@ print(f&#39;População do cenário reduzido: {cenario_rio.num_pop}\n&#39;)
 <div class="prompt input_prompt">In&nbsp;[32]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Existem </span><span class="si">{qt_fora}</span><span class="s1"> casos fora do município, então esperamos distribuir no total: {len(df_atv) - qt_fora} infectados&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Existem </span><span class="si">{</span><span class="n">qt_fora</span><span class="si">}</span><span class="s1"> casos fora do município, então esperamos distribuir no total: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">df_atv</span><span class="p">)</span> <span class="o">-</span> <span class="n">qt_fora</span><span class="si">}</span><span class="s1"> infectados&#39;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -14011,7 +14011,7 @@ print(f&#39;População do cenário reduzido: {cenario_rio.num_pop}\n&#39;)
 <div class="prompt input_prompt">In&nbsp;[33]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Foram distribuidos {len(diagnosticados)} casos, esse defasagem pode estar ocorrendo por conta da diferença de localização dos individuos com os blocos&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Foram distribuidos </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">diagnosticados</span><span class="p">)</span><span class="si">}</span><span class="s1"> casos, esse defasagem pode estar ocorrendo por conta da diferença de localização dos individuos com os blocos&#39;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -14070,8 +14070,8 @@ print(f&#39;População do cenário reduzido: {cenario_rio.num_pop}\n&#39;)
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">rio_latitude</span> <span class="o">=</span> <span class="mf">22.9</span> <span class="c1">## degrees </span>
 <span class="n">arc_second_latitudinal_equator</span> <span class="o">=</span> <span class="mi">1852</span><span class="o">/</span><span class="mi">60</span>
 <span class="n">arc_second_longitudinal_rio</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">rio_latitude</span><span class="o">/</span><span class="mi">180</span><span class="p">)</span><span class="o">*</span><span class="n">arc_second_latitudinal_equator</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;30&quot; de comprimento de arco latitudinal no Rio de Janeiro equivalem a {30*arc_second_latitudinal_equator:.2f} metros&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;30&quot; de comprimento de arco longitudinal no Rio de Janeiro equivalem a {30*arc_second_longitudinal_rio:.2f} metros&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;30&quot; de comprimento de arco latitudinal no Rio de Janeiro equivalem a </span><span class="si">{</span><span class="mi">30</span><span class="o">*</span><span class="n">arc_second_latitudinal_equator</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1"> metros&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;30&quot; de comprimento de arco longitudinal no Rio de Janeiro equivalem a </span><span class="si">{</span><span class="mi">30</span><span class="o">*</span><span class="n">arc_second_longitudinal_rio</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1"> metros&#39;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -14475,8 +14475,8 @@ Algumas diferenças entre os dois gráficos acontecem também por conta de exist
 <div class="prompt input_prompt">In&nbsp;[45]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">time</span>
-infectados_0 = distribuicao_inicial_casos(1, mtrx_infectados_real, cenario_rio.pop_posicoes)
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%time</span>
+<span class="n">infectados_0</span> <span class="o">=</span> <span class="n">distribuicao_inicial_casos</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">mtrx_infectados_real</span><span class="p">,</span> <span class="n">cenario_rio</span><span class="o">.</span><span class="n">pop_posicoes</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -14521,7 +14521,7 @@ Wall time: 2.24 s
 <div class="prompt input_prompt">In&nbsp;[43]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Total esperado de Infectados dada a redução: </span><span class="si">{total_infectados}</span><span class="s1">, Casos distribuidos: {len(infectados_0)}&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Total esperado de Infectados dada a redução: </span><span class="si">{</span><span class="n">total_infectados</span><span class="si">}</span><span class="s1">, Casos distribuidos: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">infectados_0</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -14599,8 +14599,8 @@ Wall time: 2.24 s
 <div class="prompt input_prompt">In&nbsp;[46]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">time</span>
-infectados_0 = distribuicao_inicial_casos(tx_reducao, mtrx_infectados_real, cenario_rio.pop_posicoes)
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%time</span>
+<span class="n">infectados_0</span> <span class="o">=</span> <span class="n">distribuicao_inicial_casos</span><span class="p">(</span><span class="n">tx_reducao</span><span class="p">,</span> <span class="n">mtrx_infectados_real</span><span class="p">,</span> <span class="n">cenario_rio</span><span class="o">.</span><span class="n">pop_posicoes</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -14632,7 +14632,7 @@ Wall time: 2.21 s
 <div class="prompt input_prompt">In&nbsp;[47]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Total esperado de Infectados dada a redução: {np.rint(total_infectados/tx_reducao)}, Casos distribuidos: {len(infectados_0)}&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Total esperado de Infectados dada a redução: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">rint</span><span class="p">(</span><span class="n">total_infectados</span><span class="o">/</span><span class="n">tx_reducao</span><span class="p">)</span><span class="si">}</span><span class="s1">, Casos distribuidos: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">infectados_0</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -14749,7 +14749,7 @@ Wall time: 2.21 s
 <div class="prompt input_prompt">In&nbsp;[53]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Casos distribuidos: {len(infectados_1605_0)}, número de casos esperados {np.rint(np.sum(mtrx_infect_1605_real)/tx_reducao)}&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Casos distribuidos: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">infectados_1605_0</span><span class="p">)</span><span class="si">}</span><span class="s1">, número de casos esperados </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">rint</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">mtrx_infect_1605_real</span><span class="p">)</span><span class="o">/</span><span class="n">tx_reducao</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 </pre></div>
 
     </div>

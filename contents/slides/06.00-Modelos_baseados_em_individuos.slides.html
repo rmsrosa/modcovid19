@@ -13673,103 +13673,103 @@ width=800
 <div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">time</span> 
-# parâmetros
-fator_de_transmissao = 0.4
-fator_de_recuperacao = 0.15 # entre seis e sete dias de recuperação, em média
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%time</span> 
+<span class="c1"># parâmetros</span>
+<span class="n">fator_de_transmissao</span> <span class="o">=</span> <span class="mf">0.4</span>
+<span class="n">fator_de_recuperacao</span> <span class="o">=</span> <span class="mf">0.15</span> <span class="c1"># entre seis e sete dias de recuperação, em média</span>
 
-# estado inicial da população
-num_individuos = 100
-num_infectados0 = 10
-populacao0 = np.ones(num_individuos)
-infectados0 = np.random.choice(num_individuos, num_infectados0)
-populacao0[infectados0] = 2*np.ones(num_infectados0)
+<span class="c1"># estado inicial da população</span>
+<span class="n">num_individuos</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">num_infectados0</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">populacao0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">num_individuos</span><span class="p">)</span>
+<span class="n">infectados0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">num_individuos</span><span class="p">,</span> <span class="n">num_infectados0</span><span class="p">)</span>
+<span class="n">populacao0</span><span class="p">[</span><span class="n">infectados0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">num_infectados0</span><span class="p">)</span>
 
-# dias para cada evolução
-tmax = 60
-dias = np.arange(tmax)
+<span class="c1"># dias para cada evolução</span>
+<span class="n">tmax</span> <span class="o">=</span> <span class="mi">60</span>
+<span class="n">dias</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">tmax</span><span class="p">)</span>
 
-# número de simulações
-num_simulacoes = 80
+<span class="c1"># número de simulações</span>
+<span class="n">num_simulacoes</span> <span class="o">=</span> <span class="mi">80</span>
 
-# alpha para os gráficos
-alpha = min(0.2, 5/num_simulacoes)
+<span class="c1"># alpha para os gráficos</span>
+<span class="n">alpha</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="mf">0.2</span><span class="p">,</span> <span class="mi">5</span><span class="o">/</span><span class="n">num_simulacoes</span><span class="p">)</span>
 
-# inicializa figura e define eixo vertical
-plt.figure(figsize=(12,6))
-plt.ylim(0, num_individuos)
+<span class="c1"># inicializa figura e define eixo vertical</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">num_individuos</span><span class="p">)</span>
 
-# inicializa variáveis para o cálculo da média
-num_infectados_mean = np.zeros(tmax)
-num_suscetiveis_mean = np.zeros(tmax)
-num_recuperados_mean = np.zeros(tmax)
-num_adoeceram_mean = np.zeros(tmax)
+<span class="c1"># inicializa variáveis para o cálculo da média</span>
+<span class="n">num_infectados_mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">tmax</span><span class="p">)</span>
+<span class="n">num_suscetiveis_mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">tmax</span><span class="p">)</span>
+<span class="n">num_recuperados_mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">tmax</span><span class="p">)</span>
+<span class="n">num_adoeceram_mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">tmax</span><span class="p">)</span>
 
-# inicializa variáveis para o cálculo do desvio padrão
-sigma_infectados = np.zeros(tmax)
-sigma_suscetiveis = np.zeros(tmax)
-sigma_recuperados = np.zeros(tmax)
-sigma_adoeceram = np.zeros(tmax)
+<span class="c1"># inicializa variáveis para o cálculo do desvio padrão</span>
+<span class="n">sigma_infectados</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">tmax</span><span class="p">)</span>
+<span class="n">sigma_suscetiveis</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">tmax</span><span class="p">)</span>
+<span class="n">sigma_recuperados</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">tmax</span><span class="p">)</span>
+<span class="n">sigma_adoeceram</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">tmax</span><span class="p">)</span>
 
-# simulações
-for k in range(num_simulacoes):
-    # inicializa população de cada simulação
-    populacao = np.copy(populacao0)
-    num_infectados = np.array([num_infectados0])
-    num_suscetiveis = np.array([num_individuos - num_infectados0])
-    num_recuperados = np.array([0])
-    num_adoeceram = np.array([0])
+<span class="c1"># simulações</span>
+<span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_simulacoes</span><span class="p">):</span>
+    <span class="c1"># inicializa população de cada simulação</span>
+    <span class="n">populacao</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">populacao0</span><span class="p">)</span>
+    <span class="n">num_infectados</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">num_infectados0</span><span class="p">])</span>
+    <span class="n">num_suscetiveis</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">num_individuos</span> <span class="o">-</span> <span class="n">num_infectados0</span><span class="p">])</span>
+    <span class="n">num_recuperados</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">num_adoeceram</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">])</span>
     
-    # evolui o dia e armazena as novas contagens
-    for t in range(1,tmax):
-        populacao = evolui(populacao, fator_de_transmissao, fator_de_recuperacao)
-        num_suscetiveis = np.hstack([num_suscetiveis, np.count_nonzero(populacao==1)])
-        num_infectados = np.hstack([num_infectados, np.count_nonzero(populacao==2)])
-        num_recuperados = np.hstack([num_recuperados, np.count_nonzero(populacao==3)])
+    <span class="c1"># evolui o dia e armazena as novas contagens</span>
+    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">tmax</span><span class="p">):</span>
+        <span class="n">populacao</span> <span class="o">=</span> <span class="n">evolui</span><span class="p">(</span><span class="n">populacao</span><span class="p">,</span> <span class="n">fator_de_transmissao</span><span class="p">,</span> <span class="n">fator_de_recuperacao</span><span class="p">)</span>
+        <span class="n">num_suscetiveis</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">num_suscetiveis</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">populacao</span><span class="o">==</span><span class="mi">1</span><span class="p">)])</span>
+        <span class="n">num_infectados</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">num_infectados</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">populacao</span><span class="o">==</span><span class="mi">2</span><span class="p">)])</span>
+        <span class="n">num_recuperados</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">num_recuperados</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">populacao</span><span class="o">==</span><span class="mi">3</span><span class="p">)])</span>
     
-    # adiciona as contagens dessa simulação para o cálculo final da média
-    num_infectados_mean += num_infectados
-    num_suscetiveis_mean += num_suscetiveis
-    num_recuperados_mean += num_recuperados
-    num_adoeceram_mean += num_individuos - num_suscetiveis
+    <span class="c1"># adiciona as contagens dessa simulação para o cálculo final da média</span>
+    <span class="n">num_infectados_mean</span> <span class="o">+=</span> <span class="n">num_infectados</span>
+    <span class="n">num_suscetiveis_mean</span> <span class="o">+=</span> <span class="n">num_suscetiveis</span>
+    <span class="n">num_recuperados_mean</span> <span class="o">+=</span> <span class="n">num_recuperados</span>
+    <span class="n">num_adoeceram_mean</span> <span class="o">+=</span> <span class="n">num_individuos</span> <span class="o">-</span> <span class="n">num_suscetiveis</span>
 
-    # adiciona as contagens dessa simulação para o cálculo final do desvio padrão
-    sigma_infectados += num_infectados ** 2
-    sigma_suscetiveis += num_suscetiveis ** 2
-    sigma_recuperados += num_recuperados ** 2
-    sigma_adoeceram += (num_individuos - num_suscetiveis)**2
+    <span class="c1"># adiciona as contagens dessa simulação para o cálculo final do desvio padrão</span>
+    <span class="n">sigma_infectados</span> <span class="o">+=</span> <span class="n">num_infectados</span> <span class="o">**</span> <span class="mi">2</span>
+    <span class="n">sigma_suscetiveis</span> <span class="o">+=</span> <span class="n">num_suscetiveis</span> <span class="o">**</span> <span class="mi">2</span>
+    <span class="n">sigma_recuperados</span> <span class="o">+=</span> <span class="n">num_recuperados</span> <span class="o">**</span> <span class="mi">2</span>
+    <span class="n">sigma_adoeceram</span> <span class="o">+=</span> <span class="p">(</span><span class="n">num_individuos</span> <span class="o">-</span> <span class="n">num_suscetiveis</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
     
-    # exibe os gráficos dos dados dessa simulação
-    plt.plot(num_infectados, color=&#39;tab:red&#39;, alpha=alpha)
-    plt.plot(num_suscetiveis, &#39;-&#39;, color=&#39;tab:green&#39;, alpha=alpha)
-    plt.plot(num_recuperados, &#39;-&#39;, color=&#39;tab:blue&#39;, alpha=alpha)
-    plt.plot(num_individuos - num_suscetiveis, &#39;-&#39;, color=&#39;tab:gray&#39;, alpha=alpha)
+    <span class="c1"># exibe os gráficos dos dados dessa simulação</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">num_infectados</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;tab:red&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="n">alpha</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">num_suscetiveis</span><span class="p">,</span> <span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;tab:green&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="n">alpha</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">num_recuperados</span><span class="p">,</span> <span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;tab:blue&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="n">alpha</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">num_individuos</span> <span class="o">-</span> <span class="n">num_suscetiveis</span><span class="p">,</span> <span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;tab:gray&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="n">alpha</span><span class="p">)</span>
 
-# divide pelo número de evoluções para obter a média, melhor fazer isso ao final
-# para reduzir erros de arredondamento
-num_infectados_mean /= num_simulacoes
-num_suscetiveis_mean /= num_simulacoes
-num_recuperados_mean /= num_simulacoes
-num_adoeceram_mean /= num_simulacoes
+<span class="c1"># divide pelo número de evoluções para obter a média, melhor fazer isso ao final</span>
+<span class="c1"># para reduzir erros de arredondamento</span>
+<span class="n">num_infectados_mean</span> <span class="o">/=</span> <span class="n">num_simulacoes</span>
+<span class="n">num_suscetiveis_mean</span> <span class="o">/=</span> <span class="n">num_simulacoes</span>
+<span class="n">num_recuperados_mean</span> <span class="o">/=</span> <span class="n">num_simulacoes</span>
+<span class="n">num_adoeceram_mean</span> <span class="o">/=</span> <span class="n">num_simulacoes</span>
 
-# ajusta o calcula do desvio padrão
-sigma_infectados = ( sigma_infectados / num_simulacoes - num_infectados_mean ** 2) ** .5
-sigma_suscetiveis = ( sigma_suscetiveis / num_simulacoes - num_suscetiveis_mean ** 2 ) ** .5
-sigma_recuperados = ( sigma_recuperados / num_simulacoes - num_recuperados_mean ** 2 ) ** .5
-sigma_adoeceram = ( sigma_adoeceram / num_simulacoes - num_adoeceram_mean ** 2 ) ** .5
+<span class="c1"># ajusta o calcula do desvio padrão</span>
+<span class="n">sigma_infectados</span> <span class="o">=</span> <span class="p">(</span> <span class="n">sigma_infectados</span> <span class="o">/</span> <span class="n">num_simulacoes</span> <span class="o">-</span> <span class="n">num_infectados_mean</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">**</span> <span class="o">.</span><span class="mi">5</span>
+<span class="n">sigma_suscetiveis</span> <span class="o">=</span> <span class="p">(</span> <span class="n">sigma_suscetiveis</span> <span class="o">/</span> <span class="n">num_simulacoes</span> <span class="o">-</span> <span class="n">num_suscetiveis_mean</span> <span class="o">**</span> <span class="mi">2</span> <span class="p">)</span> <span class="o">**</span> <span class="o">.</span><span class="mi">5</span>
+<span class="n">sigma_recuperados</span> <span class="o">=</span> <span class="p">(</span> <span class="n">sigma_recuperados</span> <span class="o">/</span> <span class="n">num_simulacoes</span> <span class="o">-</span> <span class="n">num_recuperados_mean</span> <span class="o">**</span> <span class="mi">2</span> <span class="p">)</span> <span class="o">**</span> <span class="o">.</span><span class="mi">5</span>
+<span class="n">sigma_adoeceram</span> <span class="o">=</span> <span class="p">(</span> <span class="n">sigma_adoeceram</span> <span class="o">/</span> <span class="n">num_simulacoes</span> <span class="o">-</span> <span class="n">num_adoeceram_mean</span> <span class="o">**</span> <span class="mi">2</span> <span class="p">)</span> <span class="o">**</span> <span class="o">.</span><span class="mi">5</span>
 
-# exibe os gráficos das médias
-plt.plot(dias, num_infectados_mean, &#39;-&#39;, color=&#39;tab:red&#39;, label=&#39;infectados&#39;)
-plt.plot(dias, num_suscetiveis_mean, &#39;-&#39;, color=&#39;tab:green&#39;, label=&#39;suscetíveis&#39;)
-plt.plot(dias, num_recuperados_mean, &#39;-&#39;, color=&#39;tab:blue&#39;, label=&#39;recuperados&#39;)
-plt.plot(dias, num_adoeceram_mean, &#39;-&#39;, color=&#39;tab:gray&#39;, label=&#39;inf.+ rec.&#39;)
+<span class="c1"># exibe os gráficos das médias</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">dias</span><span class="p">,</span> <span class="n">num_infectados_mean</span><span class="p">,</span> <span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;tab:red&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;infectados&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">dias</span><span class="p">,</span> <span class="n">num_suscetiveis_mean</span><span class="p">,</span> <span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;tab:green&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;suscetíveis&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">dias</span><span class="p">,</span> <span class="n">num_recuperados_mean</span><span class="p">,</span> <span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;tab:blue&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;recuperados&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">dias</span><span class="p">,</span> <span class="n">num_adoeceram_mean</span><span class="p">,</span> <span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;tab:gray&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;inf.+ rec.&#39;</span><span class="p">)</span>
 
-# informações para o gráfico
-plt.xlabel(&#39;dias&#39;, fontsize=16)
-plt.ylabel(&#39;número de indivíduos&#39;, fontsize=16)
-plt.title(&#39;Evolução do conjunto de simulações e da média&#39;, fontsize=18)
-plt.legend(fontsize=12)
-plt.show() 
+<span class="c1"># informações para o gráfico</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;dias&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;número de indivíduos&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Evolução do conjunto de simulações e da média&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">18</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span> 
 </pre></div>
 
     </div>
@@ -14127,104 +14127,104 @@ Fatores de recuperação:
 <div class="prompt input_prompt">In&nbsp;[20]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">time</span> 
-# parâmetros
-fator_de_transmissao = 0.4
-fator_de_recuperacao = 0.15 # entre seis e sete dias de recuperação, em média
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%time</span> 
+<span class="c1"># parâmetros</span>
+<span class="n">fator_de_transmissao</span> <span class="o">=</span> <span class="mf">0.4</span>
+<span class="n">fator_de_recuperacao</span> <span class="o">=</span> <span class="mf">0.15</span> <span class="c1"># entre seis e sete dias de recuperação, em média</span>
 
-# estado inicial da população
-num_individuos = 100
-num_infectados0 = 10
-populacao0 = np.ones(num_individuos)
-infectados0 = np.random.choice(num_individuos, num_infectados0)
-populacao0[infectados0] = 2*np.ones(num_infectados0)
+<span class="c1"># estado inicial da população</span>
+<span class="n">num_individuos</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">num_infectados0</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">populacao0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">num_individuos</span><span class="p">)</span>
+<span class="n">infectados0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">num_individuos</span><span class="p">,</span> <span class="n">num_infectados0</span><span class="p">)</span>
+<span class="n">populacao0</span><span class="p">[</span><span class="n">infectados0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">num_infectados0</span><span class="p">)</span>
 
-# dias para cada evolução
-tmax = 60
-dias = np.arange(tmax)
+<span class="c1"># dias para cada evolução</span>
+<span class="n">tmax</span> <span class="o">=</span> <span class="mi">60</span>
+<span class="n">dias</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">tmax</span><span class="p">)</span>
 
-# número de simulações
-num_simulacoes = 80
+<span class="c1"># número de simulações</span>
+<span class="n">num_simulacoes</span> <span class="o">=</span> <span class="mi">80</span>
 
-# alpha para os gráficos
-alpha = min(0.2, 5/num_simulacoes)
+<span class="c1"># alpha para os gráficos</span>
+<span class="n">alpha</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="mf">0.2</span><span class="p">,</span> <span class="mi">5</span><span class="o">/</span><span class="n">num_simulacoes</span><span class="p">)</span>
 
-# inicializa figura e define eixo vertical
-plt.figure(figsize=(12,6))
-plt.ylim(0, num_individuos)
+<span class="c1"># inicializa figura e define eixo vertical</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">num_individuos</span><span class="p">)</span>
 
-# inicializa variáveis para o cálculo da média
-num_infectados_mean = np.zeros(tmax)
-num_suscetiveis_mean = np.zeros(tmax)
-num_recuperados_mean = np.zeros(tmax)
-num_adoeceram_mean = np.zeros(tmax)
+<span class="c1"># inicializa variáveis para o cálculo da média</span>
+<span class="n">num_infectados_mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">tmax</span><span class="p">)</span>
+<span class="n">num_suscetiveis_mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">tmax</span><span class="p">)</span>
+<span class="n">num_recuperados_mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">tmax</span><span class="p">)</span>
+<span class="n">num_adoeceram_mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">tmax</span><span class="p">)</span>
 
-# inicializa variáveis para o cálculo do desvio padrão
-sigma_infectados = np.zeros(tmax)
-sigma_suscetiveis = np.zeros(tmax)
-sigma_recuperados = np.zeros(tmax)
-sigma_adoeceram = np.zeros(tmax)
+<span class="c1"># inicializa variáveis para o cálculo do desvio padrão</span>
+<span class="n">sigma_infectados</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">tmax</span><span class="p">)</span>
+<span class="n">sigma_suscetiveis</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">tmax</span><span class="p">)</span>
+<span class="n">sigma_recuperados</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">tmax</span><span class="p">)</span>
+<span class="n">sigma_adoeceram</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">tmax</span><span class="p">)</span>
 
-# simulações
-for k in range(num_simulacoes):
-    # inicializa população de cada simulação
-    populacao = np.copy(populacao0)
-    num_infectados = np.array([num_infectados0])
-    num_suscetiveis = np.array([num_individuos - num_infectados0])
-    num_recuperados = np.array([0])
-    num_adoeceram = np.array([0])
+<span class="c1"># simulações</span>
+<span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_simulacoes</span><span class="p">):</span>
+    <span class="c1"># inicializa população de cada simulação</span>
+    <span class="n">populacao</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">populacao0</span><span class="p">)</span>
+    <span class="n">num_infectados</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">num_infectados0</span><span class="p">])</span>
+    <span class="n">num_suscetiveis</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">num_individuos</span> <span class="o">-</span> <span class="n">num_infectados0</span><span class="p">])</span>
+    <span class="n">num_recuperados</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">num_adoeceram</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">])</span>
     
-    # evolui o dia e armazena as novas contagens
-    for t in range(1,tmax):
-        populacao = evolui_grafo_completo(num_individuos, populacao, 
-                                          fator_de_transmissao, fator_de_recuperacao)
-        num_suscetiveis = np.hstack([num_suscetiveis, np.count_nonzero(populacao==1)])
-        num_infectados = np.hstack([num_infectados, np.count_nonzero(populacao==2)])
-        num_recuperados = np.hstack([num_recuperados, np.count_nonzero(populacao==3)])
+    <span class="c1"># evolui o dia e armazena as novas contagens</span>
+    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">tmax</span><span class="p">):</span>
+        <span class="n">populacao</span> <span class="o">=</span> <span class="n">evolui_grafo_completo</span><span class="p">(</span><span class="n">num_individuos</span><span class="p">,</span> <span class="n">populacao</span><span class="p">,</span> 
+                                          <span class="n">fator_de_transmissao</span><span class="p">,</span> <span class="n">fator_de_recuperacao</span><span class="p">)</span>
+        <span class="n">num_suscetiveis</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">num_suscetiveis</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">populacao</span><span class="o">==</span><span class="mi">1</span><span class="p">)])</span>
+        <span class="n">num_infectados</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">num_infectados</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">populacao</span><span class="o">==</span><span class="mi">2</span><span class="p">)])</span>
+        <span class="n">num_recuperados</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">num_recuperados</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">populacao</span><span class="o">==</span><span class="mi">3</span><span class="p">)])</span>
     
-    # adiciona as contagens dessa simulação para o cálculo final da média
-    num_infectados_mean += num_infectados
-    num_suscetiveis_mean += num_suscetiveis
-    num_recuperados_mean += num_recuperados
-    num_adoeceram_mean += num_individuos - num_suscetiveis
+    <span class="c1"># adiciona as contagens dessa simulação para o cálculo final da média</span>
+    <span class="n">num_infectados_mean</span> <span class="o">+=</span> <span class="n">num_infectados</span>
+    <span class="n">num_suscetiveis_mean</span> <span class="o">+=</span> <span class="n">num_suscetiveis</span>
+    <span class="n">num_recuperados_mean</span> <span class="o">+=</span> <span class="n">num_recuperados</span>
+    <span class="n">num_adoeceram_mean</span> <span class="o">+=</span> <span class="n">num_individuos</span> <span class="o">-</span> <span class="n">num_suscetiveis</span>
 
-    # adiciona as contagens dessa simulação para o cálculo final do desvio padrão
-    sigma_infectados += num_infectados ** 2
-    sigma_suscetiveis += num_suscetiveis ** 2
-    sigma_recuperados += num_recuperados ** 2
-    sigma_adoeceram += (num_individuos - num_suscetiveis)**2
+    <span class="c1"># adiciona as contagens dessa simulação para o cálculo final do desvio padrão</span>
+    <span class="n">sigma_infectados</span> <span class="o">+=</span> <span class="n">num_infectados</span> <span class="o">**</span> <span class="mi">2</span>
+    <span class="n">sigma_suscetiveis</span> <span class="o">+=</span> <span class="n">num_suscetiveis</span> <span class="o">**</span> <span class="mi">2</span>
+    <span class="n">sigma_recuperados</span> <span class="o">+=</span> <span class="n">num_recuperados</span> <span class="o">**</span> <span class="mi">2</span>
+    <span class="n">sigma_adoeceram</span> <span class="o">+=</span> <span class="p">(</span><span class="n">num_individuos</span> <span class="o">-</span> <span class="n">num_suscetiveis</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
     
-    # exibe os gráficos dos dados dessa simulação
-    plt.plot(num_infectados, color=&#39;tab:red&#39;, alpha=alpha)
-    plt.plot(num_suscetiveis, &#39;-&#39;, color=&#39;tab:green&#39;, alpha=alpha)
-    plt.plot(num_recuperados, &#39;-&#39;, color=&#39;tab:blue&#39;, alpha=alpha)
-    plt.plot(num_individuos - num_suscetiveis, &#39;-&#39;, color=&#39;tab:gray&#39;, alpha=alpha)
+    <span class="c1"># exibe os gráficos dos dados dessa simulação</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">num_infectados</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;tab:red&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="n">alpha</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">num_suscetiveis</span><span class="p">,</span> <span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;tab:green&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="n">alpha</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">num_recuperados</span><span class="p">,</span> <span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;tab:blue&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="n">alpha</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">num_individuos</span> <span class="o">-</span> <span class="n">num_suscetiveis</span><span class="p">,</span> <span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;tab:gray&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="n">alpha</span><span class="p">)</span>
 
-# divide pelo número de evoluções para obter a média, melhor fazer isso ao final
-# para reduzir erros de arredondamento
-num_infectados_mean /= num_simulacoes
-num_suscetiveis_mean /= num_simulacoes
-num_recuperados_mean /= num_simulacoes
-num_adoeceram_mean /= num_simulacoes
+<span class="c1"># divide pelo número de evoluções para obter a média, melhor fazer isso ao final</span>
+<span class="c1"># para reduzir erros de arredondamento</span>
+<span class="n">num_infectados_mean</span> <span class="o">/=</span> <span class="n">num_simulacoes</span>
+<span class="n">num_suscetiveis_mean</span> <span class="o">/=</span> <span class="n">num_simulacoes</span>
+<span class="n">num_recuperados_mean</span> <span class="o">/=</span> <span class="n">num_simulacoes</span>
+<span class="n">num_adoeceram_mean</span> <span class="o">/=</span> <span class="n">num_simulacoes</span>
 
-# ajusta o calcula do desvio padrão
-sigma_infectados = ( sigma_infectados / num_simulacoes - num_infectados_mean ** 2) ** .5
-sigma_suscetiveis = ( sigma_suscetiveis / num_simulacoes - num_suscetiveis_mean ** 2 ) ** .5
-sigma_recuperados = ( sigma_recuperados / num_simulacoes - num_recuperados_mean ** 2 ) ** .5
-sigma_adoeceram = ( sigma_adoeceram / num_simulacoes - num_adoeceram_mean ** 2 ) ** .5
+<span class="c1"># ajusta o calcula do desvio padrão</span>
+<span class="n">sigma_infectados</span> <span class="o">=</span> <span class="p">(</span> <span class="n">sigma_infectados</span> <span class="o">/</span> <span class="n">num_simulacoes</span> <span class="o">-</span> <span class="n">num_infectados_mean</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">**</span> <span class="o">.</span><span class="mi">5</span>
+<span class="n">sigma_suscetiveis</span> <span class="o">=</span> <span class="p">(</span> <span class="n">sigma_suscetiveis</span> <span class="o">/</span> <span class="n">num_simulacoes</span> <span class="o">-</span> <span class="n">num_suscetiveis_mean</span> <span class="o">**</span> <span class="mi">2</span> <span class="p">)</span> <span class="o">**</span> <span class="o">.</span><span class="mi">5</span>
+<span class="n">sigma_recuperados</span> <span class="o">=</span> <span class="p">(</span> <span class="n">sigma_recuperados</span> <span class="o">/</span> <span class="n">num_simulacoes</span> <span class="o">-</span> <span class="n">num_recuperados_mean</span> <span class="o">**</span> <span class="mi">2</span> <span class="p">)</span> <span class="o">**</span> <span class="o">.</span><span class="mi">5</span>
+<span class="n">sigma_adoeceram</span> <span class="o">=</span> <span class="p">(</span> <span class="n">sigma_adoeceram</span> <span class="o">/</span> <span class="n">num_simulacoes</span> <span class="o">-</span> <span class="n">num_adoeceram_mean</span> <span class="o">**</span> <span class="mi">2</span> <span class="p">)</span> <span class="o">**</span> <span class="o">.</span><span class="mi">5</span>
 
-# exibe os gráficos das médias
-plt.plot(dias, num_infectados_mean, &#39;-&#39;, color=&#39;tab:red&#39;, label=&#39;infectados&#39;)
-plt.plot(dias, num_suscetiveis_mean, &#39;-&#39;, color=&#39;tab:green&#39;, label=&#39;suscetíveis&#39;)
-plt.plot(dias, num_recuperados_mean, &#39;-&#39;, color=&#39;tab:blue&#39;, label=&#39;recuperados&#39;)
-plt.plot(dias, num_adoeceram_mean, &#39;-&#39;, color=&#39;tab:gray&#39;, label=&#39;inf.+ rec.&#39;)
+<span class="c1"># exibe os gráficos das médias</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">dias</span><span class="p">,</span> <span class="n">num_infectados_mean</span><span class="p">,</span> <span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;tab:red&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;infectados&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">dias</span><span class="p">,</span> <span class="n">num_suscetiveis_mean</span><span class="p">,</span> <span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;tab:green&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;suscetíveis&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">dias</span><span class="p">,</span> <span class="n">num_recuperados_mean</span><span class="p">,</span> <span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;tab:blue&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;recuperados&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">dias</span><span class="p">,</span> <span class="n">num_adoeceram_mean</span><span class="p">,</span> <span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;tab:gray&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;inf.+ rec.&#39;</span><span class="p">)</span>
 
-# informações para o gráfico
-plt.xlabel(&#39;dias&#39;, fontsize=16)
-plt.ylabel(&#39;número de indivíduos&#39;, fontsize=16)
-plt.title(&#39;Evolução do conjunto de simulações e da média&#39;, fontsize=18)
-plt.legend(fontsize=12)
-plt.show() 
+<span class="c1"># informações para o gráfico</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;dias&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;número de indivíduos&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Evolução do conjunto de simulações e da média&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">18</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span> 
 </pre></div>
 
     </div>

@@ -13252,13 +13252,13 @@ a.anchor-link {
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <ul>
-<li><p>Modela separadamente cada indivíduo da população. No caso do Rio de Janeiro, são quase sete milhões de indivíduos. Para cada indivíduo, temos os seguintes atributos:</p>
+<li><p>Trata separadamente cada indivíduo da população. No caso do Rio de Janeiro, são quase sete milhões de indivíduos. Para cada indivíduo, temos os seguintes atributos:</p>
 <ul>
 <li><p>a sua localização espacial;</p>
 </li>
 <li><p>a sua idade;</p>
 </li>
-<li><p>O grau de vulnerabilidade ou de potencial de infectividade do indivíduo;</p>
+<li><p>o potencial de infectividade do indivíduo;</p>
 </li>
 </ul>
 </li>
@@ -13277,7 +13277,7 @@ a.anchor-link {
 </li>
 <li><p>O momento de exposição, caso tenha sido infectado;</p>
 </li>
-<li><p>O momento do início do período infeccioso, idem;</p>
+<li><p>O momento do início do período infeccioso, caso tenha sido infectado;</p>
 </li>
 <li><p>O momento do fim de recuperação ou de decesso, caso tenha sido infectado.</p>
 </li>
@@ -13365,13 +13365,15 @@ a.anchor-link {
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <ul>
-<li><p>Estocasticidades:</p>
+<li><p>Aleatoriedades:</p>
 <ul>
+<li><p>Testes de Bernoulli são realizados para decidir se cada indivíduo suscetível é infectado em função dos contatos com indivíduos contagiosos em suas redes de contato.</p>
+</li>
+<li><p>Em caso de contágio, um teste de Bernoulli é realizado para decidir se um exposto será sintomático ou assintomático.</p>
+</li>
+<li><p>Os períodos de latência e de incubação são variáveis aleatórias, seguindo uma distribuição log-normal ou weibull, dependendo da escolha para o modelo.</p>
+</li>
 <li></li>
-<li><p>Os períodos de latência e de incubação são variáveis aleatórias, seguindo uma distribuição log-normal ou weibull.</p>
-</li>
-<li><p>Um teste de Bernoulli é feito para decidir se um exposto será sintomático ou assintomático.</p>
-</li>
 <li></li>
 </ul>
 </li>

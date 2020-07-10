@@ -13549,7 +13549,7 @@ $$<ul>
 <span class="n">T</span> <span class="o">=</span> <span class="mi">60</span>
 <span class="n">tempos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">T</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
 <span class="n">num_sim</span> <span class="o">=</span> <span class="mi">20</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Número básico de reprodução = </span><span class="si">{R0:.2f}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Número básico de reprodução = </span><span class="si">{</span><span class="n">R0</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -13652,10 +13652,10 @@ $$<ul>
     <span class="n">num_medio_conexoes</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">([</span><span class="n">d</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">degree</span><span class="p">(</span><span class="n">weight</span><span class="o">=</span><span class="s1">&#39;weight&#39;</span><span class="p">)])</span><span class="o">/</span><span class="n">G</span><span class="o">.</span><span class="n">number_of_nodes</span><span class="p">()</span>
 
     <span class="k">if</span> <span class="n">info</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Número de vértices: </span><span class="si">{num_vertices}</span><span class="s1">&#39;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Número de arestas: </span><span class="si">{num_arestas}</span><span class="s1">&#39;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Número de arestas com peso: </span><span class="si">{num_arestas_weighted}</span><span class="s1">&#39;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Número médio de conexões por indivíduo: </span><span class="si">{num_medio_conexoes:.1f}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Número de vértices: </span><span class="si">{</span><span class="n">num_vertices</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Número de arestas: </span><span class="si">{</span><span class="n">num_arestas</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Número de arestas com peso: </span><span class="si">{</span><span class="n">num_arestas_weighted</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Número médio de conexões por indivíduo: </span><span class="si">{</span><span class="n">num_medio_conexoes</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">node_size</span><span class="p">:</span>
         <span class="n">color</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;tab:blue&#39;</span><span class="p">,</span> <span class="s1">&#39;tab:red&#39;</span><span class="p">,</span> <span class="s1">&#39;tab:green&#39;</span><span class="p">]</span>
@@ -14140,7 +14140,7 @@ $$<ul>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">censo_fracoes</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{k}</span><span class="s1">: {100*v:.1f}%&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s1">: </span><span class="si">{</span><span class="mi">100</span><span class="o">*</span><span class="n">v</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">%&#39;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -14548,7 +14548,7 @@ Número médio de conexões por indivíduo: 65.2
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">rs_tamanho</span><span class="p">,</span> <span class="s1">&#39;o&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;local de trabalho&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;número de trabalhadores&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Distribuição do total de {sum(rs_tamanho)} trabalhadores por local de trabalho&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Distribuição do total de </span><span class="si">{</span><span class="nb">sum</span><span class="p">(</span><span class="n">rs_tamanho</span><span class="p">)</span><span class="si">}</span><span class="s1"> trabalhadores por local de trabalho&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 
@@ -14921,9 +14921,9 @@ Número médio de conexões por indivíduo: 12.2
 <div class="prompt input_prompt">In&nbsp;[35]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">time</span>
-print(&#39;Rede de residências&#39;)
-X_r = evolucao_grafo_estruturado(pop_0, G_r, gamma, tempos, num_sim, show=&#39;sd&#39;)
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%time</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Rede de residências&#39;</span><span class="p">)</span>
+<span class="n">X_r</span> <span class="o">=</span> <span class="n">evolucao_grafo_estruturado</span><span class="p">(</span><span class="n">pop_0</span><span class="p">,</span> <span class="n">G_r</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">tempos</span><span class="p">,</span> <span class="n">num_sim</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="s1">&#39;sd&#39;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -14981,9 +14981,9 @@ Wall time: 6.53 s
 <div class="prompt input_prompt">In&nbsp;[36]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">time</span>
-print(&#39;Rede de locais de estudo e de trabalho &#39;)
-X_s = evolucao_grafo_estruturado(pop_0, G_s, gamma, tempos, num_sim, show=&#39;sd&#39;)
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%time</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Rede de locais de estudo e de trabalho &#39;</span><span class="p">)</span>
+<span class="n">X_s</span> <span class="o">=</span> <span class="n">evolucao_grafo_estruturado</span><span class="p">(</span><span class="n">pop_0</span><span class="p">,</span> <span class="n">G_s</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">tempos</span><span class="p">,</span> <span class="n">num_sim</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="s1">&#39;sd&#39;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -15041,9 +15041,9 @@ Wall time: 8.9 s
 <div class="prompt input_prompt">In&nbsp;[37]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">time</span>
-print(&#39;Rede global&#39;)
-X_c = evolucao_grafo_estruturado(pop_0, G_c, gamma, tempos, num_sim, show=&#39;sd&#39;)
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%time</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Rede global&#39;</span><span class="p">)</span>
+<span class="n">X_c</span> <span class="o">=</span> <span class="n">evolucao_grafo_estruturado</span><span class="p">(</span><span class="n">pop_0</span><span class="p">,</span> <span class="n">G_c</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">tempos</span><span class="p">,</span> <span class="n">num_sim</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="s1">&#39;sd&#39;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -15101,9 +15101,9 @@ Wall time: 9.96 s
 <div class="prompt input_prompt">In&nbsp;[38]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">time</span>
-print(&#39;Redes residencial e social&#39;)
-X_rs = evolucao_grafo_estruturado(pop_0, G_rs, gamma, tempos, num_sim, show=&#39;sd&#39;)
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%time</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Redes residencial e social&#39;</span><span class="p">)</span>
+<span class="n">X_rs</span> <span class="o">=</span> <span class="n">evolucao_grafo_estruturado</span><span class="p">(</span><span class="n">pop_0</span><span class="p">,</span> <span class="n">G_rs</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">tempos</span><span class="p">,</span> <span class="n">num_sim</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="s1">&#39;sd&#39;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -15161,9 +15161,9 @@ Wall time: 11.4 s
 <div class="prompt input_prompt">In&nbsp;[39]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">time</span>
-print(&#39;Rede combinada&#39;)
-X_a = evolucao_grafo_estruturado(pop_0, G_a, gamma, tempos, num_sim, show=&#39;sd&#39;)
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%time</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Rede combinada&#39;</span><span class="p">)</span>
+<span class="n">X_a</span> <span class="o">=</span> <span class="n">evolucao_grafo_estruturado</span><span class="p">(</span><span class="n">pop_0</span><span class="p">,</span> <span class="n">G_a</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">tempos</span><span class="p">,</span> <span class="n">num_sim</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="s1">&#39;sd&#39;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -15256,8 +15256,8 @@ Wall time: 9.54 s
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;dias&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;número de indivíduos&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Evolução do SIR compartimental clássico e da média do individual estocástico em diferentes redes</span><span class="se">\n</span><span class="s1">&#39;</span>
-          <span class="o">+</span> <span class="sa">f</span><span class="s1">&#39;População </span><span class="si">{num_pop}</span><span class="s1">; Infectados inicialmente: </span><span class="si">{I_0}</span><span class="s1"> ({100*I_0/num_pop:.2f}%)</span><span class="se">\n</span><span class="s1">&#39;</span>
-          <span class="o">+</span> <span class="sa">f</span><span class="s1">&#39;beta = </span><span class="si">{beta:.3f}</span><span class="s1">; gamma = </span><span class="si">{gamma:.3f}</span><span class="s1">; $R_0$ = {beta/gamma:.3f}&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+          <span class="o">+</span> <span class="sa">f</span><span class="s1">&#39;População </span><span class="si">{</span><span class="n">num_pop</span><span class="si">}</span><span class="s1">; Infectados inicialmente: </span><span class="si">{</span><span class="n">I_0</span><span class="si">}</span><span class="s1"> (</span><span class="si">{</span><span class="mi">100</span><span class="o">*</span><span class="n">I_0</span><span class="o">/</span><span class="n">num_pop</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1">%)</span><span class="se">\n</span><span class="s1">&#39;</span>
+          <span class="o">+</span> <span class="sa">f</span><span class="s1">&#39;beta = </span><span class="si">{</span><span class="n">beta</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="s1">; gamma = </span><span class="si">{</span><span class="n">gamma</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="s1">; $R_0$ = </span><span class="si">{</span><span class="n">beta</span><span class="o">/</span><span class="n">gamma</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;best&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span> 
 </pre></div>

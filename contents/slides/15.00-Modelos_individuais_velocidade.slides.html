@@ -14173,7 +14173,7 @@ a.anchor-link {
 <span class="n">correct</span> <span class="o">=</span> <span class="n">timefunc</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;numpy (1 thread)&quot;</span><span class="p">,</span> <span class="n">func_np</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
 
 <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nthreads</span><span class="p">):</span>
-    <span class="n">timefunc</span><span class="p">(</span><span class="n">correct</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;numba ({n+1} thread)&quot;</span><span class="p">,</span> <span class="n">func_nb_mt</span><span class="p">[</span><span class="n">n</span><span class="p">],</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+    <span class="n">timefunc</span><span class="p">(</span><span class="n">correct</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;numba (</span><span class="si">{</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2"> thread)&quot;</span><span class="p">,</span> <span class="n">func_nb_mt</span><span class="p">[</span><span class="n">n</span><span class="p">],</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
 </pre></div>
 
     </div>

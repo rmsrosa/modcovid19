@@ -13252,7 +13252,7 @@ a.anchor-link {
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">pop_por_bloco</span> <span class="o">=</span> <span class="p">(</span><span class="n">landscan_rio</span><span class="o">/</span><span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
 <span class="n">num_pop</span> <span class="o">=</span> <span class="n">pop_por_bloco</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;População: </span><span class="si">{num_pop}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;População: </span><span class="si">{</span><span class="n">num_pop</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -13293,7 +13293,7 @@ a.anchor-link {
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span><span class="mi">7</span><span class="p">))</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">landscan_rio</span><span class="p">),</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;bwr&#39;</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Distribuição da população de {int(landscan_rio.sum())} indivíduos&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Distribuição da população de </span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">landscan_rio</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span><span class="si">}</span><span class="s1"> indivíduos&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 
@@ -13357,9 +13357,9 @@ a.anchor-link {
 <div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">time</span>
-pos_residencias, pos_individuos, res_individuos, pop_blocos_indices \
-    = episiming.cenarios.aloca_residencias_e_individuos(pop_por_bloco, censo_residencial)
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%time</span>
+<span class="n">pos_residencias</span><span class="p">,</span> <span class="n">pos_individuos</span><span class="p">,</span> <span class="n">res_individuos</span><span class="p">,</span> <span class="n">pop_blocos_indices</span> \
+    <span class="o">=</span> <span class="n">episiming</span><span class="o">.</span><span class="n">cenarios</span><span class="o">.</span><span class="n">aloca_residencias_e_individuos</span><span class="p">(</span><span class="n">pop_por_bloco</span><span class="p">,</span> <span class="n">censo_residencial</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -13422,7 +13422,7 @@ Wall time: 1.22 s
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;número de moradores da residência&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;densidade populacional&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Densidade de distribuição populacional por tamanho de residência para </span><span class="si">{num_pop}</span><span class="s1"> indivíduos&#39;</span><span class="p">,</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Densidade de distribuição populacional por tamanho de residência para </span><span class="si">{</span><span class="n">num_pop</span><span class="si">}</span><span class="s1"> indivíduos&#39;</span><span class="p">,</span>
           <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>  
 </pre></div>
@@ -13541,7 +13541,7 @@ Wall time: 1.22 s
 <span class="n">idades_fracoes_grupos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.047</span><span class="p">,</span> <span class="mf">0.046</span><span class="p">,</span> <span class="mf">0.043</span><span class="p">,</span> <span class="mf">0.049</span><span class="p">,</span> <span class="mf">0.027</span><span class="p">,</span> <span class="mf">0.065</span><span class="p">,</span> <span class="mf">0.067</span><span class="p">,</span> <span class="mf">0.155</span><span class="p">,</span> <span class="mf">0.142</span><span class="p">,</span>
                                   <span class="mf">0.140</span><span class="p">,</span> <span class="mf">0.064</span><span class="p">,</span> <span class="mf">0.155</span><span class="p">])</span>
 <span class="n">idade_max</span> <span class="o">=</span> <span class="mi">100</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Conferindo a soma das frações dos grupos de idades: {idades_fracoes_grupos.sum()}&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Conferindo a soma das frações dos grupos de idades: </span><span class="si">{</span><span class="n">idades_fracoes_grupos</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -13776,15 +13776,15 @@ Wall time: 1.22 s
 <div class="prompt input_prompt">In&nbsp;[16]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">time</span>
-res = (num_tam_res+1)*[[]]
-for j in range(1,num_tam_res+1):
-    res[j] = [r for r in res_individuos if len(r) == j]
-res_2b = random.sample(res[2], k=int(0.1*len(res[2])))
-res_2a = [r for r in res[2] if r not in res_2b]
-res_3mais = []
-for res_k in res[3:]:
-    res_3mais += res_k
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%time</span>
+<span class="n">res</span> <span class="o">=</span> <span class="p">(</span><span class="n">num_tam_res</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="p">[[]]</span>
+<span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">num_tam_res</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+    <span class="n">res</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">r</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">res_individuos</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">r</span><span class="p">)</span> <span class="o">==</span> <span class="n">j</span><span class="p">]</span>
+<span class="n">res_2b</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">res</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">k</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="mf">0.1</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">res</span><span class="p">[</span><span class="mi">2</span><span class="p">])))</span>
+<span class="n">res_2a</span> <span class="o">=</span> <span class="p">[</span><span class="n">r</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">res</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="k">if</span> <span class="n">r</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">res_2b</span><span class="p">]</span>
+<span class="n">res_3mais</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">res_k</span> <span class="ow">in</span> <span class="n">res</span><span class="p">[</span><span class="mi">3</span><span class="p">:]:</span>
+    <span class="n">res_3mais</span> <span class="o">+=</span> <span class="n">res_k</span>
 </pre></div>
 
     </div>
@@ -13917,9 +13917,9 @@ Wall time: 500 ms
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">pop_idades_hist</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="nb">len</span><span class="p">(</span><span class="n">pop_idades</span><span class="p">[</span><span class="n">pop_idades</span><span class="o">==</span><span class="n">j</span><span class="p">])</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">)])</span>
 <span class="n">pop_idades_hist_1up</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="nb">len</span><span class="p">(</span><span class="n">pop_idades</span><span class="p">[</span><span class="n">pop_idades</span><span class="o">==</span><span class="n">j</span><span class="p">])</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">100</span><span class="p">)])</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Total do histograma: {pop_idades_hist.sum()}&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Total de alocados com um ano ou mais: {pop_idades_hist_1up.sum()}&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Distribuição de indivíduos em função da idade:</span><span class="se">\n</span><span class="si">{pop_idades_hist}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Total do histograma: </span><span class="si">{</span><span class="n">pop_idades_hist</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Total de alocados com um ano ou mais: </span><span class="si">{</span><span class="n">pop_idades_hist_1up</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Distribuição de indivíduos em função da idade:</span><span class="se">\n</span><span class="si">{</span><span class="n">pop_idades_hist</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -13969,16 +13969,16 @@ Distribuição de indivíduos em função da idade:
 <div class="prompt input_prompt">In&nbsp;[21]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">time</span>
-random.seed(17000001)
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%time</span>
+<span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">17000001</span><span class="p">)</span>
 
-ind_idades = random.choices(idades, distrib_idades_adultos, k=len(res[1]))
-for j in range(len(res[1])):
-    pop_idades[res[1][j]] = ind_idades[j]
-    distrib_idades_adultos[ind_idades[j]] -= 1
-n += len(res[1])
-print(len(res[1]))
-print(n)
+<span class="n">ind_idades</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choices</span><span class="p">(</span><span class="n">idades</span><span class="p">,</span> <span class="n">distrib_idades_adultos</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">res</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+<span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">res</span><span class="p">[</span><span class="mi">1</span><span class="p">])):</span>
+    <span class="n">pop_idades</span><span class="p">[</span><span class="n">res</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">j</span><span class="p">]]</span> <span class="o">=</span> <span class="n">ind_idades</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+    <span class="n">distrib_idades_adultos</span><span class="p">[</span><span class="n">ind_idades</span><span class="p">[</span><span class="n">j</span><span class="p">]]</span> <span class="o">-=</span> <span class="mi">1</span>
+<span class="n">n</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">res</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">res</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -14014,9 +14014,9 @@ Wall time: 78.4 ms
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">pop_idades_hist</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="nb">len</span><span class="p">(</span><span class="n">pop_idades</span><span class="p">[</span><span class="n">pop_idades</span><span class="o">==</span><span class="n">j</span><span class="p">])</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">)])</span>
 <span class="n">pop_idades_hist_1up</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="nb">len</span><span class="p">(</span><span class="n">pop_idades</span><span class="p">[</span><span class="n">pop_idades</span><span class="o">==</span><span class="n">j</span><span class="p">])</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">100</span><span class="p">)])</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Total do histograma: {pop_idades_hist.sum()}&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Total de alocados com um ano ou mais: {pop_idades_hist_1up.sum()}&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Distribuição de indivíduos em função da idade:</span><span class="se">\n</span><span class="si">{pop_idades_hist}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Total do histograma: </span><span class="si">{</span><span class="n">pop_idades_hist</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Total de alocados com um ano ou mais: </span><span class="si">{</span><span class="n">pop_idades_hist_1up</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Distribuição de indivíduos em função da idade:</span><span class="se">\n</span><span class="si">{</span><span class="n">pop_idades_hist</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -14065,16 +14065,16 @@ Distribuição de indivíduos em função da idade:
 <div class="prompt input_prompt">In&nbsp;[23]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">time</span>
-random.seed(27000002)
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%time</span>
+<span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">27000002</span><span class="p">)</span>
 
-ind_idades = random.choices(idades, distrib_idades_adultos, k=len(res_2b))
-for j in range(len(res_2b)):
-    pop_idades[res_2b[j][0]] = ind_idades[j]
-    distrib_idades_adultos[ind_idades[j]] -= 1
-n += len(res_2b)
-print(len(res_2b))
-print(n)
+<span class="n">ind_idades</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choices</span><span class="p">(</span><span class="n">idades</span><span class="p">,</span> <span class="n">distrib_idades_adultos</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">res_2b</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">res_2b</span><span class="p">)):</span>
+    <span class="n">pop_idades</span><span class="p">[</span><span class="n">res_2b</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="mi">0</span><span class="p">]]</span> <span class="o">=</span> <span class="n">ind_idades</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+    <span class="n">distrib_idades_adultos</span><span class="p">[</span><span class="n">ind_idades</span><span class="p">[</span><span class="n">j</span><span class="p">]]</span> <span class="o">-=</span> <span class="mi">1</span>
+<span class="n">n</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">res_2b</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">res_2b</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -14110,9 +14110,9 @@ Wall time: 3.33 ms
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">pop_idades_hist</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="nb">len</span><span class="p">(</span><span class="n">pop_idades</span><span class="p">[</span><span class="n">pop_idades</span><span class="o">==</span><span class="n">j</span><span class="p">])</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">)])</span>
 <span class="n">pop_idades_hist_1up</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="nb">len</span><span class="p">(</span><span class="n">pop_idades</span><span class="p">[</span><span class="n">pop_idades</span><span class="o">==</span><span class="n">j</span><span class="p">])</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">100</span><span class="p">)])</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Total do histograma: {pop_idades_hist.sum()}&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Total de alocados com um ano ou mais: {pop_idades_hist_1up.sum()}&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Distribuição de indivíduos em função da idade:</span><span class="se">\n</span><span class="si">{pop_idades_hist}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Total do histograma: </span><span class="si">{</span><span class="n">pop_idades_hist</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Total de alocados com um ano ou mais: </span><span class="si">{</span><span class="n">pop_idades_hist_1up</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Distribuição de indivíduos em função da idade:</span><span class="se">\n</span><span class="si">{</span><span class="n">pop_idades_hist</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -14164,18 +14164,18 @@ Distribuição de indivíduos em função da idade:
 <div class="prompt input_prompt">In&nbsp;[25]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">time</span>
-random.seed(37010203)
-len_res_2a = len(res_2a)
-ind_idades = random.choices(idades, distrib_idades_adultos, k=2*len_res_2a)
-for j in range(len_res_2a):
-    pop_idades[res_2a[j][0]] = ind_idades[j]
-    pop_idades[res_2a[j][1]] = ind_idades[len_res_2a + j]
-    distrib_idades_adultos[ind_idades[j]] -= 1
-    distrib_idades_adultos[ind_idades[len_res_2a + j]] -= 1
-n += 2*len_res_2a
-print(f&#39;Alocados nesta etapa: {2*len_res_2a}&#39;)
-print(f&#39;Alocados até o momento: {n}&#39;)
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%time</span>
+<span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">37010203</span><span class="p">)</span>
+<span class="n">len_res_2a</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">res_2a</span><span class="p">)</span>
+<span class="n">ind_idades</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choices</span><span class="p">(</span><span class="n">idades</span><span class="p">,</span> <span class="n">distrib_idades_adultos</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">2</span><span class="o">*</span><span class="n">len_res_2a</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">len_res_2a</span><span class="p">):</span>
+    <span class="n">pop_idades</span><span class="p">[</span><span class="n">res_2a</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="mi">0</span><span class="p">]]</span> <span class="o">=</span> <span class="n">ind_idades</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+    <span class="n">pop_idades</span><span class="p">[</span><span class="n">res_2a</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="mi">1</span><span class="p">]]</span> <span class="o">=</span> <span class="n">ind_idades</span><span class="p">[</span><span class="n">len_res_2a</span> <span class="o">+</span> <span class="n">j</span><span class="p">]</span>
+    <span class="n">distrib_idades_adultos</span><span class="p">[</span><span class="n">ind_idades</span><span class="p">[</span><span class="n">j</span><span class="p">]]</span> <span class="o">-=</span> <span class="mi">1</span>
+    <span class="n">distrib_idades_adultos</span><span class="p">[</span><span class="n">ind_idades</span><span class="p">[</span><span class="n">len_res_2a</span> <span class="o">+</span> <span class="n">j</span><span class="p">]]</span> <span class="o">-=</span> <span class="mi">1</span>
+<span class="n">n</span> <span class="o">+=</span> <span class="mi">2</span><span class="o">*</span><span class="n">len_res_2a</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Alocados nesta etapa: </span><span class="si">{</span><span class="mi">2</span><span class="o">*</span><span class="n">len_res_2a</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Alocados até o momento: </span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -14211,9 +14211,9 @@ Wall time: 49.9 ms
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">pop_idades_hist</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="nb">len</span><span class="p">(</span><span class="n">pop_idades</span><span class="p">[</span><span class="n">pop_idades</span><span class="o">==</span><span class="n">j</span><span class="p">])</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">)])</span>
 <span class="n">pop_idades_hist_1up</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="nb">len</span><span class="p">(</span><span class="n">pop_idades</span><span class="p">[</span><span class="n">pop_idades</span><span class="o">==</span><span class="n">j</span><span class="p">])</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">100</span><span class="p">)])</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Total do histograma: {pop_idades_hist.sum()}&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Total de alocados com um ano ou mais: {pop_idades_hist_1up.sum()}&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Distribuição de indivíduos em função da idade:</span><span class="se">\n</span><span class="si">{pop_idades_hist}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Total do histograma: </span><span class="si">{</span><span class="n">pop_idades_hist</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Total de alocados com um ano ou mais: </span><span class="si">{</span><span class="n">pop_idades_hist_1up</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Distribuição de indivíduos em função da idade:</span><span class="se">\n</span><span class="si">{</span><span class="n">pop_idades_hist</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -14262,18 +14262,18 @@ Distribuição de indivíduos em função da idade:
 <div class="prompt input_prompt">In&nbsp;[27]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">time</span>
-random.seed(47010204)
-len_res_3mais = len(res_3mais)
-ind_idades = random.choices(idades, distrib_idades_adultos, k=2*len_res_3mais)
-for j in range(len_res_3mais):
-    pop_idades[res_3mais[j][0]] = ind_idades[j]
-    pop_idades[res_3mais[j][1]] = ind_idades[len_res_3mais + j]
-    distrib_idades_adultos[ind_idades[j]] -= 1
-    distrib_idades_adultos[ind_idades[len_res_3mais + j]] -= 1
-n += 2*len_res_3mais
-print(f&#39;Alocados nesta etapa: {2*len_res_3mais}&#39;)
-print(f&#39;Alocados até o momento: {n}&#39;)
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%time</span>
+<span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">47010204</span><span class="p">)</span>
+<span class="n">len_res_3mais</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">res_3mais</span><span class="p">)</span>
+<span class="n">ind_idades</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choices</span><span class="p">(</span><span class="n">idades</span><span class="p">,</span> <span class="n">distrib_idades_adultos</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">2</span><span class="o">*</span><span class="n">len_res_3mais</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">len_res_3mais</span><span class="p">):</span>
+    <span class="n">pop_idades</span><span class="p">[</span><span class="n">res_3mais</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="mi">0</span><span class="p">]]</span> <span class="o">=</span> <span class="n">ind_idades</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+    <span class="n">pop_idades</span><span class="p">[</span><span class="n">res_3mais</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="mi">1</span><span class="p">]]</span> <span class="o">=</span> <span class="n">ind_idades</span><span class="p">[</span><span class="n">len_res_3mais</span> <span class="o">+</span> <span class="n">j</span><span class="p">]</span>
+    <span class="n">distrib_idades_adultos</span><span class="p">[</span><span class="n">ind_idades</span><span class="p">[</span><span class="n">j</span><span class="p">]]</span> <span class="o">-=</span> <span class="mi">1</span>
+    <span class="n">distrib_idades_adultos</span><span class="p">[</span><span class="n">ind_idades</span><span class="p">[</span><span class="n">len_res_3mais</span> <span class="o">+</span> <span class="n">j</span><span class="p">]]</span> <span class="o">-=</span> <span class="mi">1</span>
+<span class="n">n</span> <span class="o">+=</span> <span class="mi">2</span><span class="o">*</span><span class="n">len_res_3mais</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Alocados nesta etapa: </span><span class="si">{</span><span class="mi">2</span><span class="o">*</span><span class="n">len_res_3mais</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Alocados até o momento: </span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -14309,9 +14309,9 @@ Wall time: 55.6 ms
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">pop_idades_hist</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="nb">len</span><span class="p">(</span><span class="n">pop_idades</span><span class="p">[</span><span class="n">pop_idades</span><span class="o">==</span><span class="n">j</span><span class="p">])</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">)])</span>
 <span class="n">pop_idades_hist_1up</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="nb">len</span><span class="p">(</span><span class="n">pop_idades</span><span class="p">[</span><span class="n">pop_idades</span><span class="o">==</span><span class="n">j</span><span class="p">])</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">100</span><span class="p">)])</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Total do histograma: {pop_idades_hist.sum()}&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Total de alocados com um ano ou mais: {pop_idades_hist_1up.sum()}&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Distribuição de indivíduos em função da idade:</span><span class="se">\n</span><span class="si">{pop_idades_hist}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Total do histograma: </span><span class="si">{</span><span class="n">pop_idades_hist</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Total de alocados com um ano ou mais: </span><span class="si">{</span><span class="n">pop_idades_hist_1up</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Distribuição de indivíduos em função da idade:</span><span class="se">\n</span><span class="si">{</span><span class="n">pop_idades_hist</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -14360,16 +14360,16 @@ Distribuição de indivíduos em função da idade:
 <div class="prompt input_prompt">In&nbsp;[29]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">time</span>
-random.seed(57010205)
-len_res_2b = len(res_2b)
-ind_idades = random.choices(idades, distrib_idades_menores, k=len_res_2b)
-for j in range(len_res_2b):
-    pop_idades[res_2b[j][1]] = ind_idades[j]
-    distrib_idades_menores[ind_idades[j]] -= 1
-n += len_res_2b
-print(f&#39;Alocados nesta etapa: {len_res_2b}&#39;)
-print(f&#39;Alocados até o momento: {n}&#39;)
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%time</span>
+<span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">57010205</span><span class="p">)</span>
+<span class="n">len_res_2b</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">res_2b</span><span class="p">)</span>
+<span class="n">ind_idades</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choices</span><span class="p">(</span><span class="n">idades</span><span class="p">,</span> <span class="n">distrib_idades_menores</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">len_res_2b</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">len_res_2b</span><span class="p">):</span>
+    <span class="n">pop_idades</span><span class="p">[</span><span class="n">res_2b</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="mi">1</span><span class="p">]]</span> <span class="o">=</span> <span class="n">ind_idades</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+    <span class="n">distrib_idades_menores</span><span class="p">[</span><span class="n">ind_idades</span><span class="p">[</span><span class="n">j</span><span class="p">]]</span> <span class="o">-=</span> <span class="mi">1</span>
+<span class="n">n</span> <span class="o">+=</span> <span class="n">len_res_2b</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Alocados nesta etapa: </span><span class="si">{</span><span class="n">len_res_2b</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Alocados até o momento: </span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -14455,13 +14455,13 @@ Wall time: 8.47 ms
 <div class="prompt input_prompt">In&nbsp;[31]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;População total: </span><span class="si">{num_pop}</span><span class="s1">&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Alocados até o mometo: </span><span class="si">{n}</span><span class="s1">&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;População total: </span><span class="si">{</span><span class="n">num_pop</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Alocados até o mometo: </span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 <span class="n">pop_idades_hist</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="nb">len</span><span class="p">(</span><span class="n">pop_idades</span><span class="p">[</span><span class="n">pop_idades</span><span class="o">==</span><span class="n">j</span><span class="p">])</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">)])</span>
 <span class="n">pop_idades_hist_1up</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="nb">len</span><span class="p">(</span><span class="n">pop_idades</span><span class="p">[</span><span class="n">pop_idades</span><span class="o">==</span><span class="n">j</span><span class="p">])</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">100</span><span class="p">)])</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Total do histograma: {pop_idades_hist.sum()}&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Total de alocados com um ano ou mais: {pop_idades_hist_1up.sum()}&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Distribuição de indivíduos em função da idade:</span><span class="se">\n</span><span class="si">{pop_idades_hist}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Total do histograma: </span><span class="si">{</span><span class="n">pop_idades_hist</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Total de alocados com um ano ou mais: </span><span class="si">{</span><span class="n">pop_idades_hist_1up</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Distribuição de indivíduos em função da idade:</span><span class="se">\n</span><span class="si">{</span><span class="n">pop_idades_hist</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -14512,16 +14512,16 @@ Distribuição de indivíduos em função da idade:
 <div class="prompt input_prompt">In&nbsp;[32]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">time</span>
-for k in range(3,num_tam_res+1):
-    ind_idades = random.choices(idades, distrib_idades_left, k=(k-2)*len(res[k]))
-    for j in range(len(res[k])):
-        for l in range(2, k):
-            pop_idades[res[k][j][l]] = ind_idades[(l-2)*len(res[k]) + j]
-            distrib_idades_left[ind_idades[(l-2)*len(res[k]) + j]] -= 1
-    n += (k-2)*len(res[k])
-#print(f&#39;Alocados nesta etapa: {len_res_2b}&#39;)
-print(f&#39;Alocados até o momento: {n}&#39;)
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%time</span>
+<span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="n">num_tam_res</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+    <span class="n">ind_idades</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choices</span><span class="p">(</span><span class="n">idades</span><span class="p">,</span> <span class="n">distrib_idades_left</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="p">(</span><span class="n">k</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">res</span><span class="p">[</span><span class="n">k</span><span class="p">]))</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">res</span><span class="p">[</span><span class="n">k</span><span class="p">])):</span>
+        <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+            <span class="n">pop_idades</span><span class="p">[</span><span class="n">res</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="n">j</span><span class="p">][</span><span class="n">l</span><span class="p">]]</span> <span class="o">=</span> <span class="n">ind_idades</span><span class="p">[(</span><span class="n">l</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">res</span><span class="p">[</span><span class="n">k</span><span class="p">])</span> <span class="o">+</span> <span class="n">j</span><span class="p">]</span>
+            <span class="n">distrib_idades_left</span><span class="p">[</span><span class="n">ind_idades</span><span class="p">[(</span><span class="n">l</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">res</span><span class="p">[</span><span class="n">k</span><span class="p">])</span> <span class="o">+</span> <span class="n">j</span><span class="p">]]</span> <span class="o">-=</span> <span class="mi">1</span>
+    <span class="n">n</span> <span class="o">+=</span> <span class="p">(</span><span class="n">k</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">res</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+<span class="c1">#print(f&#39;Alocados nesta etapa: {len_res_2b}&#39;)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Alocados até o momento: </span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -14561,11 +14561,11 @@ Wall time: 70.7 ms
 <div class="prompt input_prompt">In&nbsp;[33]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;População total: </span><span class="si">{num_pop}</span><span class="s1">&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Alocados ao final: </span><span class="si">{n}</span><span class="s1">&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;População total: </span><span class="si">{</span><span class="n">num_pop</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Alocados ao final: </span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 <span class="n">pop_idades_hist</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="nb">len</span><span class="p">(</span><span class="n">pop_idades</span><span class="p">[</span><span class="n">pop_idades</span><span class="o">==</span><span class="n">j</span><span class="p">])</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">)])</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Total de alocados via somatório do histograma: {pop_idades_hist.sum()}&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Distribuição de indivíduos em função da idade:</span><span class="se">\n</span><span class="si">{pop_idades_hist}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Total de alocados via somatório do histograma: </span><span class="si">{</span><span class="n">pop_idades_hist</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Distribuição de indivíduos em função da idade:</span><span class="se">\n</span><span class="si">{</span><span class="n">pop_idades_hist</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -14703,7 +14703,7 @@ Distribuição de indivíduos em função da idade:
 <span class="n">idades_fracoes_grupos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.047</span><span class="p">,</span> <span class="mf">0.046</span><span class="p">,</span> <span class="mf">0.043</span><span class="p">,</span> <span class="mf">0.049</span><span class="p">,</span> <span class="mf">0.027</span><span class="p">,</span> <span class="mf">0.065</span><span class="p">,</span> <span class="mf">0.067</span><span class="p">,</span> <span class="mf">0.155</span><span class="p">,</span> <span class="mf">0.142</span><span class="p">,</span>
                                   <span class="mf">0.140</span><span class="p">,</span> <span class="mf">0.064</span><span class="p">,</span> <span class="mf">0.155</span><span class="p">])</span>
 <span class="n">idade_max</span> <span class="o">=</span> <span class="mi">100</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Conferindo a soma das frações dos grupos de idades: {idades_fracoes_grupos.sum()}&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Conferindo a soma das frações dos grupos de idades: </span><span class="si">{</span><span class="n">idades_fracoes_grupos</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -14813,7 +14813,7 @@ Distribuição de indivíduos em função da idade:
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">pop_por_bloco</span> <span class="o">=</span> <span class="p">(</span><span class="n">landscan_rio</span><span class="o">/</span><span class="mi">10000</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
 <span class="n">num_pop</span> <span class="o">=</span> <span class="n">pop_por_bloco</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;População: </span><span class="si">{num_pop}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;População: </span><span class="si">{</span><span class="n">num_pop</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -14851,9 +14851,9 @@ Distribuição de indivíduos em função da idade:
 <div class="prompt input_prompt">In&nbsp;[39]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">time</span>
-pos_residencias, pos_individuos, res_individuos, pop_blocos_indices \
-    = episiming.cenarios.aloca_residencias_e_individuos(pop_por_bloco, censo_residencial)
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%time</span>
+<span class="n">pos_residencias</span><span class="p">,</span> <span class="n">pos_individuos</span><span class="p">,</span> <span class="n">res_individuos</span><span class="p">,</span> <span class="n">pop_blocos_indices</span> \
+    <span class="o">=</span> <span class="n">episiming</span><span class="o">.</span><span class="n">cenarios</span><span class="o">.</span><span class="n">aloca_residencias_e_individuos</span><span class="p">(</span><span class="n">pop_por_bloco</span><span class="p">,</span> <span class="n">censo_residencial</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -14912,8 +14912,8 @@ Wall time: 384 ms
 <div class="prompt input_prompt">In&nbsp;[41]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">time</span>
-pop_idades = episiming.cenarios.gera_idades(num_pop, num_tam_res, res_individuos, idades_fracoes)
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%time</span>
+<span class="n">pop_idades</span> <span class="o">=</span> <span class="n">episiming</span><span class="o">.</span><span class="n">cenarios</span><span class="o">.</span><span class="n">gera_idades</span><span class="p">(</span><span class="n">num_pop</span><span class="p">,</span> <span class="n">num_tam_res</span><span class="p">,</span> <span class="n">res_individuos</span><span class="p">,</span> <span class="n">idades_fracoes</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -14957,7 +14957,7 @@ Wall time: 4.07 ms
 <span class="n">plt</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">idade_max</span><span class="o">+</span><span class="mi">1</span><span class="p">)),</span> <span class="n">num_pop</span><span class="o">*</span><span class="n">idades_fracoes</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;pirâmide segundo censo&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;idade&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;população&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Pirâmide populacional obtida para </span><span class="si">{num_pop}</span><span class="s1"> indivíduos, em comparação com a meta&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Pirâmide populacional obtida para </span><span class="si">{</span><span class="n">num_pop</span><span class="si">}</span><span class="s1"> indivíduos, em comparação com a meta&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
@@ -15003,7 +15003,7 @@ Wall time: 4.07 ms
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">pop_por_bloco</span> <span class="o">=</span> <span class="p">(</span><span class="n">landscan_rio</span><span class="o">/</span><span class="mi">1000</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
 <span class="n">num_pop</span> <span class="o">=</span> <span class="n">pop_por_bloco</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;População: </span><span class="si">{num_pop}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;População: </span><span class="si">{</span><span class="n">num_pop</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -15041,9 +15041,9 @@ Wall time: 4.07 ms
 <div class="prompt input_prompt">In&nbsp;[44]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">time</span>
-pos_residencias, pos_individuos, res_individuos, pop_blocos_indices \
-    = episiming.cenarios.aloca_residencias_e_individuos(pop_por_bloco, censo_residencial)
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%time</span>
+<span class="n">pos_residencias</span><span class="p">,</span> <span class="n">pos_individuos</span><span class="p">,</span> <span class="n">res_individuos</span><span class="p">,</span> <span class="n">pop_blocos_indices</span> \
+    <span class="o">=</span> <span class="n">episiming</span><span class="o">.</span><span class="n">cenarios</span><span class="o">.</span><span class="n">aloca_residencias_e_individuos</span><span class="p">(</span><span class="n">pop_por_bloco</span><span class="p">,</span> <span class="n">censo_residencial</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -15082,8 +15082,8 @@ Wall time: 294 ms
 <div class="prompt input_prompt">In&nbsp;[45]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">time</span>
-pop_idades = episiming.cenarios.gera_idades(num_pop, num_tam_res, res_individuos, idades_fracoes)
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%time</span>
+<span class="n">pop_idades</span> <span class="o">=</span> <span class="n">episiming</span><span class="o">.</span><span class="n">cenarios</span><span class="o">.</span><span class="n">gera_idades</span><span class="p">(</span><span class="n">num_pop</span><span class="p">,</span> <span class="n">num_tam_res</span><span class="p">,</span> <span class="n">res_individuos</span><span class="p">,</span> <span class="n">idades_fracoes</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -15127,7 +15127,7 @@ Wall time: 30.7 ms
 <span class="n">plt</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">idade_max</span><span class="o">+</span><span class="mi">1</span><span class="p">)),</span> <span class="n">num_pop</span><span class="o">*</span><span class="n">idades_fracoes</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;pirâmide segundo censo&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;idade&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;população&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Pirâmide populacional obtida para </span><span class="si">{num_pop}</span><span class="s1"> indivíduos, em comparação com a meta&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Pirâmide populacional obtida para </span><span class="si">{</span><span class="n">num_pop</span><span class="si">}</span><span class="s1"> indivíduos, em comparação com a meta&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
@@ -15173,7 +15173,7 @@ Wall time: 30.7 ms
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">pop_por_bloco</span> <span class="o">=</span> <span class="p">(</span><span class="n">landscan_rio</span><span class="o">/</span><span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
 <span class="n">num_pop</span> <span class="o">=</span> <span class="n">pop_por_bloco</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;População: </span><span class="si">{num_pop}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;População: </span><span class="si">{</span><span class="n">num_pop</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -15211,9 +15211,9 @@ Wall time: 30.7 ms
 <div class="prompt input_prompt">In&nbsp;[48]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">time</span>
-pos_residencias, pos_individuos, res_individuos, pop_blocos_indices \
-    = episiming.cenarios.aloca_residencias_e_individuos(pop_por_bloco, censo_residencial)
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%time</span>
+<span class="n">pos_residencias</span><span class="p">,</span> <span class="n">pos_individuos</span><span class="p">,</span> <span class="n">res_individuos</span><span class="p">,</span> <span class="n">pop_blocos_indices</span> \
+    <span class="o">=</span> <span class="n">episiming</span><span class="o">.</span><span class="n">cenarios</span><span class="o">.</span><span class="n">aloca_residencias_e_individuos</span><span class="p">(</span><span class="n">pop_por_bloco</span><span class="p">,</span> <span class="n">censo_residencial</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -15252,8 +15252,8 @@ Wall time: 1.12 s
 <div class="prompt input_prompt">In&nbsp;[49]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">time</span>
-pop_idades = episiming.cenarios.gera_idades(num_pop, num_tam_res, res_individuos, idades_fracoes)
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%time</span>
+<span class="n">pop_idades</span> <span class="o">=</span> <span class="n">episiming</span><span class="o">.</span><span class="n">cenarios</span><span class="o">.</span><span class="n">gera_idades</span><span class="p">(</span><span class="n">num_pop</span><span class="p">,</span> <span class="n">num_tam_res</span><span class="p">,</span> <span class="n">res_individuos</span><span class="p">,</span> <span class="n">idades_fracoes</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -15297,7 +15297,7 @@ Wall time: 714 ms
 <span class="n">plt</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">idade_max</span><span class="o">+</span><span class="mi">1</span><span class="p">)),</span> <span class="n">num_pop</span><span class="o">*</span><span class="n">idades_fracoes</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;pirâmide segundo censo&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;idade&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;população&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Pirâmide populacional obtida para </span><span class="si">{num_pop}</span><span class="s1"> indivíduos, em comparação com a meta&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Pirâmide populacional obtida para </span><span class="si">{</span><span class="n">num_pop</span><span class="si">}</span><span class="s1"> indivíduos, em comparação com a meta&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
@@ -15343,7 +15343,7 @@ Wall time: 714 ms
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">pop_por_bloco</span> <span class="o">=</span> <span class="p">(</span><span class="n">landscan_rio</span><span class="o">/</span><span class="mi">10</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
 <span class="n">num_pop</span> <span class="o">=</span> <span class="n">pop_por_bloco</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;População: </span><span class="si">{num_pop}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;População: </span><span class="si">{</span><span class="n">num_pop</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -15381,9 +15381,9 @@ Wall time: 714 ms
 <div class="prompt input_prompt">In&nbsp;[52]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">time</span>
-pos_residencias, pos_individuos, res_individuos, pop_blocos_indices \
-    = episiming.cenarios.aloca_residencias_e_individuos(pop_por_bloco, censo_residencial)
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%time</span>
+<span class="n">pos_residencias</span><span class="p">,</span> <span class="n">pos_individuos</span><span class="p">,</span> <span class="n">res_individuos</span><span class="p">,</span> <span class="n">pop_blocos_indices</span> \
+    <span class="o">=</span> <span class="n">episiming</span><span class="o">.</span><span class="n">cenarios</span><span class="o">.</span><span class="n">aloca_residencias_e_individuos</span><span class="p">(</span><span class="n">pop_por_bloco</span><span class="p">,</span> <span class="n">censo_residencial</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -15422,8 +15422,8 @@ Wall time: 1min 5s
 <div class="prompt input_prompt">In&nbsp;[53]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">time</span>
-pop_idades = episiming.cenarios.gera_idades(num_pop, num_tam_res, res_individuos, idades_fracoes)
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%time</span>
+<span class="n">pop_idades</span> <span class="o">=</span> <span class="n">episiming</span><span class="o">.</span><span class="n">cenarios</span><span class="o">.</span><span class="n">gera_idades</span><span class="p">(</span><span class="n">num_pop</span><span class="p">,</span> <span class="n">num_tam_res</span><span class="p">,</span> <span class="n">res_individuos</span><span class="p">,</span> <span class="n">idades_fracoes</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -15467,7 +15467,7 @@ Wall time: 3min 57s
 <span class="n">plt</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">idade_max</span><span class="o">+</span><span class="mi">1</span><span class="p">)),</span> <span class="n">num_pop</span><span class="o">*</span><span class="n">idades_fracoes</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;pirâmide segundo censo&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;idade&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;população&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Pirâmide populacional obtida para </span><span class="si">{num_pop}</span><span class="s1"> indivíduos, em comparação com a meta&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Pirâmide populacional obtida para </span><span class="si">{</span><span class="n">num_pop</span><span class="si">}</span><span class="s1"> indivíduos, em comparação com a meta&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>

@@ -13249,17 +13249,17 @@ a.anchor-link {
 <div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">time</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%time</span>
 
-num_sim = 20
-dt_0 = 4 # primeiro passo
-J = 8 # número de passos dt
-t_0 = 0 # instante initial
-T_max = 40 # instante final máximo
+<span class="n">num_sim</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="n">dt_0</span> <span class="o">=</span> <span class="mi">4</span> <span class="c1"># primeiro passo</span>
+<span class="n">J</span> <span class="o">=</span> <span class="mi">8</span> <span class="c1"># número de passos dt</span>
+<span class="n">t_0</span> <span class="o">=</span> <span class="mi">0</span> <span class="c1"># instante initial</span>
+<span class="n">T_max</span> <span class="o">=</span> <span class="mi">40</span> <span class="c1"># instante final máximo</span>
 
-l_2_comp_20, l_2_comp_mat, l_infty_comp, l_infty_comp_mat, l_2_dif, l_infty_dif, \
-    dt_lista, X_comp, X_comp_mat, X_sir, dt \
-    = calcula_convergencia(num_sim, t_0, dt_0, T_max, J)
+<span class="n">l_2_comp_20</span><span class="p">,</span> <span class="n">l_2_comp_mat</span><span class="p">,</span> <span class="n">l_infty_comp</span><span class="p">,</span> <span class="n">l_infty_comp_mat</span><span class="p">,</span> <span class="n">l_2_dif</span><span class="p">,</span> <span class="n">l_infty_dif</span><span class="p">,</span> \
+    <span class="n">dt_lista</span><span class="p">,</span> <span class="n">X_comp</span><span class="p">,</span> <span class="n">X_comp_mat</span><span class="p">,</span> <span class="n">X_sir</span><span class="p">,</span> <span class="n">dt</span> \
+    <span class="o">=</span> <span class="n">calcula_convergencia</span><span class="p">(</span><span class="n">num_sim</span><span class="p">,</span> <span class="n">t_0</span><span class="p">,</span> <span class="n">dt_0</span><span class="p">,</span> <span class="n">T_max</span><span class="p">,</span> <span class="n">J</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -13486,17 +13486,17 @@ Wall time: 2min 58s
 <div class="prompt input_prompt">In&nbsp;[12]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">time</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%time</span>
 
-num_sim = 5
-dt_0 = 4 # primeiro passo
-J = 8 # número de passos dt
-t_0 = 0 # instante initial
-T_max = 40 # instante final máximo
+<span class="n">num_sim</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">dt_0</span> <span class="o">=</span> <span class="mi">4</span> <span class="c1"># primeiro passo</span>
+<span class="n">J</span> <span class="o">=</span> <span class="mi">8</span> <span class="c1"># número de passos dt</span>
+<span class="n">t_0</span> <span class="o">=</span> <span class="mi">0</span> <span class="c1"># instante initial</span>
+<span class="n">T_max</span> <span class="o">=</span> <span class="mi">40</span> <span class="c1"># instante final máximo</span>
 
-l_2_comp_5, l_2_comp_mat, l_infty_comp, l_infty_comp_mat, l_2_dif, l_infty_dif, \
-    dt_lista, X_comp, X_comp_mat, X_sir, dt \
-    = calcula_convergencia(num_sim, t_0, dt_0, T_max, J)
+<span class="n">l_2_comp_5</span><span class="p">,</span> <span class="n">l_2_comp_mat</span><span class="p">,</span> <span class="n">l_infty_comp</span><span class="p">,</span> <span class="n">l_infty_comp_mat</span><span class="p">,</span> <span class="n">l_2_dif</span><span class="p">,</span> <span class="n">l_infty_dif</span><span class="p">,</span> \
+    <span class="n">dt_lista</span><span class="p">,</span> <span class="n">X_comp</span><span class="p">,</span> <span class="n">X_comp_mat</span><span class="p">,</span> <span class="n">X_sir</span><span class="p">,</span> <span class="n">dt</span> \
+    <span class="o">=</span> <span class="n">calcula_convergencia</span><span class="p">(</span><span class="n">num_sim</span><span class="p">,</span> <span class="n">t_0</span><span class="p">,</span> <span class="n">dt_0</span><span class="p">,</span> <span class="n">T_max</span><span class="p">,</span> <span class="n">J</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -13723,17 +13723,17 @@ Wall time: 47 s
 <div class="prompt input_prompt">In&nbsp;[15]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">time</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%time</span>
 
-num_sim = 40
-dt_0 = 4 # primeiro passo
-J = 8 # número de passos dt
-t_0 = 0 # instante initial
-T_max = 40 # instante final máximo
+<span class="n">num_sim</span> <span class="o">=</span> <span class="mi">40</span>
+<span class="n">dt_0</span> <span class="o">=</span> <span class="mi">4</span> <span class="c1"># primeiro passo</span>
+<span class="n">J</span> <span class="o">=</span> <span class="mi">8</span> <span class="c1"># número de passos dt</span>
+<span class="n">t_0</span> <span class="o">=</span> <span class="mi">0</span> <span class="c1"># instante initial</span>
+<span class="n">T_max</span> <span class="o">=</span> <span class="mi">40</span> <span class="c1"># instante final máximo</span>
 
-l_2_comp_40, l_2_comp_mat, l_infty_comp, l_infty_comp_mat, l_2_dif, l_infty_dif, \
-    dt_lista, X_comp, X_comp_mat, X_sir, dt \
-    = calcula_convergencia(num_sim, t_0, dt_0, T_max, J)
+<span class="n">l_2_comp_40</span><span class="p">,</span> <span class="n">l_2_comp_mat</span><span class="p">,</span> <span class="n">l_infty_comp</span><span class="p">,</span> <span class="n">l_infty_comp_mat</span><span class="p">,</span> <span class="n">l_2_dif</span><span class="p">,</span> <span class="n">l_infty_dif</span><span class="p">,</span> \
+    <span class="n">dt_lista</span><span class="p">,</span> <span class="n">X_comp</span><span class="p">,</span> <span class="n">X_comp_mat</span><span class="p">,</span> <span class="n">X_sir</span><span class="p">,</span> <span class="n">dt</span> \
+    <span class="o">=</span> <span class="n">calcula_convergencia</span><span class="p">(</span><span class="n">num_sim</span><span class="p">,</span> <span class="n">t_0</span><span class="p">,</span> <span class="n">dt_0</span><span class="p">,</span> <span class="n">T_max</span><span class="p">,</span> <span class="n">J</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -13974,8 +13974,8 @@ Wall time: 6min 5s
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;diferença L^2&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Diferença em norma L^2 entre os infectados simulados pelo SIR compartimental&#39;</span>
           <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">e os infectados segundo o modelo de indivíduos&#39;</span>
-          <span class="o">+</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">num_pop = </span><span class="si">{num_pop}</span><span class="s1">, num_infectados_0 = </span><span class="si">{num_infectados_0}</span><span class="s1">, beta = </span><span class="si">{beta}</span><span class="s1">, &#39;</span>
-          <span class="o">+</span> <span class="sa">f</span><span class="s1">&#39;gamma = </span><span class="si">{gamma}</span><span class="s1">&#39;</span><span class="p">,</span>
+          <span class="o">+</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">num_pop = </span><span class="si">{</span><span class="n">num_pop</span><span class="si">}</span><span class="s1">, num_infectados_0 = </span><span class="si">{</span><span class="n">num_infectados_0</span><span class="si">}</span><span class="s1">, beta = </span><span class="si">{</span><span class="n">beta</span><span class="si">}</span><span class="s1">, &#39;</span>
+          <span class="o">+</span> <span class="sa">f</span><span class="s1">&#39;gamma = </span><span class="si">{</span><span class="n">gamma</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
           <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">16</span><span class="p">)</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
@@ -14040,17 +14040,17 @@ Wall time: 6min 5s
 <div class="prompt input_prompt">In&nbsp;[20]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">time</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%time</span>
 
-num_sim = 20
-dt_0 = 4 # primeiro passo
-J = 8 # número de passos dt
-t_0 = 0 # instante initial
-T_max = 40 # instante final máximo
+<span class="n">num_sim</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="n">dt_0</span> <span class="o">=</span> <span class="mi">4</span> <span class="c1"># primeiro passo</span>
+<span class="n">J</span> <span class="o">=</span> <span class="mi">8</span> <span class="c1"># número de passos dt</span>
+<span class="n">t_0</span> <span class="o">=</span> <span class="mi">0</span> <span class="c1"># instante initial</span>
+<span class="n">T_max</span> <span class="o">=</span> <span class="mi">40</span> <span class="c1"># instante final máximo</span>
 
-l_2_comp, l_2_comp_mat, l_infty_comp, l_infty_comp_mat, l_2_dif, l_infty_dif, \
-    dt_lista, X_comp, X_comp_mat, X_sir, dt \
-    = calcula_convergencia(num_sim, t_0, dt_0, T_max, J)
+<span class="n">l_2_comp</span><span class="p">,</span> <span class="n">l_2_comp_mat</span><span class="p">,</span> <span class="n">l_infty_comp</span><span class="p">,</span> <span class="n">l_infty_comp_mat</span><span class="p">,</span> <span class="n">l_2_dif</span><span class="p">,</span> <span class="n">l_infty_dif</span><span class="p">,</span> \
+    <span class="n">dt_lista</span><span class="p">,</span> <span class="n">X_comp</span><span class="p">,</span> <span class="n">X_comp_mat</span><span class="p">,</span> <span class="n">X_sir</span><span class="p">,</span> <span class="n">dt</span> \
+    <span class="o">=</span> <span class="n">calcula_convergencia</span><span class="p">(</span><span class="n">num_sim</span><span class="p">,</span> <span class="n">t_0</span><span class="p">,</span> <span class="n">dt_0</span><span class="p">,</span> <span class="n">T_max</span><span class="p">,</span> <span class="n">J</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -14297,17 +14297,17 @@ Wall time: 6min 18s
 <div class="prompt input_prompt">In&nbsp;[24]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">time</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%time</span>
 
-num_sim = 20
-dt_0 = 4 # primeiro passo
-J = 7 # número de passos dt
-t_0 = 0 # instante initial
-T_max = 40 # instante final máximo
+<span class="n">num_sim</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="n">dt_0</span> <span class="o">=</span> <span class="mi">4</span> <span class="c1"># primeiro passo</span>
+<span class="n">J</span> <span class="o">=</span> <span class="mi">7</span> <span class="c1"># número de passos dt</span>
+<span class="n">t_0</span> <span class="o">=</span> <span class="mi">0</span> <span class="c1"># instante initial</span>
+<span class="n">T_max</span> <span class="o">=</span> <span class="mi">40</span> <span class="c1"># instante final máximo</span>
 
-l_2_comp, l_2_comp_mat, l_infty_comp, l_infty_comp_mat, l_2_dif, l_infty_dif, \
-    dt_lista, X_comp, X_comp_mat, X_sir, dt \
-    = calcula_convergencia(num_sim, t_0, dt_0, T_max, J)
+<span class="n">l_2_comp</span><span class="p">,</span> <span class="n">l_2_comp_mat</span><span class="p">,</span> <span class="n">l_infty_comp</span><span class="p">,</span> <span class="n">l_infty_comp_mat</span><span class="p">,</span> <span class="n">l_2_dif</span><span class="p">,</span> <span class="n">l_infty_dif</span><span class="p">,</span> \
+    <span class="n">dt_lista</span><span class="p">,</span> <span class="n">X_comp</span><span class="p">,</span> <span class="n">X_comp_mat</span><span class="p">,</span> <span class="n">X_sir</span><span class="p">,</span> <span class="n">dt</span> \
+    <span class="o">=</span> <span class="n">calcula_convergencia</span><span class="p">(</span><span class="n">num_sim</span><span class="p">,</span> <span class="n">t_0</span><span class="p">,</span> <span class="n">dt_0</span><span class="p">,</span> <span class="n">T_max</span><span class="p">,</span> <span class="n">J</span><span class="p">)</span>
 </pre></div>
 
     </div>

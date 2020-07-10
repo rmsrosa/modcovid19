@@ -13226,9 +13226,9 @@ a.anchor-link {
 <div class="prompt input_prompt">In&nbsp;[12]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">time</span>
-tx_reducao = 250
-cenario_rio = episiming.cenarios.RiodeJaneiro(tx_reducao)
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%time</span>
+<span class="n">tx_reducao</span> <span class="o">=</span> <span class="mi">250</span>
+<span class="n">cenario_rio</span> <span class="o">=</span> <span class="n">episiming</span><span class="o">.</span><span class="n">cenarios</span><span class="o">.</span><span class="n">RiodeJaneiro</span><span class="p">(</span><span class="n">tx_reducao</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -13277,7 +13277,7 @@ Wall time: 1min 40s
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">cenario_rio</span><span class="o">.</span><span class="n">pop_posicoes</span><span class="o">.</span><span class="n">T</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Posição dos </span><span class="si">{cenario_rio.num_pop}</span><span class="s1"> indivíduos da população&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Posição dos </span><span class="si">{</span><span class="n">cenario_rio</span><span class="o">.</span><span class="n">num_pop</span><span class="si">}</span><span class="s1"> indivíduos da população&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 
@@ -13320,7 +13320,7 @@ Wall time: 1min 40s
 <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">landscan_rio</span><span class="p">),</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;Blues&#39;</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="o">-</span><span class="mf">0.7</span><span class="p">,</span> <span class="mf">38.3</span><span class="o">-</span><span class="n">y</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;tab:orange&#39;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 <span class="c1">#plt.grid(False)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Distribuição da população de </span><span class="si">{cenario_rio.num_pop}</span><span class="s1"> indivíduos&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Distribuição da população de </span><span class="si">{</span><span class="n">cenario_rio</span><span class="o">.</span><span class="n">num_pop</span><span class="si">}</span><span class="s1"> indivíduos&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 
@@ -13366,7 +13366,7 @@ Wall time: 1min 40s
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cenario_rio</span><span class="o">.</span><span class="n">pos_residencias</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Posição das {len(cenario_rio.pos_residencias)} residências&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Posição das </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">cenario_rio</span><span class="o">.</span><span class="n">pos_residencias</span><span class="p">)</span><span class="si">}</span><span class="s1"> residências&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 
@@ -13414,7 +13414,7 @@ Wall time: 1min 40s
 <span class="n">plt</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">cenario_rio</span><span class="o">.</span><span class="n">idade_max</span><span class="o">+</span><span class="mi">1</span><span class="p">)),</span> <span class="n">cenario_rio</span><span class="o">.</span><span class="n">num_pop</span><span class="o">*</span><span class="n">cenario_rio</span><span class="o">.</span><span class="n">idades_fracoes</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;pirâmide segundo censo&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;idade&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;população&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Pirâmide populacional obtida para </span><span class="si">{cenario_rio.num_pop}</span><span class="s1"> indivíduos, em comparação com a pirâmide etária&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Pirâmide populacional obtida para </span><span class="si">{</span><span class="n">cenario_rio</span><span class="o">.</span><span class="n">num_pop</span><span class="si">}</span><span class="s1"> indivíduos, em comparação com a pirâmide etária&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
@@ -13462,7 +13462,7 @@ Wall time: 1min 40s
 <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">cenario_rio</span><span class="o">.</span><span class="n">dist_escolas</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;Blues&#39;</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Distribuição das {int(cenario_rio.dist_escolas.sum())} escolas municipais&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Distribuição das </span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">cenario_rio</span><span class="o">.</span><span class="n">dist_escolas</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span><span class="si">}</span><span class="s1"> escolas municipais&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 
@@ -13512,7 +13512,7 @@ Wall time: 1min 40s
     <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
     <span class="n">n</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">escola</span><span class="p">)</span>
     
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Posição dos </span><span class="si">{n}</span><span class="s1"> alunos, coloridos por escola&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Posição dos </span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s1"> alunos, coloridos por escola&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 
@@ -13559,7 +13559,7 @@ Wall time: 1min 40s
 <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">cenario_rio</span><span class="o">.</span><span class="n">emp_por_bloco</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;Blues&#39;</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Distribuição das {cenario_rio.emp_por_bloco.sum()} empresas&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Distribuição das </span><span class="si">{</span><span class="n">cenario_rio</span><span class="o">.</span><span class="n">emp_por_bloco</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">}</span><span class="s1"> empresas&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 
@@ -13609,7 +13609,7 @@ Wall time: 1min 40s
     <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
     <span class="n">n</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">membros</span><span class="p">)</span>
     
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Posição dos </span><span class="si">{n}</span><span class="s1"> indivíduos alocados nas {cenario_rio.emp_por_bloco.sum()} empresas, &#39;</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Posição dos </span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s1"> indivíduos alocados nas </span><span class="si">{</span><span class="n">cenario_rio</span><span class="o">.</span><span class="n">emp_por_bloco</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">}</span><span class="s1"> empresas, &#39;</span>
           <span class="o">+</span> <span class="s1">&#39;coloridos por empresa&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
@@ -13660,11 +13660,11 @@ Wall time: 1min 40s
 <div class="prompt input_prompt">In&nbsp;[13]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">time</span>
-plt.figure(figsize=(12,6))
-nx.draw(cenario_rio.G_r, pos=cenario_rio.attr_pos, node_size=1, alpha=0.5)
-plt.title(&#39;Rede residencial&#39;, fontsize=16)
-plt.show()
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%time</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
+<span class="n">nx</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">cenario_rio</span><span class="o">.</span><span class="n">G_r</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="n">cenario_rio</span><span class="o">.</span><span class="n">attr_pos</span><span class="p">,</span> <span class="n">node_size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Rede residencial&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 
     </div>
@@ -13718,17 +13718,17 @@ Wall time: 4.35 s
 <div class="prompt input_prompt">In&nbsp;[14]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">time</span>
-j = 0
-plt.figure(figsize=(12,6))
-nx.draw(cenario_rio.G_esc.subgraph(tuple(cenario_rio.escolas[j])),
-        pos=cenario_rio.attr_pos, node_size=1, alpha=0.1)
-x, y = cenario_rio.pop_posicoes.T
-plt.scatter(x, y, color=&#39;tab:blue&#39;, s=1)
-x_s, y_s = cenario_rio.pop_posicoes[cenario_rio.escolas[j]].T
-plt.scatter(x_s, y_s, color = &#39;tab:orange&#39;, s=20)
-plt.title(&#39;Rede de alunos da primeira escola da lista&#39;, fontsize=16)
-plt.show()
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%time</span>
+<span class="n">j</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
+<span class="n">nx</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">cenario_rio</span><span class="o">.</span><span class="n">G_esc</span><span class="o">.</span><span class="n">subgraph</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">cenario_rio</span><span class="o">.</span><span class="n">escolas</span><span class="p">[</span><span class="n">j</span><span class="p">])),</span>
+        <span class="n">pos</span><span class="o">=</span><span class="n">cenario_rio</span><span class="o">.</span><span class="n">attr_pos</span><span class="p">,</span> <span class="n">node_size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">cenario_rio</span><span class="o">.</span><span class="n">pop_posicoes</span><span class="o">.</span><span class="n">T</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;tab:blue&#39;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">x_s</span><span class="p">,</span> <span class="n">y_s</span> <span class="o">=</span> <span class="n">cenario_rio</span><span class="o">.</span><span class="n">pop_posicoes</span><span class="p">[</span><span class="n">cenario_rio</span><span class="o">.</span><span class="n">escolas</span><span class="p">[</span><span class="n">j</span><span class="p">]]</span><span class="o">.</span><span class="n">T</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x_s</span><span class="p">,</span> <span class="n">y_s</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;tab:orange&#39;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Rede de alunos da primeira escola da lista&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 
     </div>
@@ -13782,17 +13782,17 @@ Wall time: 1.83 s
 <div class="prompt input_prompt">In&nbsp;[15]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">time</span>
-j = -1
-plt.figure(figsize=(12,6))
-nx.draw(cenario_rio.G_emp.subgraph(tuple(cenario_rio.emp_membros[j])),
-        pos=cenario_rio.attr_pos, node_size=1, alpha=0.1)
-x, y = cenario_rio.pop_posicoes.T
-plt.scatter(x, y, color=&#39;tab:blue&#39;, s=1)
-x_e, y_e = cenario_rio.pop_posicoes[cenario_rio.emp_membros[j]].T
-plt.scatter(x_e, y_e, color = &#39;tab:orange&#39;, s=50)
-plt.title(&#39;Rede de indivíduos da primeira empresa da lista&#39;, fontsize=16)
-plt.show()
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%time</span>
+<span class="n">j</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
+<span class="n">nx</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">cenario_rio</span><span class="o">.</span><span class="n">G_emp</span><span class="o">.</span><span class="n">subgraph</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">cenario_rio</span><span class="o">.</span><span class="n">emp_membros</span><span class="p">[</span><span class="n">j</span><span class="p">])),</span>
+        <span class="n">pos</span><span class="o">=</span><span class="n">cenario_rio</span><span class="o">.</span><span class="n">attr_pos</span><span class="p">,</span> <span class="n">node_size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">cenario_rio</span><span class="o">.</span><span class="n">pop_posicoes</span><span class="o">.</span><span class="n">T</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;tab:blue&#39;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">x_e</span><span class="p">,</span> <span class="n">y_e</span> <span class="o">=</span> <span class="n">cenario_rio</span><span class="o">.</span><span class="n">pop_posicoes</span><span class="p">[</span><span class="n">cenario_rio</span><span class="o">.</span><span class="n">emp_membros</span><span class="p">[</span><span class="n">j</span><span class="p">]]</span><span class="o">.</span><span class="n">T</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x_e</span><span class="p">,</span> <span class="n">y_e</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;tab:orange&#39;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Rede de indivíduos da primeira empresa da lista&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 
     </div>
