@@ -13202,38 +13202,21 @@ a.anchor-link {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Modelo-epidemiol&#243;gico-individual-estoc&#225;stico-em-tempos-discretos">Modelo epidemiol&#243;gico individual estoc&#225;stico em tempos discretos<a class="anchor-link" href="#Modelo-epidemiol&#243;gico-individual-estoc&#225;stico-em-tempos-discretos">&#182;</a></h1><p>Documentação sobre a <strong>modelagem</strong> e a <strong>implementação numérica</strong> de um <strong>modelo epidemiológico do tipo individual estocástico em tempos discretos</strong>, tendo o município do Rio de Janeiro como foco.</p>
-<p>Desenvolvido por professores e alunos do <a href="https://www.im.ufrj.br">Instituto de Matemática da UFRJ</a>.</p>
-
+<h1 id="Embasamento-para-o-trabalho-e-prepara&#231;&#227;o-para-as-apresenta&#231;&#245;es">Embasamento para o trabalho e prepara&#231;&#227;o para as apresenta&#231;&#245;es<a class="anchor-link" href="#Embasamento-para-o-trabalho-e-prepara&#231;&#227;o-para-as-apresenta&#231;&#245;es">&#182;</a></h1>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Equipe">Equipe<a class="anchor-link" href="#Equipe">&#182;</a></h2><p>A equipe responsável por esse projeto é formada pelas seguintes pessoas:</p>
+<h2 id="Pontos">Pontos<a class="anchor-link" href="#Pontos">&#182;</a></h2><p>Tópicos a serem mais bem embasados:</p>
 <ul>
-<li>Coordenador:<ul>
-<li>Ricardo Martins da Silva Rosa (DMA/IM/UFRJ) </li>
-</ul>
-</li>
-<li>Professores (IM/UFRJ):<ul>
-<li>Amaury Alvarez Cruz (DCC)</li>
-<li>Bernardo Freitas Paulo da Costa (DMA)</li>
-<li>Heudson Mirandola (DM)</li>
-</ul>
-</li>
-<li>Aluno de Mestrado (Matemática - IM/UFRJ):<ul>
-<li>Thiago Holleben</li>
-</ul>
-</li>
-<li>Alunos de Graduação (Matemática Aplicada - IM/UFRJ):<ul>
-<li>Beatriz Farah</li>
-<li>Cynthia Herkenhoff</li>
-<li>Gil Sales Miranda Neto</li>
-<li>Rodrigo Peregrino </li>
-</ul>
-</li>
+<li>método de integração ($\tau$-leap method)</li>
+<li>cálculo do número básico de reprodução $\mathcal{R}_0$</li>
+<li>influência das redes de conexão</li>
+<li>perfil variável de infecciosidade</li>
+<li>modulação da suscetibilidade e da infecciosidade</li>
+<li>taxas de transmissão em cada rede</li>
 </ul>
 
 </div>
@@ -13242,26 +13225,20 @@ a.anchor-link {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Sobre-o-modelo">Sobre o modelo<a class="anchor-link" href="#Sobre-o-modelo">&#182;</a></h2><p>O modelo está sendo desenvolvido com dados para o <strong>município do Rio de Janeiro</strong>, mas pode ser adaptado a outras regiões, desde que as devidas informações estejam disponíveis.</p>
-<p>Principais características do modelo:</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<ul>
-<li><p>Trata separadamente cada indivíduo da população. No caso do Rio de Janeiro, são quase sete milhões de indivíduos. Para cada indivíduo, temos os seguintes atributos:</p>
-<ul>
-<li><p>a sua localização espacial;</p>
+<h2 id="M&#233;todos-de-integra&#231;&#227;o-temporal">M&#233;todos de integra&#231;&#227;o temporal<a class="anchor-link" href="#M&#233;todos-de-integra&#231;&#227;o-temporal">&#182;</a></h2><ul>
+<li>Passo de tempo fixo:<ul>
+<li><em>Gillespie's $\tau$-leap method:</em> múltiplos eventos ocorrendo em um passo de tempo fixo <a href="">Box 6.5, página 204, de KR (2007)</a> and <a href="">Gillespie (2001)</a></li>
+</ul>
 </li>
-<li><p>a sua idade;</p>
+<li>Passo de tempo como variável aleatória (estes são modelos estocásticos <em>exatos</em> dos seus análogos em EDOs, segundo <a href="">Box 6.5, página 204, de KR (2007)</a>:<ul>
+<li><em>Gillespie's Direct Algorithm:</em> <a href="">Box 6.3, página 201, de Keeling &amp; Rohani (2007)</a> e <a href="">Gillespie (1977)</a></li>
+<li><em>Gillespie's First Reaction Method:</em> <a href="">Box 6.4, página 203, de Keeling &amp; Rohani (2007)</a> e <a href="">Gillespie (1977)</a></li>
+<li><em>Next Reaction Method:</em> <a href="">see Box 6.5, página 204, de Keeling &amp; Rohani (2007)</a> e <a href="">Gibson and Bruck (2000)</a></li>
+</ul>
 </li>
-<li><p>o seu grau de susceptibilidade;</p>
-</li>
-<li><p>o seu potencial de infectividade;</p>
-</li>
+<li>Velocidade: ver <a href="">Seção 6.3.2.1, pg. 203, de Keeling &amp; Rohani (2007)</a></li>
+<li>Vejam, também, <ul>
+<li><a href="">Seção 6.3.5, página 217, de Keeling &amp; Rohani (2007)</a></li>
 </ul>
 </li>
 </ul>
@@ -13272,127 +13249,24 @@ a.anchor-link {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<ul>
-<li><p>Cada indivíduo tem associado a si algumas variáveis:</p>
-<ul>
-<li><p>O seu estado epidemiológico;</p>
-</li>
-<li><p>O momento de exposição, caso tenha sido infectado;</p>
-</li>
-<li><p>O momento do início do período infeccioso, caso tenha sido infectado;</p>
-</li>
-<li><p>O momento do fim de recuperação ou de decesso, caso tenha sido infectado.</p>
-</li>
-</ul>
-</li>
-</ul>
+<h2 id="Perfil-vari&#225;vel-de-infecciosidade">Perfil vari&#225;vel de infecciosidade<a class="anchor-link" href="#Perfil-vari&#225;vel-de-infecciosidade">&#182;</a></h2><p>Também mencionamos muito por alto sobre o kappa ser variável no tempo.
+E sobre a influência das redes estruturadas.</p>
 
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<ul>
-<li><p>Cada indivíduo pode estar em um dentre vários estágios possíveis da doença:</p>
-<ul>
-<li><p>suscetível;</p>
-</li>
-<li><p>exposto;</p>
-</li>
-<li><p>infeccioso assintomático;</p>
-</li>
-<li><p>infeccioso sintomático (com sintomas leves, médios ou graves);</p>
-</li>
-<li><p>recuperado;</p>
-</li>
-<li><p>decesso.</p>
-</li>
-</ul>
-</li>
-<li><p>Independente do estado, cada indivíduo pode estar em diferentes níveis de quarentena.</p>
-</li>
-</ul>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span> 
+</pre></div>
 
+    </div>
 </div>
 </div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<ul>
-<li><p>Os indivíduos interagem entre si em diversos tipos de redes de conexão:</p>
-<ul>
-<li><p>residencial;</p>
-</li>
-<li><p>escolar (em diversos níveis);</p>
-</li>
-<li><p>trabalho;</p>
-</li>
-<li><p>vizinhanças;</p>
-</li>
-<li><p>comércio;</p>
-</li>
-<li><p>aleatoriamente entre todos os indivíduos da região.</p>
-</li>
-</ul>
-</li>
-</ul>
 
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<ul>
-<li><p>Naturalmente, um contágio se dá quando um suscetível se encontra com um infeccioso através de uma dessas redes e de acordo com certas probabilidades.</p>
-</li>
-<li><p>Após o contágio, ou exposição, um indivíduo passa por dois caminhos possíveis, dependendo de uma dada probabilidade:</p>
-<ul>
-<li><p>um período de latência, seguido de um período infeccioso assintomático, terminando por se recuperar;</p>
-</li>
-<li><p>um período de incubação, seguido de um período infeccioso sintomático, terminando por se recuperar ou vir a óbito (decesso).</p>
-</li>
-</ul>
-</li>
-<li><p>Durante o período infeccioso, o grau de infecciosidade é assumido variável com o tempo.</p>
-</li>
-</ul>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<ul>
-<li><p>Aleatoriedades:</p>
-<ul>
-<li><p>O potencial de infectividade segue uma distribuição gama com média 1.</p>
-</li>
-<li><p>Testes de Bernoulli são realizados para decidir se cada indivíduo suscetível é infectado em função dos contatos com indivíduos contagiosos em suas redes de contato.</p>
-</li>
-<li><p>Em caso de contágio, um teste de Bernoulli é realizado para decidir se um exposto será sintomático ou assintomático.</p>
-</li>
-<li><p>Os períodos de latência e de incubação são variáveis aleatórias, seguindo uma distribuição log-normal ou weibull, dependendo da escolha para o modelo.</p>
-</li>
-<li><p>A força de infecção de cada indivíduo é modulada por uma log-normal com parâmetros aleatórios.</p>
-</li>
-</ul>
-</li>
-</ul>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Licen&#231;as">Licen&#231;as<a class="anchor-link" href="#Licen&#231;as">&#182;</a></h2><p>O texto está disponível sob a <a href="https://creativecommons.org/licenses/by-nc-nd/3.0/us/legalcode">licença CC-BY-NC-ND</a> e os códigos estão disponíveis sob a <a href="https://www.gnu.org/licenses/gpl.html">licença GNU GPL Versão 3</a>.</p>
-
-</div>
-</div>
 </div></section></section>
 </div>
 </div>
